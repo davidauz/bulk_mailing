@@ -21,8 +21,11 @@ public interface MailMessageRepository extends JpaRepository<blk_MailMessage, Lo
     @Query(value = "update config set value=1+value where name='heartbeat';", nativeQuery = true)
     void update_heart_beat();
 
-    @Query(value="SELECT coalesce(min(id), 0) FROM mail_message WHERE sent_status=?1", nativeQuery = true)
-    Long getMinId(@Param("paramstatus") blk_MailMessage.SENT_STATUS paramstatus);
+    @Query
+//            (value="SELECT coalesce(min(id), 0) FROM mail_message WHERE sent_status=?1", nativeQuery = true)
+//    (value="SELECT id FROM mail_message WHERE sent_status=?1", nativeQuery = true)
+    (value="SELECT id FROM mail_message WHERE sent_status=:#{#paramstatus.name()}", nativeQuery = true)
+    long getMinId(@Param("paramstatus") blk_MailMessage.SENT_STATUS paramstatus);
 }
 
 
