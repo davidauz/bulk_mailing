@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="https://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{workflow_layout.html}"
+>
+<head>
+	<title>Bulk mailing: Settings</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+	<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+	<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+	<script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+	<script type="text/javascript" th:src="@{/webjars/htmx.org/dist/htmx.min.js}"></script>
+	<script type="text/javascript" th:src="@{/webjars/hyperscript.org/dist/_hyperscript.js}"></script>
+	<style>
+		.sending-form{
+		}
+	</style>
+</head>
+<body>
+<section layout:fragment="content">
+	<h2>Global settings</h2>
+	<div style="width:80%">
+		<div class="container">
+				<ul class="nav nav-tabs" id="myTab" role="tablist">
+					<li class="nav-item">
+						<a class="nav-link active" id="tab1-tab" data-bs-toggle="tab" href="#tab1" role="tab" aria-controls="tab1" aria-selected="true" >Mail server</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" id="tab2-tab" data-bs-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false">Rules</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" id="tab3-tab" data-bs-toggle="tab" href="#tab3" role="tab" aria-controls="tab3" aria-selected="false">User preferences</a>
+					</li>
+				</ul>
+				<div class="tab-content">
+					<div class="tab-pane show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+						<h3>Mail server configuration</h3>
+
+						<div class="form-group row">
+							<label class="col-sm-2 col-form-label" th:for="SMTPServer">SMTP server:</label>
+							<div class="col-sm-10">
+								<input	type="text"
+										  required
+										  class="form-control"
+										  id="SMTPServer"
+										  name="SMTPServer"
+										  placeholder="smtp.provider.com"
+										  th:value="${settings_map.get('SMTPServer')}"
+								/>
+							</div>
+						</div>
+
+
+						<div class="form-group row">
+							<label class="col-sm-2 col-form-label" th:for="SMTPPort">SMTP Server port:</label>
+							<div class="col-sm-10">
+								<input	type="text"
+										  required
+										  class="form-control"
+										  id="SMTPPort"
+										  name="SMTPPort"
+										  placeholder="587"
+										  th:value="${settings_map.get('SMTPPort')}"
+								/>
+							</div>
+						</div>
+
+
+						<div class="form-group row">
+							<label class="col-sm-2 col-form-label" th:for="serveruname">User name:</label>
+							<div class="col-sm-10">
+								<input	type="text"
+										  required
+										  class="form-control"
+										  id="serveruname"
+										  name="serveruname"
+										  placeholder="my_user_name"
+										  th:value="${settings_map.get('serveruname')}"
+								/>
+							</div>
+						</div>
+
+
+						<div class="form-group row">
+							<label class="col-sm-2 col-form-label" th:for="serverpassword">Password:</label>
+							<div class="col-sm-10">
+								<input	type="password"
+										  required
+										  class="form-control"
+										  id="serverpassword"
+										  name="serverpassword"
+										  placeholder="super_secret_password"
+										  th:value="${settings_map.get('serverpassword')}"
+								/>
+							</div>
+						</div>
+
+					<div class="form-group row">
+						<label class="col-sm-2 col-form-label" th:for="serverpassword2">Confirm password:</label>
+						<div class="col-sm-10">
+							<input	type="password"
+									  required
+									  class="form-control"
+									  id="serverpassword2"
+									  name="serverpassword2"
+									  placeholder="confirm password"
+									  th:value="${settings_map.get('serverpassword')}"
+							/>
+						</div>
+					</div>
+
+
+
+						<div class="form-group row">
+							<label class="col-sm-2 col-form-label" th:for="authtype">Authentication type:</label>
+							<div class="col-sm-10">
+								<select	th:selected="${settings_map.get('authtype')}"
+										class="form-control"
+										id=authtype
+										name=authtype
+										style="width:30%;float:left;"
+								>
+									<option value="NONE">None</option>
+									<option th:if="'STARTTLS'==${settings_map.get('authtype')}" selected=selected value="STARTTLS">STARTTLS</option>
+									<option th:unless="'STARTTLS'==${settings_map.get('authtype')}" value="STARTTLS">STARTTLS</option>
+									<option th:if="'SSL_TLS'==${settings_map.get('authtype')}" selected=selected value="SSL_TLS">SSL/TLS</option>
+									<option th:unless="'SSL_TLS'==${settings_map.get('authtype')}" value="SSL_TLS">SSL/TLS</option>
+								</select>
+							</div>
+						</div>
+
+
+						<hr>
+
+
+						<div class="form-group row">
+							<label class="col-sm-2 col-form-label" th:for="imapserver">IMAP server:</label>
+							<div class="col-sm-10">
+								<input	type="text"
+										  required
+										  class="form-control"
+										  id="imapserver"
+										  name="imapserver"
+										  placeholder="imap.provider.com"
+										  th:value="${settings_map.get('imapserver')}"
+								/>
+							</div>
+						</div>
+
+
+						<div class="form-group row">
+							<label class="col-sm-2 col-form-label" th:for="IMAPserverPort">IMAP Server port:</label>
+							<div class="col-sm-10">
+								<input	type="text"
+										  required
+										  class="form-control"
+										  id="IMAPserverPort"
+										  name="IMAPserverPort"
+										  placeholder="587"
+										  th:value="${settings_map.get('IMAPserverPort')}"
+								/>
+							</div>
+						</div>
+
+						<a hx-post="/settings/mailServer"
+						   hx-target="#mailServerResults"
+						   hx-include=".form-control"
+						   hx-swap="innerHTML"
+						   class="btn btn-primary"
+						>Save changes</a><span id="mailServerResults"></span>
+					</div>
+
+					<div class="tab-pane" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
+						<h3>Rules for sending mail</h3>
+
+						<div class="form-group row">
+							<label class="col-sm-2 col-form-label" th:for="sendingRandomDelay">Minimum delay between sends:</label>
+							<div class="col-sm-10">
+								<input	type="numeric"
+										  required
+										  class="sending-form"
+										  id="sendingRandomDelay"
+										  name="sendingRandomDelay"
+										  placeholder="500 (ms)"
+										  th:value="${settings_map.get('sendingRandomDelay')}"
+								/>
+							</div>
+						</div>
+
+						<div class="form-group row">
+							<label class="col-sm-2 col-form-label" th:for="batchSize">Batch size:</label>
+							<div class="col-sm-10">
+								<input	type="numeric"
+										  required
+										  class="sending-form"
+										  id="batchSize"
+										  name="batchSize"
+										  placeholder="50"
+										  th:value="${settings_map.get('batchSize')}"
+								/>
+							</div>
+						</div>
+
+						<div class="form-group row">
+							<label class="col-sm-2 col-form-label" th:for="minPauseBatch">Minimum pause between batches:</label>
+							<div class="col-sm-10">
+								<input	type="numeric"
+										  required
+										  class="sending-form"
+										  id="minPauseBatch"
+										  name="minPauseBatch"
+										  placeholder="5000 (ms)"
+										  th:value="${settings_map.get('minPauseBatch')}"
+								/>
+							</div>
+						</div>
+
+						<div class="form-group row">
+							<label class="col-sm-2 col-form-label" th:for="maxMessagesInADay">Max messages in a day:</label>
+							<div class="col-sm-10">
+								<input	type="numeric"
+										  required
+										  class="sending-form"
+										  id="maxMessagesInADay"
+										  name="maxMessagesInADay"
+										  placeholder="500"
+										  th:value="${settings_map.get('maxMessagesInADay')}"
+								/>
+							</div>
+						</div>
+
+						<a hx-post="/settings/sendingRules"
+						   hx-target="#sendingRulesResults"
+						   hx-include=".sending-form"
+						   hx-swap="innerHTML"
+						   class="btn btn-primary"
+						>Save changes</a><span id="sendingRulesResults"></span>
+
+					</div>
+					<div class="tab-pane" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
+						Mailer daemon status
+						<div class="mb-3">
+							<div class="form-check form-switch">
+								<input
+										checked class="form-check-input"
+										hx-post="/settings/daemon_active"
+										hx-target="#mailer_daemon_status"
+										hx-swap="innerHTML"
+										hx-trigger="click"
+										hx-vals='{"checkbox": "demo-checkbox-switch"}'
+										name="demo-checkbox-switch"
+										type="checkbox"
+										value="demo-checkbox-value"
+								>
+								<span id="mailer_daemon_status" name="mailer_daemon_status">Mailer daemon status</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+</section>
+</div>
+
+
+</body>
+</html>
+

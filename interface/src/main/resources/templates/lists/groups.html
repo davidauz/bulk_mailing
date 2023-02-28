@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:th="https://www.thymeleaf.org"
+    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{workflow_layout.html}"
+>
+    <head>
+    <title>Bulk mailing: Groups</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/pagination_style.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    </head>
+<body>
+<section layout:fragment="content">
+
+    <div class="container-fluid" style="max-width: 90%; margin: 0;">
+        <h2 class="text-center">Groups</h2>
+
+        <div th:if="${message != null}" class="alert alert-success alert-dismissible fade show text-center message"
+             role="alert">
+            [[${message}]]
+            <button type="button" class="close btn-sm" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div>
+            <form th:action="@{/groups/search}" method="post" id="searchForm" >
+                <div class="row">
+                    <div class="col">
+                        <div class="search">
+                            <input
+                                id="keyword"
+                                type="search"
+                                name="keyword"
+                                th:value="${keyword}"
+                                class="form-control"
+                                placeholder="Enter keyword"
+                            >
+                            <button
+                                type="submit_lens"
+                                class="btn btn-secondary"
+                                id="btn_search"
+                                name="btn_search"
+                            >
+                            Search
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col input-group">
+                        <label for="pageSize">Page size:</label>
+                        <input
+                                type="number"
+                                size="5"
+                                th:with="pageSize=*{pageSize}"
+                                name="pageSize"
+                                id="pageSize"
+                                th:value="${pageSize}"
+                        />
+                    </div>
+                    <div class="col">
+                        <button name="btnClear" class="btn btn-info">Clear</button>
+                        <a href="/groups/new" class="btn btn-info">New</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div th:if="${groups.size() > 0}">
+            <table class="table table-hover table-responsive-xl">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="group : ${groups}">
+                    <th scope="row">[[${group.groupId}]]</th>
+                    <td>[[${group.groupName}]]</td>
+                    <td>[[${group.groupDesc}]]</td>
+                    <td>
+                        <a th:if="${group.active}" class="fa-regular bi-check-square"
+                           th:href="@{'/groups/' + ${group.groupId} + '/published/false'}" title="Disable this group"></a>
+                        <a th:if="! ${group.active}" class="fa-regular bi-square"
+                           th:href="@{'/groups/' + ${group.groupId} + '/published/true'}" title="Disable this group"></a>
+                        <a th:href="@{'/groups/edit/' + ${group.groupId}}" title="Edit this group"
+                           class="fa-regular bi-pencil icon-dark"></a>
+                        &nbsp;
+                        <a
+                            th:href="@{'/groups/delete/' + ${group.groupId}}"
+                            th:title="${group.groupName}" id="btnDelete"
+                            title="Delete this group"
+                            class="fa-regular bi-trash icon-dark btn-delete"
+                            onclick="return confirm('Are you sure you wish to delete this group?')"
+                        >
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div th:unless="${groups.size() > 0}">
+            <span>No groups found!</span>
+        </div>
+
+
+
+        <nav aria-label="Pagination" th:if="${totalPages > 0}">
+            <ul class="pagination justify-content-center">
+                <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+                    <a th:replace="fragments/paging :: paging(1, '<<', 'First Page')"></a>
+                </li>
+                <li class="page-item font-weight-bold" th:classappend="${currentPage == 1} ? 'disabled'">
+                    <a th:replace="fragments/paging :: paging(${currentPage - 1}, 'Prev', 'Previous Page')"></a>
+                </li>
+                <li class="page-item disabled" th:if="${currentPage - 2 > 1}">
+                    <a class="page-link" href="#">...</a>
+                </li>
+                <li class="page-item" th:classappend="${page == currentPage} ? 'active'"
+                    th:each="page : ${#numbers.sequence(currentPage > 2 ? currentPage - 2 : 1, currentPage + 2 < totalPages ? currentPage + 2 : totalPages)}">
+                    <a th:replace="fragments/paging :: paging(${page}, ${page}, 'Page ' + ${page})"></a>
+                </li>
+                <li class="page-item disabled" th:if="${currentPage + 2 < totalPages}">
+                    <a class="page-link" href="#">...</a>
+                </li>
+                <li class="page-item font-weight-bold" th:classappend="${currentPage == totalPages} ? 'disabled'">
+                    <a th:replace="fragments/paging :: paging(${currentPage + 1},'Next', 'Next Page')"></a>
+                </li>
+                <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+                    <a th:replace="fragments/paging :: paging(${totalPages}, '>>', 'Last Page')"></a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+
+
+</section>
+</div>
+</body>
+</html>

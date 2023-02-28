@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="https://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{workflow_layout.html}"
+>
+<head>
+	<meta charset="UTF-8"/>
+	<title>Bulk mailing: person properties</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+	<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+	<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+	<script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+	<script type="text/javascript" th:src="@{/webjars/hyperscript.org/dist/_hyperscript.js}"></script>
+</head>
+<body>
+<section layout:fragment="content">
+
+
+
+	<div style="width:80%">
+
+		<form onSubmit='fill_values()' th:action="@{/person/insert}" th:object="${person}" method="post" class="form-horizontal">
+			<h3 th:if="${person.personId}">Edit person</h3>
+			<h3 th:unless="${person.personId}">New person</h3>
+
+			<div th:if="${#fields}">
+				<div th:if="${#fields.hasAnyErrors()}">
+					Please correct the following errors in the inserted data:
+				</div>
+			</div>
+
+
+			<input
+					type="hidden"
+					name="personId"
+					th:field="*{personId}"
+			/>
+
+			<div class="form-group row">
+				<label class="col-sm-2 col-form-label" th:for="firstName">First Name:</label>
+				<div class="col-sm-10"
+				>
+					<input
+							type="text"
+							required
+							class="form-control"
+							id="name"
+							placeholder="First Name"
+							th:field="*{firstName}"
+					 		th:classappend="${#fields.hasErrors('firstName')} ? 'is-invalid' : ''"
+					/>
+					<div
+						class="invalid-feedback"
+						th:if="${#fields.hasErrors('firstName')}"
+						th:errors="*{firstName}">Invalid first name
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label class="col-sm-2 col-form-label" th:for="familyName">Family Name:</label>
+				<div class="col-sm-10">
+					<input
+							type="text"
+							class="form-control"
+							id="address"
+							placeholder="Family name"
+							th:field="*{familyName}"
+							th:classappend="${#fields.hasErrors('familyName')} ? 'is-invalid' : ''"
+					/>
+					<div
+							class="invalid-feedback"
+							th:if="${#fields.hasErrors('familyName')}"
+							th:errors="*{familyName}">Family Name Error
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label class="col-sm-2 col-form-label" th:for="company">Company:</label>
+				<div class="col-sm-10">
+					<select class="form-control" id="company" name=company style="width:50%;float:left;">
+						<option value="0">--SELECT--</option>
+						<option
+								th:each="option : ${companies}"
+								th:value="${option.id}"
+								th:text="${option.name}"
+								th:selected="${option.id==person.company.id}"
+						></option>
+					</select>
+					<div
+							class="invalid-feedback"
+							th:if="${#fields.hasErrors('company')}"
+							th:errors="*{nation}">Company
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label class="col-sm-2 col-form-label" th:for="email">Email:</label>
+				<div class="col-sm-10">
+					<input
+						type="email"
+						pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+						class="form-control"
+						id="email"
+						placeholder="some@address.tld"
+						th:field="*{email}"
+						th:classappend="${#fields.hasErrors('email')} ? 'is-invalid' : ''"
+					/>
+					<div
+						class="invalid-feedback"
+						th:if="${#fields.hasErrors('email')}"
+						th:errors="*{email}">invalid email address
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group row" id="groups_div">
+				<label class="col-sm-2 col-form-label" th:for="groups">Groups:</label>
+				<div class="col-sm-10">
+					<select
+						size=10
+						class="form-control"
+						id=available_groups
+						multiple=multiple
+						name=available_groups
+						style="width:30%;float:left;"
+					>
+						<option
+							th:each="option : ${available_groups}"
+							th:value="${option.groupId}"
+							th:text="${option.groupName}"
+						></option>
+					</select>
+					<div style="float:left;text-align:center">
+					<span
+							class="btn btn-primary"
+							onclick="group_add()"
+					>Add ➡</span>
+						</br>
+						<span
+							class="btn btn-primary"
+							onclick="group_del()"
+						>⬅ Remove
+					</span>
+					</div>
+					<div style="width:30%;float:left;">
+						<select
+							size=10
+							class="form-control"
+							multiple=multiple
+							id=member_of
+							name=member_of
+							th:field="*{groups}"
+							style="float:left;"
+						>
+							<option
+								th:each="option : ${person.groups}"
+								th:value="${option.groupId}"
+								th:text="${option.groupName}"
+							></option>
+						</select>
+					</div>
+					<div
+							class="invalid-feedback"
+							th:if="${#fields.hasErrors('groups')}"
+							th:errors="*{nation}">Groups
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label for="active">Active:</label>
+				<input type="checkbox" id="active" th:field="*{active}" th:value="${active}" />
+				<div th:if="${#fields.hasErrors('active')}" th:errors="*{active}">active Error</div>
+			</div>
+
+			<button type="submit">Submit</button>
+		</form>
+	</div>
+
+<script type="text/javascript">
+function group_del() {
+	$('#member_of option:selected').each(function(idx, opt){
+		$('#available_groups').append(opt);
+		$('#member_of').find('option[value="'+opt.value+'"]').remove();
+	});
+}
+function group_add() {
+	$('#available_groups option:selected').each(function(idx, opt){
+		$('#member_of').append(opt);
+		$('#available_groups').find('option[value="'+opt.value+'"]').remove();
+	});
+}
+function fill_values(){
+	$('#member_of option').prop('selected', true);
+	console.log($('#member_of'));
+}
+</script>
+
+
+</section>
+</div>
+
+
+</body>
+</html>

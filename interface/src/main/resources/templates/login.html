@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:spring="http://www.w3.org/1999/XSL/Transform">
+<head>
+    <title>Bulk mailing: login page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+</head>
+<body>
+<section layout:fragment="content">
+<div class="container-fluid text-center">
+    <div>
+        <a href="/dashboard"><img class="img-fluid" width=40% th:src="@{/images/company.logo.png}" /></a>
+    </div>
+    <p>
+        <span th:text="${now}" />
+    <p>
+
+    <form method="post" th:action="@{/login}" style="max-width: 350px; margin: 0 auto;">
+        <div th:if="${s_error}">
+            <div class="alert alert-danger" th:text="${s_error}"></div>
+        </div>
+        <div th:if="${s_message}">
+            <div th:text="${s_message}"></div>
+        </div>
+        <div th:if="${param.error}">
+            <div class="alert alert-danger">Invalid Email or Password.<br />
+            Reason: [[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]
+            </div>
+        </div>
+        <div th:if="${param.logout}">
+            <div class="alert alert-success">You have been logged out.</div>
+        </div>
+
+        <div class="border border-secondary p-3 rounded">
+            <p>Access to bulk mailing
+            </p><p> <!-- vuole proprio username, non ce n'e' per nessuno-->
+            <input type="email" name="username" class="form-control" placeholder="E-mail" required autofocus/>
+        </p><p>
+            <input type="password" name="password" class="form-control" placeholder="Password" required />
+        </p><!-- p>
+            <input type="checkbox" name="remember-me" />&nbsp;Remember Me
+        </p  --><p>
+            <input type="submit" value="Login" class="btn btn-primary" />
+            <input type="reset" value="Reset" class="btn btn-primary" />
+        </p><p>
+            <a href="/register">Register new user</a>
+        </p><p>
+            <a href="/login/forgot">Forgot password</a>
+        </p>
+        </div>
+    </form>
+</div>
+</section>
+</body>
+</html>
