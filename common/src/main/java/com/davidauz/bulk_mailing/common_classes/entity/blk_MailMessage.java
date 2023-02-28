@@ -44,7 +44,7 @@ public class blk_MailMessage {
     private Timestamp timeSent;
 
     @Column
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private SENT_STATUS sentStatus;
 
     @Column

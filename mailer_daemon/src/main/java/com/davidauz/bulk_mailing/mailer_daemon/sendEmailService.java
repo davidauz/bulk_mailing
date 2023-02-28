@@ -16,12 +16,17 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Optional;
 
 @Service
 public class sendEmailService {
+
 
     @Autowired
     private ConfigurationRepository configurationRepository;
@@ -109,14 +114,17 @@ public class sendEmailService {
             if(present_time_diff<minimum_time_diff)
                 return;
         }
-        long smallest_id=mailMessageRepo.getMinId(blk_MailMessage.SENT_STATUS.ENQUEUED);
-        blk_MailMessage blkmm=mailMessageRepo.getReferenceById(smallest_id);
+        blk_MailMessage blkmm=null;
         try {
+            long smallest_id=mailMessageRepo.getMinId(blk_MailMessage.SENT_STATUS.ENQUEUED);
+            blkmm=mailMessageRepo.getReferenceById((long)1);
             sendOneEmail(smallest_id);
             blkmm.setSentStatus(blk_MailMessage.SENT_STATUS.SENT_SUCCESS);
         } catch (Exception e) {
+            if(null!=blkmm)
+                blkmm.setSentStatus(blk_MailMessage.SENT_STATUS.SENT_ERROR);
             throw new RuntimeException(e);
         }
-        blkmm.setSentStatus(blk_MailMessage.SENT_STATUS.SENT_ERROR);
+
     }
 }
