@@ -16,10 +16,6 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.Query;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Optional;
@@ -29,7 +25,7 @@ public class sendEmailService {
 
 
     @Autowired
-    private ConfigurationRepository configurationRepository;
+    private ConfigurationRepository cfgRepo;
 
     private final Logger logger = LoggerFactory.getLogger(sendEmailService.class);
 
@@ -60,16 +56,18 @@ public class sendEmailService {
     void sendOneEmail(long mail_id) throws Exception {
         Optional<blk_MailMessage> o_blkm = Optional.ofNullable(mailMessageRepo.findById(mail_id).orElseThrow(() -> new Exception("mail ID '" + mail_id + "' not found")));
         blk_MailMessage blkm=o_blkm.get();
+
         final MimeMessage mimeMessage = JMailSender.createMimeMessage();
-//        final String from = "noreply etc";
         final String text_body = blkm.getBody();
         final MimeMessageHelper helper;
         try {
             helper = new MimeMessageHelper(mimeMessage, true);
-//            helper.setFrom(from);
+            helper.setFrom(cfgRepo.findByName("serveruname").get().getValue());
             helper.setTo(blkm.getRecipient());
             helper.setSubject(blkm.getSubject());
             helper.setText(text_body, true);
+            JMailSender.send(mimeMessage);
+            blkm.setSentStatus(blk_MailMessage.SENT_STATUS.SENT_SUCCESS);
         } catch (MessagingException e) {
             logger.error("Error in message id=`"+mail_id+"`");
             blkm.setSentStatus(blk_MailMessage.SENT_STATUS.SYSTEM_ERROR);
@@ -86,7 +84,7 @@ public class sendEmailService {
 //            }
 //        }
 
-        JMailSender.send(mimeMessage);
+
     }
 
     public void send_messages_in_queue() {
@@ -101,12 +99,12 @@ public class sendEmailService {
 
         if(0==mailMessageRepo.countBySentStatus(blk_MailMessage.SENT_STATUS.ENQUEUED))
             return;
-        o_mda=configurationRepository.findByName("last_send_timestamp");
+        o_mda= cfgRepo.findByName("last_send_timestamp");
         if(o_mda.isPresent()){
             now_timestamp = new Timestamp(Calendar.getInstance().getTime().getTime());
             mda=o_mda.get();
             last_sent_timestamp=Timestamp.valueOf(mda.getValue());
-            o_mda=configurationRepository.findByName("sendingRandomDelay");
+            o_mda= cfgRepo.findByName("sendingRandomDelay");
             if(o_mda.isPresent())
                 minimum_time_diff=Long.valueOf(o_mda.get().getValue());
             present_time_diff=now_timestamp.getNanos()-last_sent_timestamp.getNanos();

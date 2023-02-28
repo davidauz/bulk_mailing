@@ -5,9 +5,7 @@ import com.davidauz.bulk_mailing.common_classes.repo.ConfigurationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.boot.autoconfigure.mail.*;
 
 import java.util.Optional;
 import java.util.Properties;
@@ -66,44 +64,8 @@ public class MailSenderConfig {
         }
     }
 
-//    private static final String[] MANDATORY_PROPERTIES =
-//            {	"SMTPServer"
-//            ,   "SMTPPort"
-//            ,	"serveruname"
-//            ,   "serverpassword"
-//            };
-
     @Autowired
     private ConfigurationRepository cfgRepo;
-
-//    @Bean("javaMailSender")
-//    public JavaMailSender javaMailSender() {
-//        JavaMailSenderImpl sender = new JavaMailSenderImpl();
-//        try {
-//        for(String prop:MANDATORY_PROPERTIES)
-//            cfgRepo.findByName(prop).orElseThrow(()->new Exception("property '"+prop+"' not found"));
-//
-//        sender.setHost(cfgRepo.findByName("SMTPServer").get().getValue());
-//        sender.setPort(Integer.parseInt(cfgRepo.findByName("SMTPPort").get().getValue()));
-//        sender.setUsername(cfgRepo.findByName("serveruname").get().getValue());
-//        sender.setPassword(cfgRepo.findByName("serverpassword").get().getValue());
-//
-//        Properties props = sender.getJavaMailProperties();
-////https://javaee.github.io/javamail/docs/api/com/sun/mail/smtp/package-summary.html
-////https://javaee.github.io/javamail/docs/api/com/sun/mail/imap/package-summary.html
-////https://javaee.github.io/javamail/docs/api/com/sun/mail/pop3/package-summary.html
-////https://connector.sourceforge.net/doc-files/Properties.html
-//        props.put("mail.transport.protocol", "smtp");
-//        props.put("mail.smtp.auth", "true");
-//        props.put("mail.smtp.starttls.enable", "true");
-//        props.put("mail.debug", "true");
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
-//        return sender;
-//    }
-
-
 
     @Bean("JavaMailSender")
     public JavaMailSenderImpl javaMailSenderImpl()  {
