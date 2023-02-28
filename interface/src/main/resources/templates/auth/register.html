@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <title>Bulk mailing: new user registration</title>
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}"  />
+</head>
+<body>
+<section layout:fragment="content">
+    <div class="container-fluid text-center">
+        <div>
+            <a href="/dashboard"><img class="img-fluid" width=40% th:src="@{/images/company.logo.png}" /></a>
+        </div>
+        <div th:if="${param.error}">
+            <p class="text-danger">[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</p>
+        </div>
+
+        <div class="border border-secondary p-3 rounded" style="max-width: 350px; margin: 0 auto;">
+            <p>New user registration
+            </p><p>
+            <input type="email" name="email" class="form-control" placeholder="E-mail" required autofocus/>
+        </p><p>
+            <input type="password" name="password1" class="form-control" placeholder="Password" required />
+        </p><p>
+            <input type="password" name="password2" class="form-control" placeholder="Confirm Password" required />
+        </p><p>
+            <button hx-post="/register/data" hx-target="#registered_message" hx-include=".form-control" hx-swap="innerHTML" class="btn btn-primary">
+                Register</button>
+        </p>
+            <div>
+                <p>
+                    <span id="registered_message">
+                    </span>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:spring="http://www.w3.org/1999/XSL/Transform">
+<head>
+    <body>
+<section layout:fragment="content">
+    <div class="container-fluid text-center">
+        <div>
+            <a href="/dashboard"><img class="img-fluid" width=40% th:src="@{/images/company.logo.png}" /></a>
+        </div>
+        <p>
+            <span th:text="${now}" />
+        <p>
+
+        <form method="post" th:action="@{/login/do_forgot}" style="max-width: 350px; margin: 0 auto;">
+
+        <div th:if="${message}">
+            <h4 th:text="${messageString}"></h4>
+        </div>
+
+            <div th:if="${error}">
+                <p class="text-danger">[[${errorMessage}]]</p>
+            </div>
+
+
+            <div class="border border-secondary p-3 rounded">
+                <p>Please insert your email address here.
+                </p><p>
+                If we have it in our database, we will send you an email with instructions.
+            </p><p>
+                    <input type="email" name="email" class="form-control" placeholder="E-mail" required autofocus/>
+                </p>
+                    <input type="submit" value="Send email" class="btn btn-primary" />
+                </p>
+            </div>
+        </form>
+    </div>
+    </section>
+    </body>
+</html>

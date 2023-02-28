@@ -1,0 +1,4 @@
+*.swp
+*.sql
+.idea
+target

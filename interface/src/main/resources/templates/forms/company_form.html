@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{workflow_layout.html}"
+>
+<head>
+    <title>Bulk mailing: Insert new company</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/htmx.org/dist/htmx.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/hyperscript.org/dist/_hyperscript.js}"></script>
+</head>
+<body>
+<section layout:fragment="content">
+
+
+
+    <div style="width:80%">
+        <form th:action="@{/company_insert}" th:object="${company}" method="post" class="form-horizontal">
+
+            <div th:if="${fields}">
+                <div th:if="${#fields.hasAnyErrors()}">
+                    Please correct the following errors in the inserted data:
+                </div>
+            </div>
+
+            <div class="form-group row">
+
+                <input
+                        type="hidden"
+                        name="id"
+                        th:field="*{id}"
+                />
+                <label class="col-sm-2 col-form-label" th:for="name">Name:</label>
+                <div class="col-sm-10"
+                     th:classappend="${#fields.hasErrors('name')} ? 'is-invalid' : ''"
+                >
+                    <input
+                            type="text"
+                            required
+                            class="form-control"
+                            id="name"
+                            placeholder="Company Name"
+                            th:field="*{name}"
+                    />
+                    <div
+                        class="invalid-feedback"
+                        th:if="${#fields.hasErrors('name')}"
+                        th:errors="*{name}">Invalid company name
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" th:for="address">Address:</label>
+                <div class="col-sm-10">
+                    <input
+                            type="text"
+                            class="form-control"
+                            id="address"
+                            placeholder="Company Address (can be empty)"
+                            th:field="*{address}"
+                            th:classappend="${#fields.hasErrors('address')} ? 'is-invalid' : ''"
+                    />
+                    <div
+                            class="invalid-feedback"
+                            th:if="${#fields.hasErrors('address')}"
+                            th:errors="*{address}">Company Address Error
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" th:for="city">City:</label>
+                <div class="col-sm-10">
+                    <input
+                            type="text"
+                            class="form-control"
+                            id="city"
+                            placeholder="Company City (can be empty)"
+                            th:field="*{city}"
+                            th:classappend="${#fields.hasErrors('city')} ? 'is-invalid' : ''"
+                    />
+                    <div
+                            class="invalid-feedback"
+                            th:if="${#fields.hasErrors('city')}"
+                            th:errors="*{nation}">Nation
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" th:for="nation">Nation:</label>
+                <div class="col-sm-10">
+
+                    <select class="form-control" id="nation" name=nation style="width:50%;float:left;">
+                        <option value="0">--SELECT--</option>
+                        <option th:each="option : ${nations}" th:value="${option.nationId}" th:text="${option.nation}"></option>
+                    </select> Or: <input
+                        id="new_nation"
+                        name="new_nation"
+                        placeholder="New nation"
+                    />
+                    <a hx-post="/nation/add"
+                            hx-target="#nation"
+                            hx-params="new_nation"
+                            hx-swap="innerHTML"
+                            class="btn btn-primary"
+                    >Add</a>
+                    <div
+                            class="invalid-feedback"
+                            th:if="${#fields.hasErrors('nation')}"
+                            th:errors="*{nation}">Nation
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" th:for="email">Company Email:</label>
+                <div class="col-sm-10">
+                    <input
+                            type="email"
+                            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                            class="form-control"
+                            id="email"
+                            placeholder="some@address.tld (can be empty)"
+                            th:field="*{email}"
+                            th:classappend="${#fields.hasErrors('email')} ? 'is-invalid' : ''"
+                    />
+                    <div
+                            class="invalid-feedback"
+                            th:if="${#fields.hasErrors('email')}"
+                            th:errors="*{email}">invalid email address
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" th:for="website">Company Website:</label>
+                <div class="col-sm-10">
+                    <input
+                            type="text"
+                            class="form-control"
+                            id="website"
+                            th:field="*{website}"
+                            placeholder="http://company.address.tld (can be empty)"
+                            th:classappend="${#fields.hasErrors('website')} ? 'is-invalid' : ''"
+                    />
+                    <div
+                            class="invalid-feedback"
+                            th:if="${#fields.hasErrors('website')}"
+                            th:errors="*{website}">Company Website
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="form-group row">
+                <label for="active">Active:</label>
+                <input type="checkbox" id="active" th:field="*{active}" th:value="${active}" />
+                <div th:if="${#fields.hasErrors('active')}" th:errors="*{active}">active Error</div>
+            </div>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+</section>
+</div>
+</body>
+</html>

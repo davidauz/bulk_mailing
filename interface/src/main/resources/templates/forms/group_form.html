@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="https://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{workflow_layout.html}"
+>
+<head>
+	<title>Bulk mailing: Group properties</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+	<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+	<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+	<script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+	<script type="text/javascript" th:src="@{/webjars/hyperscript.org/dist/_hyperscript.js}"></script>
+</head>
+<body>
+<section layout:fragment="content">
+
+
+
+	<div style="width:80%">
+
+		<form onSubmit='fill_values()' th:action="@{/groups/insert}" th:object="${group}" method="post" class="form-horizontal">
+			<h3 th:if="${groupId}">Edit group</h3>
+			<h3 th:unless="${groupId}">New group</h3>
+
+			<div th:if="${#fields}">
+				<div th:if="${#fields.hasAnyErrors()}">
+					Please correct the following errors in the inserted data:
+				</div>
+			</div>
+
+
+			<input
+					type="hidden"
+					name="groupId"
+					th:field="*{groupId}"
+			/>
+
+			<div class="form-group row">
+				<label class="col-sm-2 col-form-label" th:for="firstName">Group Name:</label>
+				<div class="col-sm-10">
+					<input
+							type="text"
+							required
+							class="form-control"
+							id="name"
+							placeholder="Group Name"
+							th:field="*{groupName}"
+					 		th:classappend="${#fields.hasErrors('groupName')} ? 'is-invalid' : ''"
+					/>
+					<div
+						class="invalid-feedback"
+						th:if="${#fields.hasErrors('groupName')}"
+						th:errors="*{groupName}">Invalid group name
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label class="col-sm-2 col-form-label" th:for="groupDesc">Group Description:</label>
+				<div class="col-sm-10">
+					<input
+							type="text"
+							class="form-control"
+							id="address"
+							placeholder="Group Description"
+							th:field="*{groupDesc}"
+							th:classappend="${#fields.hasErrors('groupDesc')} ? 'is-invalid' : ''"
+					/>
+					<div
+							class="invalid-feedback"
+							th:if="${#fields.hasErrors('groupDesc')}"
+							th:errors="*{groupDesc}">Group Description Error
+					</div>
+				</div>
+			</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			<div class="form-group row" id="groups_div">
+				<label class="col-sm-2 col-form-label" th:for="people">People:</label>
+				<div class="col-sm-10">
+					<select
+						size=10
+						class="form-control"
+						id=available_persons
+						multiple=multiple
+						name=available_persons
+						style="width:30%;float:left;"
+					>
+						<option
+							th:each="option : ${available_persons}"
+							th:value="${option.personId}"
+							th:text="${option.firstName} + ' ' + ${option.familyName}"
+						></option>
+					</select>
+					<div style="float:left;text-align:center">
+					<span
+							class="btn btn-primary"
+							onclick="group_add()"
+					>Add ➡</span>
+						</br>
+						<span
+							class="btn btn-primary"
+							onclick="group_del()"
+						>⬅ Remove
+					</span>
+					</div>
+					<div style="width:30%;float:left;">
+						<select
+							size=10
+							class="form-control"
+							multiple=multiple
+							id=member_of
+							name=member_of
+							th:field="*{people}"
+							style="float:left;"
+						>
+							<option
+								th:each="option : ${group.people}"
+								th:value="${option.personId}"
+								th:text="${option.firstName} + ' ' + ${option.familyName}"
+							></option>
+						</select>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label for="active">Active:</label>
+				<input type="checkbox" id="active" th:field="*{active}" th:value="${active}" />
+				<div th:if="${#fields.hasErrors('active')}" th:errors="*{active}">active Error</div>
+			</div>
+
+			<button type="submit">Submit</button>
+		</form>
+	</div>
+
+<script type="text/javascript">
+function group_del() {
+	$('#member_of option:selected').each(function(idx, opt){
+		$('#available_persons').append(opt);
+		$('#member_of').find('option[value="'+opt.value+'"]').remove();
+	});
+}
+function group_add() {
+	$('#available_persons option:selected').each(function(idx, opt){
+		$('#member_of').append(opt);
+		$('#available_persons').find('option[value="'+opt.value+'"]').remove();
+	});
+}
+function fill_values(){
+	$('#member_of option').prop('selected', true);
+	console.log($('#member_of'));
+}
+</script>
+
+
+</section>
+</div>
+
+
+</body>
+</html>

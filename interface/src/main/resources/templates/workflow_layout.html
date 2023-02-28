@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html
+    lang="en"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    xmlns:th="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/1999/xhtml"
+    xsi:schemaLocation="http://www.ultraq.net.nz/thymeleaf/layout"
+>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap-icons/font/bootstrap-icons.css}">
+</head>
+
+<body>
+<div class="container-scroller">
+
+
+<!--Navigation bar-->
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #ffffff;" >
+        <a class="navbar-brand" href="#"><img src="/images/company.logo.small.png"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a
+                            class="nav-link dropdown-toggle"
+                            href="#"
+                            id="navbarDropdown"
+                            role="button"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                            th:text="${s_auth_message}"
+                    >
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">Logout</a>
+                        <a class="dropdown-item" href="#">Profile</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Separated link</a>
+                    </div>
+                </li>
+
+
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#">Disabled</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+<!--sidebar-->
+    <div class="container-fluid">
+        <div class="row flex-nowrap">
+            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-light">
+                <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+                    <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                        <span class="fs-5 d-none d-sm-inline">Top</span>
+                    </a>
+                    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+
+
+
+
+                        <li>
+                            <a href="#submenu2" data-bs-toggle="collapse" class="nav-link px-0 align-middle ">
+                                <i class="fs-4 bi-file-earmark-person"></i> <span class="ms-1 d-none d-sm-inline">Contacts</span></a>
+                            <ul class="collapse nav flex-column ms-1" id="submenu2" data-bs-parent="#menu">
+                                <li class="w-100">
+                                    <a href="/companies" class="nav-link align-middle px-0">
+                                        <i class="fs-4 bi-building"></i><span class="ms-1 d-none d-sm-inline">Companies</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/people" class="nav-link px-0 align-middle">
+                                        <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">People</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/groups" class="nav-link px-0 align-middle">
+                                        <i class="fs-4 bi-columns-gap"></i> <span class="ms-1 d-none d-sm-inline">Groups</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+
+
+
+
+                        <li>
+                            <a href="#submenu3" data-bs-toggle="collapse" class="nav-link px-0 align-middle ">
+                                <i class="fs-4 bi-gear"></i> <span class="ms-1 d-none d-sm-inline">Settings</span></a>
+                            <ul class="collapse nav flex-column ms-1" id="submenu3" data-bs-parent="#menu">
+                                <li class="w-100">
+                                    <a href="/settings" class="nav-link align-middle px-0">
+                                        <i class="fs-4 bi-wrench-adjustable"></i><span class="ms-1 d-none d-sm-inline">Configuration</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/texts" class="nav-link px-0 align-middle">
+                                        <i class="fs-4 bi-text-left"></i> <span class="ms-1 d-none d-sm-inline">Texts</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+
+
+
+
+                        <li>
+                            <a href="/projects" class="nav-link px-0 align-middle">
+                                <i class="fs-4 bi-box-seam"></i> <span class="ms-1 d-none d-sm-inline">Projects</span></a>
+                        </li>
+                        <li>
+                            <a href="logout" class="nav-link px-0 align-middle">
+                                <i class="fs-4 bi-person-dash"></i> <span class="ms-1 d-none d-sm-inline">Logout</span></a>
+                        </li>
+                    </ul>
+                    <hr>
+                    <div class="dropdown pb-4">
+                        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="/images/company.logo.small.png" alt="hugenerd" width="30" height="30" class="rounded-circle">
+                            <span class="d-none d-sm-inline mx-1">loser</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+                            <li><a class="dropdown-item" href="#">New project...</a></li>
+                            <li><a class="dropdown-item" href="#">Settings</a></li>
+                            <li><a class="dropdown-item" href="#">Profile</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="#">Sign out</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <section layout:fragment="content">
+                <p>Page content goes here</p>
+            </section>
+        </div>
+    </div>
+
+
+
+    <!-- page-body-wrapper ends -->
+</div>
+<!-- container-scroller -->
+
+</body>
+</html>
