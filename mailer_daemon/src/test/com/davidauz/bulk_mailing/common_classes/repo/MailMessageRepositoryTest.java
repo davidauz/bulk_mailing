@@ -29,9 +29,9 @@ class MailMessageRepositoryTest {
     private MailMessageRepository mailMessageRepo;
 
     @Test
-    public void do_the_fucking_test_already() {
+    public void test_min_id() {
         long smallest_id = mailMessageRepo.getMinId(blk_MailMessage.SENT_STATUS.ENQUEUED);
-        logger.info("CIPI - " + smallest_id);
+        logger.info("Smallest enqueued ID : " + smallest_id);
     }
 
     @Configuration
