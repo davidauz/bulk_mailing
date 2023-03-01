@@ -40,7 +40,6 @@ public class MailerDaemonApplication {
                 .web(WebApplicationType.SERVLET)
                 .sources(MailerDaemonApplication.class)
                 .run(args);
-//        SpringApplication.run(MailerDaemonApplication.class, args);
     }
 
     @Bean

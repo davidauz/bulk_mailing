@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -24,8 +21,8 @@ public class SettingsController {
 
     @GetMapping("/settings")
     public String groups_search
-            (Model model
-            ) {
+    (Model model
+    ) {
         Map<String, String> settings_map = new HashMap<>();
         List<ConfigurationPair> all_settings = cfgRepo.findAll();
         for (ConfigurationPair keyvalue : all_settings)
@@ -45,6 +42,7 @@ public class SettingsController {
     ,   @RequestParam("batchSize") String batchSize
     ,   @RequestParam("minPauseBatch") String minPauseBatch
     ,   @RequestParam("maxMessagesInADay") String maxMessagesInADay
+    ,   @RequestParam("message_send_randomize") String message_send_randomize
     ) {
         try {
             String[][] configs = new String[][]
@@ -52,12 +50,13 @@ public class SettingsController {
             , {"batchSize", batchSize}
             , {"minPauseBatch", minPauseBatch}
             , {"maxMessagesInADay", maxMessagesInADay}
+            , {"message_send_randomize", message_send_randomize}
             };
             for (String[] strp : configs) {
-                try { Integer.parseInt(strp[1]); }
-                catch (NumberFormatException e){
-                    throw new Exception("`"+strp[1]+"` is not a number");
-                }
+//                try { Integer.parseInt(strp[1]); }
+//                catch (NumberFormatException e){
+//                    throw new Exception("`"+strp[1]+"` is not a number");
+//                }
                 Optional<ConfigurationPair> cfg = cfgRepo.findByName(strp[0]);
                 ConfigurationPair cp = null;
                 if (cfg.isPresent()) {
@@ -134,27 +133,33 @@ public class SettingsController {
 
 
 
-    @PostMapping(path = "/settings/daemon_active", produces = MediaType.TEXT_HTML_VALUE)
+    @PostMapping(path = "/settings/toggle/{toggle_setting}", produces = MediaType.TEXT_HTML_VALUE)
     @ResponseBody
-    public String checkbox(@RequestParam Map<String, String> parameters) {
-        String cfg_name="mailer_daemon_active";
+    public String checkbox
+    (   @RequestParam Map<String, String> parameters
+    ) {
+        if( ! parameters.containsKey("checkbox") )
+            return "ERROR: parameter not found";
+
+        String control_ID=parameters.get("checkbox")
+        ,   control_value=parameters.get(control_ID)
+        ;
         ConfigurationPair cfg;
-        Optional<ConfigurationPair> o_cfg = cfgRepo.findByName(cfg_name);
+        Optional<ConfigurationPair> o_cfg = cfgRepo.findByName(control_value);
         if(o_cfg.isPresent())
             cfg=o_cfg.get();
         else{
             cfg=new ConfigurationPair();
-            cfg.setName("mailer_daemon_active");
+            cfg.setName(control_ID);
         }
-        if (parameters.containsKey("checkbox"))
-            if (parameters.containsKey(parameters.get("checkbox"))) {
+        if (control_value.equals("on")) {
                 cfg.setValue("1");
                 cfgRepo.save(cfg);
-                return "Daemon active";
-            }
+                return "active";
+        }
         cfg.setValue("0");
         cfgRepo.save(cfg);
-        return "Daemon NOT active";
+        return "NOT active";
     }
 
 

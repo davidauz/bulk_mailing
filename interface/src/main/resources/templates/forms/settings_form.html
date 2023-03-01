@@ -24,18 +24,21 @@
 		<div class="container">
 				<ul class="nav nav-tabs" id="myTab" role="tablist">
 					<li class="nav-item">
-						<a class="nav-link active" id="tab1-tab" data-bs-toggle="tab" href="#tab1" role="tab" aria-controls="tab1" aria-selected="true" >Mail server</a>
+						<a class="nav-link active" id="tab1-tab" data-bs-toggle="tab" href="#tab1" role="tab" aria-controls="tab1" aria-selected="true" >Sending</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" id="tab2-tab" data-bs-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false">Rules</a>
+						<a class="nav-link" id="tab2-tab" data-bs-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false">Checking</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" id="tab3-tab" data-bs-toggle="tab" href="#tab3" role="tab" aria-controls="tab3" aria-selected="false">User preferences</a>
+						<a class="nav-link" id="tab3-tab" data-bs-toggle="tab" href="#tab3" role="tab" aria-controls="tab3" aria-selected="false">Rules</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" id="tab4-tab" data-bs-toggle="tab" href="#tab4" role="tab" aria-controls="tab4" aria-selected="false">Status</a>
 					</li>
 				</ul>
 				<div class="tab-content">
 					<div class="tab-pane show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
-						<h3>Mail server configuration</h3>
+						<h3>Sending messages</h3>
 
 						<div class="form-group row">
 							<label class="col-sm-2 col-form-label" th:for="SMTPServer">SMTP server:</label>
@@ -131,9 +134,17 @@
 						</div>
 
 
-						<hr>
 
+						<a hx-post="/settings/mailServer"
+						   hx-target="#mailServerResults"
+						   hx-include=".form-control"
+						   hx-swap="innerHTML"
+						   class="btn btn-primary"
+						>Save changes</a><span id="mailServerResults"></span>
+					</div>
 
+					<div class="tab-pane" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
+						<h3>Checking sent messages on server</h3>
 						<div class="form-group row">
 							<label class="col-sm-2 col-form-label" th:for="imapserver">IMAP server:</label>
 							<div class="col-sm-10">
@@ -162,17 +173,26 @@
 								/>
 							</div>
 						</div>
-
-						<a hx-post="/settings/mailServer"
-						   hx-target="#mailServerResults"
-						   hx-include=".form-control"
-						   hx-swap="innerHTML"
-						   class="btn btn-primary"
-						>Save changes</a><span id="mailServerResults"></span>
 					</div>
 
-					<div class="tab-pane" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
-						<h3>Rules for sending mail</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+					<div class="tab-pane" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
+						<h3>General Rules</h3>
 
 						<div class="form-group row">
 							<label class="col-sm-2 col-form-label" th:for="sendingRandomDelay">Minimum delay between sends:</label>
@@ -230,6 +250,20 @@
 							</div>
 						</div>
 
+						<div class="form-check form-switch">
+							<input th:if="'on'==${settings_map.get('message_send_randomize')}" checked=checked
+								   class="sending-form form-check-input"
+								   name="message_send_randomize"
+								   type="checkbox"
+							>
+							<input th:unless="'on'==${settings_map.get('message_send_randomize')}"
+								   class="sending-form form-check-input"
+								   name="message_send_randomize"
+								   type="checkbox"
+							>
+							<span id="time_randomize" name="time_randomize">Randomize send times</span>
+						</div>
+
 						<a hx-post="/settings/sendingRules"
 						   hx-target="#sendingRulesResults"
 						   hx-include=".sending-form"
@@ -237,23 +271,35 @@
 						   class="btn btn-primary"
 						>Save changes</a><span id="sendingRulesResults"></span>
 
+
 					</div>
-					<div class="tab-pane" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
-						Mailer daemon status
+					<div class="tab-pane" id="tab4" role="tabpanel" aria-labelledby="tab4-tab">
+						<h3>Mailer daemon status</h3>
+						<p>Note: the effect of these controls is immediate.</p>
+						<p>No save button.</p>
 						<div class="mb-3">
 							<div class="form-check form-switch">
-								<input
-										checked class="form-check-input"
-										hx-post="/settings/daemon_active"
-										hx-target="#mailer_daemon_status"
-										hx-swap="innerHTML"
-										hx-trigger="click"
-										hx-vals='{"checkbox": "demo-checkbox-switch"}'
-										name="demo-checkbox-switch"
-										type="checkbox"
-										value="demo-checkbox-value"
+								<input th:if="'1'==${settings_map.get('mailer_daemon_active')}" checked=checked
+									   class="form-check-input"
+									   hx-post="/settings/toggle/mailer_daemon_status"
+									   hx-target="#mailer_daemon_status"
+									   hx-swap="innerHTML"
+									   hx-trigger="click"
+									   hx-vals='{"checkbox": "mailer_daemon_status"}'
+									   name="mailer_daemon_active"
+									   type="checkbox"
 								>
-								<span id="mailer_daemon_status" name="mailer_daemon_status">Mailer daemon status</span>
+								<input th:unless="'1'==${settings_map.get('mailer_daemon_active')}"
+									   class="form-check-input"
+									   hx-post="/settings/toggle/mailer_daemon_status"
+									   hx-target="#mailer_daemon_status"
+									   hx-swap="innerHTML"
+									   hx-trigger="click"
+									   hx-vals='{"checkbox": "mailer_daemon_status"}'
+									   name="mailer_daemon_status"
+									   type="checkbox"
+								>
+								Mailer daemon status <span id="mailer_daemon_status" name="mailer_daemon_status"></span>
 							</div>
 						</div>
 					</div>
