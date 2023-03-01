@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="https://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{workflow_layout.html}"
+>
+<head>
+	<meta charset="UTF-8"/>
+	<title>Bulk mailing: Project properties</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+	<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+	<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+	<script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+	<script type="text/javascript" th:src="@{/webjars/hyperscript.org/dist/_hyperscript.js}"></script>
+</head>
+<body>
+<section layout:fragment="content">
+
+
+
+	<div style="width:80%">
+
+		<form th:action="@{/project/insert}" th:object="${project}" method="post" class="form-horizontal">
+			<h3 th:if="${project.Id}">Edit project</h3>
+			<h3 th:unless="${project.Id}">New project</h3>
+
+			<div th:if="${#fields}">
+				<div th:if="${#fields.hasAnyErrors()}">
+					Please correct the following errors in the inserted data:
+				</div>
+			</div>
+
+			<input
+					type="hidden"
+					name="Id"
+					th:field="*{Id}"
+			/>
+
+
+			<button type="submit">Submit</button>
+		</form>
+	</div>
+
+</section>
+</div>
+
+
+</body>
+</html>

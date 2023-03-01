@@ -1,5 +1,6 @@
 package com.davidauz.bulk_mailing.controller;
 
+import com.davidauz.bulk_mailing.entity.Company;
 import com.davidauz.bulk_mailing.entity.Project;
 import com.davidauz.bulk_mailing.repository.ProjectsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class projectsController {
     private ProjectsRepository projectsRepository;
 
 
-    @GetMapping("projects")
+    @GetMapping("/projects")
     public String getAll
     (   Model model
     ,   @RequestParam(required = false) String keyword
@@ -51,7 +52,17 @@ public class projectsController {
             model.addAttribute("message", e.getMessage());
         }
 
-        return "lists/companies";
+        return "lists/projects";
     }
+
+
+    @GetMapping(value = "/project_new")
+    public String company_new
+    (   Model model
+    ){
+        model.addAttribute("project", new Project());
+        return "forms/project_form";
+    }
+
 
 }
