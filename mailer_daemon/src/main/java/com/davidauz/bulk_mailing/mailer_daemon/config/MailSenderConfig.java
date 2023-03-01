@@ -67,7 +67,8 @@ public class MailSenderConfig {
     @Autowired
     private ConfigurationRepository cfgRepo;
 
-    @Bean("JavaMailSender")
+    @Bean("JavaMailSender") // this is because the parameters are read not from application.resources but
+    // from database, so here is the place where to configure the JavaMailSenderImpl (Autowired in sendEmailService)
     public JavaMailSenderImpl javaMailSenderImpl()  {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         ensureValuesPresent();
