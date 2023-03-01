@@ -79,7 +79,7 @@ public class MailSenderConfig {
             mailSender.setPassword(cfgRepo.findByName("serverpassword").get().getValue());
 
             Properties props = mailSender.getJavaMailProperties();
-            props.put("mail.transport.protocol", "smtp");
+            props.put("mail.transport.protocol", "smtp"); // TODO: set this according to cfg
             props.put("mail.smtp.auth", "true");
             props.put("mail.smtp.starttls.enable", "true");
             props.put("mail.debug", "true");
@@ -88,10 +88,6 @@ public class MailSenderConfig {
 //https://javaee.github.io/javamail/docs/api/com/sun/mail/imap/package-summary.html
 //https://javaee.github.io/javamail/docs/api/com/sun/mail/pop3/package-summary.html
 //https://connector.sourceforge.net/doc-files/Properties.html
-//                props.put("mail.transport.protocol", "smtp");
-//                props.put("mail.smtp.auth", "true");
-//                props.put("mail.smtp.starttls.enable", "true");
-//                props.put("mail.debug", "true");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

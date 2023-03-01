@@ -38,21 +38,6 @@ public class sendEmailService {
     @Value("${mail.test:false}")
     private Boolean mailTest = false;
 
-    @Async
-    public void sendEmail(SimpleMailMessage email) {
-        if (mailTest) {
-            logger.error(email.getText());
-        } else {
-            try {
-                JMailSender.send(email);
-            } catch (Exception e) {
-                logger.error("Unable to send email! Future emails will be logged - no retry!", e);
-                mailTest = true;
-                logger.error(email.getText());
-            }
-        }
-    }
-
     void sendOneEmail(long mail_id) throws Exception {
         Optional<blk_MailMessage> o_blkm = Optional.ofNullable(mailMessageRepo.findById(mail_id).orElseThrow(() -> new Exception("mail ID '" + mail_id + "' not found")));
         blk_MailMessage blkm=o_blkm.get();
@@ -68,13 +53,14 @@ public class sendEmailService {
             helper.setText(text_body, true);
             JMailSender.send(mimeMessage);
             blkm.setSentStatus(blk_MailMessage.SENT_STATUS.SENT_SUCCESS);
+            mailMessageRepo.save(blkm);
         } catch (MessagingException e) {
             logger.error("Error in message id=`"+mail_id+"`");
             blkm.setSentStatus(blk_MailMessage.SENT_STATUS.SYSTEM_ERROR);
-            return;
+            mailMessageRepo.save(blkm);
         }
 
-//        if(attachments != null) {
+//        if(attachments != null) { // TODO
 //            for(final EmailAttachmentDTO attachment : attachments) {
 //                final String attachmentFileName = attachment.getAttachmentFileName();
 //                final String attachmentFilePath = attachment.getAttachmentFilePath();
@@ -117,10 +103,11 @@ public class sendEmailService {
             long smallest_id=mailMessageRepo.getMinId(blk_MailMessage.SENT_STATUS.ENQUEUED);
             blkmm=mailMessageRepo.getReferenceById((long)1);
             sendOneEmail(smallest_id);
-            blkmm.setSentStatus(blk_MailMessage.SENT_STATUS.SENT_SUCCESS);
         } catch (Exception e) {
-            if(null!=blkmm)
+            if(null!=blkmm) {
                 blkmm.setSentStatus(blk_MailMessage.SENT_STATUS.SENT_ERROR);
+                mailMessageRepo.save(blkmm); // TODO: store exception text on message somehow
+            }
             throw new RuntimeException(e);
         }
 
