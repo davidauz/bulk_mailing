@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.lang.Nullable;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -32,6 +34,14 @@ public class Project
     @Size(min=0, max=30)
     @Nullable
     private String description;
+
+    @ManyToMany
+    @JoinTable(
+            name="projects_people",
+            inverseJoinColumns={@JoinColumn(name="PERSON_ID", referencedColumnName="personId")},
+            joinColumns={@JoinColumn(name="PROJECT_ID", referencedColumnName="Id")}
+    )
+    private List<Person> people;
 
     @Column(nullable=false)
     private boolean active;

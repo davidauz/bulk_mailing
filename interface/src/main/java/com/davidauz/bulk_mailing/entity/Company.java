@@ -25,17 +25,17 @@ public class Company
     private Long id;
 
     @Column(nullable=false, unique=true)
-    @Size(min=2, max=30)
+//    @Size(min=2, max=30)
     @NotNull
     private String name;
 
     @Column
-    @Size(min=0, max=30)
+//    @Size(min=0, max=30)
     @Nullable
     private String address;
 
     @Column
-    @Size(min=0, max=30)
+//    @Size(min=0, max=30)
     @Nullable
     private String city;
 
@@ -50,7 +50,7 @@ public class Company
     private String email;
 
     @Column
-    @Size(min=0, max=30)
+//    @Size(min=0, max=30)
     @Nullable
     @Pattern(regexp="^$|(http(s)?://)?([\\w-]+\\.)+[\\w-]+(/[\\w- ;,./?%&=]*)?", message="Invalid web address")
     private String website;

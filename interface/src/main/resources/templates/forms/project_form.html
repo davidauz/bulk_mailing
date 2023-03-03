@@ -37,9 +37,150 @@
 			/>
 
 
+			<div class="form-group row" id="persons_div">
+				<label class="col-sm-2 col-form-label" th:for="people">Add individuals:</label>
+				<div class="col-sm-10">
+					<select
+							size=10
+							class="form-control"
+							id=available_persons
+							multiple=multiple
+							name=available_persons
+							style="width:30%;float:left;"
+					>
+						<option
+								th:each="option : ${available_persons}"
+								th:value="${option.personId}"
+								th:text="${option.firstName} + ' ' + ${option.familyName}"
+						></option>
+					</select>
+					<div style="float:left;text-align:center">
+					<span
+							class="btn btn-primary"
+							onclick="addPerson()"
+					>Add ➡</span>
+						</br>
+						<span
+								class="btn btn-primary"
+								onclick="removePerson()"
+						>⬅ Remove
+					</span>
+					</div>
+					<div style="width:30%;float:left;">
+						<select
+								size=10
+								class="form-control"
+								multiple=multiple
+								id=selected_pers
+								name=selected_pers
+								th:field="*{people}"
+								style="float:left;"
+						>
+							<option
+									th:each="option : ${project.people}"
+									th:value="${option.personId}"
+									th:text="${option.firstName} + ' ' + ${option.familyName}"
+							></option>
+						</select>
+					</div>
+				</div>
+			</div>
+
+
+
+
+			<div class="form-group row" id="companies_div">
+				<label class="col-sm-2 col-form-label" th:for="people">Add companies:</label>
+				<div class="col-sm-10">
+					<select
+							size=10
+							class="form-control"
+							id=sel_companies
+							multiple=multiple
+							name=sel_companies
+							style="width:30%;float:left;"
+					>
+						<option
+								th:each="option : ${companies}"
+								th:value="${option.Id}"
+								th:text="${option.name}"
+						></option>
+					</select>
+					<div style="float:left;text-align:center">
+					<span
+							class="btn btn-primary"
+							onclick="addCompany()"
+					>Add ➡</span>
+						</br>
+						<span
+								class="btn btn-primary"
+								onclick="removeCompany()"
+						>⬅ Remove
+					</span>
+					</div>
+					<div style="width:30%;float:left;">
+						<select
+								size=10
+								class="form-control"
+								multiple=multiple
+								id=selected_companies
+								name=selected_companies
+								th:field="*{people}"
+								style="float:left;"
+						>
+							<option
+									th:each="option : ${project.people}"
+									th:value="${option.personId}"
+									th:text="${option.firstName} + ' ' + ${option.familyName}"
+							></option>
+						</select>
+					</div>
+				</div>
+			</div>
+
+
+
+
+
+
 			<button type="submit">Submit</button>
 		</form>
 	</div>
+
+	<script type="text/javascript">
+function removePerson() {
+	$('#selected_pers option:selected').each(function(idx, opt){
+		$('#available_persons').append(opt);
+		$('#selected_pers').find('option[value="'+opt.value+'"]').remove();
+	});
+}
+function addPerson() {
+	$('#available_persons option:selected').each(function(idx, opt){
+		$('#selected_pers').append(opt);
+		$('#available_persons').find('option[value="'+opt.value+'"]').remove();
+	});
+}
+
+function removeCompany() {
+	$('#selected_companies option:selected').each(function(idx, opt){
+		$('#companies').append(opt);
+		$('#selected_companies').find('option[value="'+opt.value+'"]').remove();
+	});
+}
+function addCompany() {
+	$('#companies option:selected').each(function(idx, opt){
+		$('#selected_companies').append(opt);
+		$('#companies').find('option[value="'+opt.value+'"]').remove();
+	});
+}
+
+
+function fill_values(){
+	$('#member_of option').prop('selected', true);
+	console.log($('#member_of'));
+}
+</script>
+
 
 </section>
 </div>
