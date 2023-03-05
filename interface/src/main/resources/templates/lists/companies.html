@@ -123,8 +123,13 @@
         </div>
         <nav aria-label="Pagination" th:if="${totalPages > 0}">
             <ul class="pagination justify-content-center">
-                <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
-                    <a th:replace="fragments/paging :: paging(1, '<<', 'First Page')"></a>
+                <li class="page-item">
+                    <a hx-post="/companies/navigate/first"
+                       hx-trigger="click"
+                       hx-include="paging-form"
+                       hx-target="body"
+                       class="btn btn-primary" th:classappend="${currentPage == 1} ? 'disabled'"
+                    >&#9194;</a>
                 </li>
                 <li class="page-item font-weight-bold">
                     <a hx-post="/companies/navigate/prev"
@@ -132,7 +137,7 @@
                        hx-include="paging-form"
                        hx-target="body"
                        class="btn btn-primary" th:classappend="${currentPage == 1} ? 'disabled'"
-                    >PREV</a>
+                    >&#9664;️</a>
                 </li>
                 <li class="page-item disabled" th:if="${currentPage - 2 > 1}">
                     <a class="page-link" href="#">...</a>
@@ -152,10 +157,15 @@
                        hx-include="paging-form"
                        hx-target="body"
                        class="btn btn-primary" th:classappend="${currentPage == totalPages} ? 'disabled'"
-                    >NEXT</a>
+                    >&#9654;</a>
                 </li>
-                <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
-                    <a th:replace="fragments/paging :: paging(${totalPages}, '>>', 'Last Page')"></a>
+                <li class="page-item">
+                    <a hx-post="/companies/navigate/last"
+                       hx-trigger="click"
+                       hx-include="paging-form"
+                       hx-target="body"
+                       class="btn btn-primary"  th:classappend="${currentPage == totalPages} ? 'disabled'"
+                    >&#9193;</a>
                 </li>
             </ul>
         </nav>
