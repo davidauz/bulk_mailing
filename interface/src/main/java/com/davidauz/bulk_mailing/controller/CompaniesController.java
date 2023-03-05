@@ -41,12 +41,17 @@ public class CompaniesController {
     ,   @RequestParam(required = false) String keyword
     ,   @RequestParam(defaultValue = "1") int currentPage
     ,   @RequestParam(defaultValue = "30") int pageSize
+    ,   @RequestParam(defaultValue = "0") int totalPages
     ,   @PathVariable String direction
     ){
         if(direction.equals("next"))
             currentPage+=1;
         else if(direction.equals("prev"))
             currentPage-=1;
+        else if(direction.equals("first"))
+            currentPage=1;
+        else if(direction.equals("last"))
+            currentPage=totalPages;
         return companies_search(model, keyword,currentPage,pageSize);
     }
 
