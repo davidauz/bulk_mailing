@@ -116,7 +116,6 @@
         <div th:unless="${people.size() > 0}">
             <span>No people found!</span>
         </div>
-<!--        https://www.bezkoder.com/thymeleaf-pagination/-->
         <nav aria-label="Pagination" th:if="${totalPages > 0}">
             <ul class="pagination justify-content-center">
                 <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
