@@ -45,6 +45,8 @@ public class CompaniesController {
     ){
         if(direction.equals("next"))
             currentPage+=1;
+        else if(direction.equals("prev"))
+            currentPage-=1;
         return companies_search(model, keyword,currentPage,pageSize);
     }
 
