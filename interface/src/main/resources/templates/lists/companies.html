@@ -22,6 +22,7 @@
     <body>
 <section layout:fragment="content">
 
+
     <div class="container-fluid" style="max-width: 90%; margin: 0;">
         <h2 class="text-center">Companies</h2>
 
@@ -129,7 +130,7 @@
                        hx-include="paging-form"
                        hx-target="body"
                        class="btn btn-primary" th:classappend="${currentPage == 1} ? 'disabled'"
-                    >&#9194;</a>
+                    >&#9194;&#xFE0E;</a>
                 </li>
                 <li class="page-item font-weight-bold">
                     <a hx-post="/companies/navigate/prev"
@@ -137,7 +138,7 @@
                        hx-include="paging-form"
                        hx-target="body"
                        class="btn btn-primary" th:classappend="${currentPage == 1} ? 'disabled'"
-                    >&#9664;️</a>
+                    >&#9664;&#xFE0E;️️</a>
                 </li>
                 <li class="page-item disabled" th:if="${currentPage - 2 > 1}">
                     <a class="page-link" href="#">...</a>
@@ -157,7 +158,7 @@
                        hx-include="paging-form"
                        hx-target="body"
                        class="btn btn-primary" th:classappend="${currentPage == totalPages} ? 'disabled'"
-                    >&#9654;</a>
+                    >&#9654;&#xFE0E;</a>
                 </li>
                 <li class="page-item">
                     <a hx-post="/companies/navigate/last"
@@ -165,7 +166,7 @@
                        hx-include="paging-form"
                        hx-target="body"
                        class="btn btn-primary"  th:classappend="${currentPage == totalPages} ? 'disabled'"
-                    >&#9193;</a>
+                    >&#9193;&#xFE0E;</a>
                 </li>
             </ul>
         </nav>
