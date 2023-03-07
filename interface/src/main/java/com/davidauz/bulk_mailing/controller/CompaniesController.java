@@ -35,6 +35,21 @@ public class CompaniesController {
         return getAll(model, keyword,currentPage,pageSize);
     }
 
+
+    @PostMapping("/companies/page/{pageNum}")
+    public String companies_page
+    (   Model model
+            ,   @RequestParam(required = false) String keyword
+            ,   @RequestParam(defaultValue = "1") int currentPage
+            ,   @RequestParam(defaultValue = "30") int pageSize
+            ,   @RequestParam(defaultValue = "0") int totalPages
+            ,   @PathVariable String pageNum
+    ){
+        return companies_search(model, keyword,Integer.valueOf(pageNum),pageSize);
+    }
+
+
+
     @PostMapping("/companies/navigate/{direction}")
     public String companies_search_direction
     (   Model model
