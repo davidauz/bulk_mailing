@@ -32,6 +32,38 @@ public class PersonsController {
     private GroupRepository groupRepo;
 
 
+    @PostMapping("/people/page/{pageNum}")
+    public String companies_page
+    (   Model model
+            ,   @RequestParam(required = false) String keyword
+            ,   @RequestParam(defaultValue = "1") int currentPage
+            ,   @RequestParam(defaultValue = "30") int pageSize
+            ,   @RequestParam(defaultValue = "0") int totalPages
+            ,   @PathVariable String pageNum
+    ){
+        return people_search(model, keyword,Integer.valueOf(pageNum),pageSize);
+    }
+
+    @PostMapping("/people/navigate/{direction}")
+    public String companies_search_direction
+            (   Model model
+                    ,   @RequestParam(required = false) String keyword
+                    ,   @RequestParam(defaultValue = "1") int currentPage
+                    ,   @RequestParam(defaultValue = "30") int pageSize
+                    ,   @RequestParam(defaultValue = "0") int totalPages
+                    ,   @PathVariable String direction
+            ){
+        if(direction.equals("next"))
+            currentPage+=1;
+        else if(direction.equals("prev"))
+            currentPage-=1;
+        else if(direction.equals("first"))
+            currentPage=1;
+        else if(direction.equals("last"))
+            currentPage=totalPages;
+        return people_search(model, keyword,currentPage,pageSize);
+    }
+
     @PostMapping("/people/search")
     public String people_search
     (   Model model

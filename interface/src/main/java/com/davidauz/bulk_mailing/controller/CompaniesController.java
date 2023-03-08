@@ -48,8 +48,6 @@ public class CompaniesController {
         return companies_search(model, keyword,Integer.valueOf(pageNum),pageSize);
     }
 
-
-
     @PostMapping("/companies/navigate/{direction}")
     public String companies_search_direction
     (   Model model
