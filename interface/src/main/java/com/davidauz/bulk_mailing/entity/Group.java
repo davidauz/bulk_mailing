@@ -25,12 +25,12 @@ public class Group
     private Long groupId;
 
     @Column(nullable=false, unique=true)
-    @Size(min=2, max=30)
+    @Size(min=2)
     @NotNull
     private String groupName;
 
     @Column(nullable=false, unique=true)
-    @Size(min=2, max=30)
+    @Size(min=2)
     @NotNull
     private String groupDesc;
 
