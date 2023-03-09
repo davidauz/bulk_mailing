@@ -122,54 +122,7 @@
             <span>No people found!</span>
         </div>
 
-        <nav aria-label="Pagination" th:if="${totalPages > 0}">
-            <ul class="pagination justify-content-center">
-                <li class="page-item">
-                    <a hx-post="/people/navigate/first"
-                       hx-trigger="click"
-                       hx-include="paging-form"
-                       hx-target="body"
-                       class="btn btn-primary" th:classappend="${currentPage == 1} ? 'disabled'"
-                    >&#9194;&#xFE0E;</a>
-                </li>
-                <li class="page-item font-weight-bold">
-                    <a hx-post="/people/navigate/prev"
-                       hx-trigger="click"
-                       hx-include="paging-form"
-                       hx-target="body"
-                       class="btn btn-primary" th:classappend="${currentPage == 1} ? 'disabled'"
-                    >&#9664;&#xFE0E;️️</a>
-                </li>
-                <li class="page-item disabled" th:if="${currentPage - 2 > 1}">
-                    <a class="page-link" href="#">...</a>
-                </li>
-                <li class="page-item" th:classappend="${page == currentPage} ? 'active'"
-                    th:each="page : ${#numbers.sequence(currentPage > 2 ? currentPage - 2 : 1, currentPage + 2 < totalPages ? currentPage + 2 : totalPages)}">
-                    <a th:replace="fragments/paging :: paging(${page}, ${page}, 'Page ' + ${page}, people)"></a>
-                </li>
-                <li class="page-item disabled" th:if="${currentPage + 2 < totalPages}">
-                    <a class="page-link" href="#">...</a>
-                </li>
-                <li class="page-item font-weight-bold" >
-                    <input type="hidden" name="currentPage" th:value="${currentPage}">
-                    <input type="hidden" name="totalPages" th:value="${totalPages}">
-                    <a hx-post="/people/navigate/next"
-                       hx-trigger="click"
-                       hx-include="paging-form"
-                       hx-target="body"
-                       class="btn btn-primary" th:classappend="${currentPage == totalPages} ? 'disabled'"
-                    >&#9654;&#xFE0E;</a>
-                </li>
-                <li class="page-item">
-                    <a hx-post="/people/navigate/last"
-                       hx-trigger="click"
-                       hx-include="paging-form"
-                       hx-target="body"
-                       class="btn btn-primary"  th:classappend="${currentPage == totalPages} ? 'disabled'"
-                    >&#9193;&#xFE0E;</a>
-                </li>
-            </ul>
-        </nav>
+                <div th:replace="fragments/pagination :: pagination(people)"></div>
 
         </form>
 

@@ -51,7 +51,7 @@ public class projectsController {
             model.addAttribute("message", e.getMessage());
         }
 
-        return "lists/companies";
+        return "lists/projects";
     }
 
 }
