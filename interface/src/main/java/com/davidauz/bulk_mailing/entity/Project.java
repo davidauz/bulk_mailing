@@ -43,6 +43,25 @@ public class Project
     )
     private List<Person> people;
 
+
+    @ManyToMany
+    @JoinTable(
+            name="projects_companies",
+            inverseJoinColumns={@JoinColumn(name="COMPANY_ID", referencedColumnName="Id")},
+            joinColumns={@JoinColumn(name="PROJECT_ID", referencedColumnName="Id")}
+    )
+    private List<Company> companies;
+
+
+
+    @ManyToMany
+    @JoinTable(
+            name="projects_groups",
+            inverseJoinColumns={@JoinColumn(name="GROUP_ID", referencedColumnName="groupId")},
+            joinColumns={@JoinColumn(name="PROJECT_ID", referencedColumnName="Id")}
+    )
+    private List<Group> groups;
+
     @Column(nullable=false)
     private boolean active;
 }

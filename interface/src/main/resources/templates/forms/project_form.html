@@ -38,7 +38,7 @@
 
 
 			<div class="form-group row" id="persons_div">
-				<label class="col-sm-2 col-form-label" th:for="people">Add individuals:</label>
+				<label class="col-sm-2 col-form-label" th:for="people">Individuals:</label>
 				<div class="col-sm-10">
 					<select
 							size=10
@@ -49,7 +49,7 @@
 							style="width:30%;float:left;"
 					>
 						<option
-								th:each="option : ${available_persons}"
+								th:each="option : ${all_persons}"
 								th:value="${option.personId}"
 								th:text="${option.firstName} + ' ' + ${option.familyName}"
 						></option>
@@ -87,10 +87,8 @@
 			</div>
 
 
-
-
 			<div class="form-group row" id="companies_div">
-				<label class="col-sm-2 col-form-label" th:for="people">Add companies:</label>
+				<label class="col-sm-2 col-form-label" th:for="people">Companies:</label>
 				<div class="col-sm-10">
 					<select
 							size=10
@@ -101,7 +99,7 @@
 							style="width:30%;float:left;"
 					>
 						<option
-								th:each="option : ${companies}"
+								th:each="option : ${all_companies}"
 								th:value="${option.Id}"
 								th:text="${option.name}"
 						></option>
@@ -129,9 +127,59 @@
 								style="float:left;"
 						>
 							<option
-									th:each="option : ${project.people}"
-									th:value="${option.personId}"
-									th:text="${option.firstName} + ' ' + ${option.familyName}"
+									th:each="option : ${project.companies}"
+									th:value="${option.Id}"
+									th:text="${option.name}"
+							></option>
+						</select>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="form-group row" id="groups_div">
+				<label class="col-sm-2 col-form-label" th:for="people">Groups:</label>
+				<div class="col-sm-10">
+					<select
+							size=10
+							class="form-control"
+							id=sel_groups
+							multiple=multiple
+							name=sel_companies
+							style="width:30%;float:left;"
+					>
+						<option
+								th:each="option : ${all_groups}"
+								th:value="${option.groupId}"
+								th:text="${option.groupName}"
+						></option>
+					</select>
+					<div style="float:left;text-align:center">
+					<span
+							class="btn btn-primary"
+							onclick="addGroup()"
+					>Add ➡</span>
+						</br>
+						<span
+								class="btn btn-primary"
+								onclick="removeGroup()"
+						>⬅ Remove
+					</span>
+					</div>
+					<div style="width:30%;float:left;">
+						<select
+								size=10
+								class="form-control"
+								multiple=multiple
+								id=selected_groups
+								name=selected_groups
+								th:field="*{groups}"
+								style="float:left;"
+						>
+							<option
+									th:each="option : ${project.groups}"
+									th:value="${option.groupId}"
+									th:text="${option.groupName}"
 							></option>
 						</select>
 					</div>

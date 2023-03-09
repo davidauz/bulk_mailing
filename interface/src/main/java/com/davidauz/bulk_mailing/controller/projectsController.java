@@ -3,6 +3,7 @@ package com.davidauz.bulk_mailing.controller;
 import com.davidauz.bulk_mailing.entity.Company;
 import com.davidauz.bulk_mailing.entity.Project;
 import com.davidauz.bulk_mailing.repository.CompanyRepository;
+import com.davidauz.bulk_mailing.repository.GroupRepository;
 import com.davidauz.bulk_mailing.repository.PersonRepository;
 import com.davidauz.bulk_mailing.repository.ProjectsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,10 @@ public class projectsController {
     private ProjectsRepository projectsRepository;
     @Autowired
     private PersonRepository personRepository;
+
     @Autowired private CompanyRepository companyRepository;
+
+    @Autowired private GroupRepository groupRepository;
 
 
     @GetMapping("/projects")
@@ -65,8 +69,9 @@ public class projectsController {
     public String company_new
     (   Model model
     ){
-        model.addAttribute("available_persons", personRepository.findAll());
-        model.addAttribute("companies", companyRepository.findAll());
+        model.addAttribute("all_persons", personRepository.findAll());
+        model.addAttribute("all_companies", companyRepository.findAll());
+        model.addAttribute("all_groups", groupRepository.findAll());
         model.addAttribute("project", new Project());
         return "forms/project_form";
     }
