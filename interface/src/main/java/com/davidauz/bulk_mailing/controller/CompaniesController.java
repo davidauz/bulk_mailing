@@ -29,10 +29,43 @@ public class CompaniesController {
     public String companies_search
     (   Model model
     ,   @RequestParam(required = false) String keyword
-    ,   @RequestParam(defaultValue = "1") int page
+    ,   @RequestParam(defaultValue = "1") int currentPage
     ,   @RequestParam(defaultValue = "30") int pageSize
     ){
-        return getAll(model, keyword,page,pageSize);
+        return getAll(model, keyword,currentPage,pageSize);
+    }
+
+
+    @PostMapping("/companies/page/{pageNum}")
+    public String companies_page
+    (   Model model
+            ,   @RequestParam(required = false) String keyword
+            ,   @RequestParam(defaultValue = "1") int currentPage
+            ,   @RequestParam(defaultValue = "30") int pageSize
+            ,   @RequestParam(defaultValue = "0") int totalPages
+            ,   @PathVariable String pageNum
+    ){
+        return companies_search(model, keyword,Integer.valueOf(pageNum),pageSize);
+    }
+
+    @PostMapping("/companies/navigate/{direction}")
+    public String companies_search_direction
+    (   Model model
+    ,   @RequestParam(required = false) String keyword
+    ,   @RequestParam(defaultValue = "1") int currentPage
+    ,   @RequestParam(defaultValue = "30") int pageSize
+    ,   @RequestParam(defaultValue = "0") int totalPages
+    ,   @PathVariable String direction
+    ){
+        if(direction.equals("next"))
+            currentPage+=1;
+        else if(direction.equals("prev"))
+            currentPage-=1;
+        else if(direction.equals("first"))
+            currentPage=1;
+        else if(direction.equals("last"))
+            currentPage=totalPages;
+        return companies_search(model, keyword,currentPage,pageSize);
     }
 
 
@@ -40,12 +73,12 @@ public class CompaniesController {
     public String getAll
     (   Model model
     ,   @RequestParam(required = false) String keyword
-    ,   @RequestParam(defaultValue = "1") int page
+    ,   @RequestParam(defaultValue = "1") int currentPage
     ,   @RequestParam(defaultValue = "30") int pageSize
     ) {
         try {
             List<Company> companies = new ArrayList<Company>();
-            Pageable paging = PageRequest.of(page - 1, pageSize);
+            Pageable paging = PageRequest.of(currentPage - 1, pageSize);
 
             Page<Company> companies_page;
             if (keyword == null)
@@ -117,7 +150,7 @@ public class CompaniesController {
     ,   @PathVariable Long companyId
     ,   @PathVariable("status") boolean published
     ,   @RequestParam(required = false) String keyword
-    ,   @RequestParam(defaultValue = "1") int page
+    ,   @RequestParam(defaultValue = "1") int currentPage
     ,   @RequestParam(defaultValue = "30") int pageSize
     ){
         try {
@@ -127,7 +160,7 @@ public class CompaniesController {
         } catch(Exception e){
             model.addAttribute("message", e.getMessage());
         }
-        return getAll(model, keyword, page, pageSize);
+        return getAll(model, keyword, currentPage, pageSize);
     }
 
 

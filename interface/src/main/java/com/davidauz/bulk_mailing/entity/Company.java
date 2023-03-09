@@ -50,7 +50,6 @@ public class Company
     private String email;
 
     @Column
-//    @Size(min=0, max=30)
     @Nullable
     @Pattern(regexp="^$|(http(s)?://)?([\\w-]+\\.)+[\\w-]+(/[\\w- ;,./?%&=]*)?", message="Invalid web address")
     private String website;

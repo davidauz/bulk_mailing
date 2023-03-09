@@ -64,6 +64,49 @@ public class TextsController {
         return post.getContent();
     }
 
+    @PostMapping("/texts/search")
+    public String texts_search
+    (   Model model
+            ,   @RequestParam(required = false) String keyword
+            ,   @RequestParam(defaultValue = "1") int currentPage
+            ,   @RequestParam(defaultValue = "30") int pageSize
+    ){
+        return get_texts(model, keyword,currentPage,pageSize);
+    }
+
+    @PostMapping("/texts/navigate/{direction}")
+    public String texts_search_direction
+    (   Model model
+    ,   @RequestParam(required = false) String keyword
+    ,   @RequestParam(defaultValue = "1") int currentPage
+    ,   @RequestParam(defaultValue = "30") int pageSize
+    ,   @RequestParam(defaultValue = "0") int totalPages
+    ,   @PathVariable String direction
+    ){
+        if(direction.equals("next"))
+            currentPage+=1;
+        else if(direction.equals("prev"))
+            currentPage-=1;
+        else if(direction.equals("first"))
+            currentPage=1;
+        else if(direction.equals("last"))
+            currentPage=totalPages;
+        return texts_search(model, keyword,currentPage,pageSize);
+    }
+
+    @PostMapping("/texts/page/{pageNum}")
+    public String companies_page
+            (   Model model
+                    ,   @RequestParam(required = false) String keyword
+                    ,   @RequestParam(defaultValue = "1") int currentPage
+                    ,   @RequestParam(defaultValue = "30") int pageSize
+                    ,   @RequestParam(defaultValue = "0") int totalPages
+                    ,   @PathVariable String pageNum
+            ){
+        return texts_search(model, keyword,Integer.valueOf(pageNum),pageSize);
+    }
+
+
     @PostMapping("/texts/submit")
     public String save
     (   Post post

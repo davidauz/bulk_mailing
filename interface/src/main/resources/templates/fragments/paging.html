@@ -1,5 +1,6 @@
-<a th:fragment="paging(pageNum, label, tooltip)" class="page-link"
-  th:href="@{'?' + ${keyword!=null && keyword!=''? 'keyword=' + keyword + '&' : ''} + 'page=' + ${pageNum} + '&size=' + ${pageSize}}"
+<a th:fragment="paging(pageNum, label, tooltip, target)"
+  class="page-link"
+  th:attr="hx-target=body,hx-include=paging-form,hx-trigger=click,hx-post='/' + ${target} + '/page/' + ${pageNum}"
   th:title="${tooltip}" rel="tooltip">
   [[${label}]]
 </a>
