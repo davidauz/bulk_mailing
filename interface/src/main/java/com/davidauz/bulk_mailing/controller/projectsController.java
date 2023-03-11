@@ -1,10 +1,13 @@
 package com.davidauz.bulk_mailing.controller;
 
+import com.davidauz.bulk_mailing.entity.Group;
+import com.davidauz.bulk_mailing.entity.Person;
 import com.davidauz.bulk_mailing.entity.Project;
 import com.davidauz.bulk_mailing.repository.CompanyRepository;
 import com.davidauz.bulk_mailing.repository.GroupRepository;
 import com.davidauz.bulk_mailing.repository.PersonRepository;
 import com.davidauz.bulk_mailing.repository.ProjectsRepository;
+import com.fasterxml.classmate.Annotations;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +22,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 public class projectsController {
@@ -98,7 +103,26 @@ public class projectsController {
     }
 
     private ResponseEntity<String> add_groups(ArrayList<String> groups) {
-        String[] ret_data=new String[] {"a", ":", "c"};
+// Retrieve groups whose ID is in list
+        Optional<Group> gr_o;
+        Group gr;
+        ArrayList<String[]> groupsToAdd=new ArrayList<String[]>()
+        ,    peopleToAdd=new ArrayList<String[]>()
+        ;
+        for (String s_ID : groups) {
+            gr_o=groupRepository.findById(Long.valueOf(s_ID));
+            if(gr_o.isPresent()){
+                gr=gr_o.get();
+                groupsToAdd.add(new String[]{String.valueOf(gr.getGroupId()),gr.getGroupName()});
+                for (Person o_pers : gr.getPeople()) {
+// Retrieve all people belonging to said group
+                    peopleToAdd.add(new String[]{String.valueOf(o_pers.getPersonId()), o_pers.getFirstName(),o_pers.getFamilyName()});
+                }
+            }
+        }
+        ArrayList<Object> ret_data=new ArrayList<Object>();
+        ret_data.add(groupsToAdd);
+        ret_data.add(peopleToAdd);
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonString = null;
         try {
@@ -110,7 +134,5 @@ public class projectsController {
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
         return new ResponseEntity<String>(jsonString, responseHeaders, HttpStatus.OK);
     }
-
-//Controllare nel POM.xml se servono veramente tutte quelle dependencysu JSON
-
 }
+
