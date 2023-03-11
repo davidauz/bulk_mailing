@@ -23,10 +23,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 public class projectsController {
@@ -120,9 +117,9 @@ public class projectsController {
                 }
             }
         }
-        ArrayList<Object> ret_data=new ArrayList<Object>();
-        ret_data.add(groupsToAdd);
-        ret_data.add(peopleToAdd);
+        HashMap<String,Object> ret_data=new HashMap<>();
+        ret_data.put("GROUPS",groupsToAdd);
+        ret_data.put("PEOPLE",peopleToAdd);
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonString = null;
         try {
