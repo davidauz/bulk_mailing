@@ -11,6 +11,7 @@
 	<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
 	<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
 	<script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+	<script type="text/javascript" th:src="@{/webjars/htmx.org/dist/htmx.min.js}"></script>
 	<script type="text/javascript" th:src="@{/webjars/hyperscript.org/dist/_hyperscript.js}"></script>
 </head>
 <body>
@@ -37,32 +38,32 @@
 			/>
 
 
-			<div class="form-group row" id="persons_div">
-				<label class="col-sm-2 col-form-label" th:for="people">Individuals:</label>
+			<div class="form-group row" id="groups_div">
+				<label class="col-sm-2 col-form-label" th:for="people">Groups:</label>
 				<div class="col-sm-10">
 					<select
 							size=10
 							class="form-control"
-							id=available_persons
+							id=sel_groups
 							multiple=multiple
-							name=available_persons
+							name=sel_groups
 							style="width:30%;float:left;"
 					>
 						<option
-								th:each="option : ${all_persons}"
-								th:value="${option.personId}"
-								th:text="${option.firstName} + ' ' + ${option.familyName}"
+								th:each="option : ${all_groups}"
+								th:value="${option.groupId}"
+								th:text="${option.groupName}"
 						></option>
 					</select>
 					<div style="float:left;text-align:center">
-					<span
+					<a
 							class="btn btn-primary"
-							onclick="addPerson()"
-					>Add ➡</span>
+							onclick="addGroup()"
+					>Add ➡</a>
 						</br>
 						<span
 								class="btn btn-primary"
-								onclick="removePerson()"
+								onclick="removeGroup()"
 						>⬅ Remove
 					</span>
 					</div>
@@ -71,20 +72,21 @@
 								size=10
 								class="form-control"
 								multiple=multiple
-								id=selected_pers
-								name=selected_pers
-								th:field="*{people}"
+								id=selected_groups
+								name=selected_groups
+								th:field="*{groups}"
 								style="float:left;"
 						>
 							<option
-									th:each="option : ${project.people}"
-									th:value="${option.personId}"
-									th:text="${option.firstName} + ' ' + ${option.familyName}"
+									th:each="option : ${project.groups}"
+									th:value="${option.groupId}"
+									th:text="${option.groupName}"
 							></option>
 						</select>
 					</div>
 				</div>
 			</div>
+
 
 
 			<div class="form-group row" id="companies_div">
@@ -137,32 +139,33 @@
 			</div>
 
 
-			<div class="form-group row" id="groups_div">
-				<label class="col-sm-2 col-form-label" th:for="people">Groups:</label>
+
+			<div class="form-group row" id="persons_div">
+				<label class="col-sm-2 col-form-label" th:for="people">Individuals:</label>
 				<div class="col-sm-10">
 					<select
 							size=10
 							class="form-control"
-							id=sel_groups
+							id=available_persons
 							multiple=multiple
-							name=sel_companies
+							name=available_persons
 							style="width:30%;float:left;"
 					>
 						<option
-								th:each="option : ${all_groups}"
-								th:value="${option.groupId}"
-								th:text="${option.groupName}"
+								th:each="option : ${all_persons}"
+								th:value="${option.personId}"
+								th:text="${option.firstName} + ' ' + ${option.familyName}"
 						></option>
 					</select>
 					<div style="float:left;text-align:center">
 					<span
 							class="btn btn-primary"
-							onclick="addGroup()"
+							onclick="addPerson()"
 					>Add ➡</span>
 						</br>
 						<span
 								class="btn btn-primary"
-								onclick="removeGroup()"
+								onclick="removePerson()"
 						>⬅ Remove
 					</span>
 					</div>
@@ -171,15 +174,15 @@
 								size=10
 								class="form-control"
 								multiple=multiple
-								id=selected_groups
-								name=selected_groups
-								th:field="*{groups}"
+								id=selected_pers
+								name=selected_pers
+								th:field="*{people}"
 								style="float:left;"
 						>
 							<option
-									th:each="option : ${project.groups}"
-									th:value="${option.groupId}"
-									th:text="${option.groupName}"
+									th:each="option : ${project.people}"
+									th:value="${option.personId}"
+									th:text="${option.firstName} + ' ' + ${option.familyName}"
 							></option>
 						</select>
 					</div>
@@ -196,6 +199,43 @@
 	</div>
 
 	<script type="text/javascript">
+function alertRetFalse(resp_ext){
+	alert(resp_ext);
+	return false;
+}
+
+function addGroup() {
+		var groups_array=$('#sel_groups').val()
+		,	params =
+		{	'verb':'add_groups'
+		,	'groups':groups_array
+		};
+		console.log(params);
+
+		$.ajax(
+		{	url: '/project/ajx_dispatcher'
+		,	method: "POST"
+		,	contentType: 'application/json'
+		,	data: JSON.stringify(params)
+		,	success: function(data){
+			alert('SUCCESS');
+			console.log(data);
+			}
+		,	error: function(data) {
+				console.log(data);
+				return alertRetFalse(data.responseText);
+		}
+		});
+	}
+
+function removeGroup() {
+	$('#selected_pers option:selected').each(function(idx, opt){
+		$('#available_persons').append(opt);
+		$('#selected_pers').find('option[value="'+opt.value+'"]').remove();
+	});
+}
+
+
 function removePerson() {
 	$('#selected_pers option:selected').each(function(idx, opt){
 		$('#available_persons').append(opt);
