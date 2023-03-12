@@ -3,7 +3,6 @@
 function alertRetFalse(resp_ext){
 	alert(resp_ext);
 	return false;
-	return false;
 }
 
 
@@ -20,12 +19,6 @@ function addPerson() {
 	});
 }
 
-function removeCompany() {
-	$('#selected_companies option:selected').each(function(idx, opt){
-		$('#companies').append(opt);
-		$('#selected_companies').find('option[value="'+opt.value+'"]').remove();
-	});
-}
 
 function fill_values(){
 	$('#member_of option').prop('selected', true);
@@ -135,3 +128,35 @@ function addCompany() {
     );
 }
 
+function removeCompany() {
+    var companies_array=$('#selected_companies').val()
+    ,	sel_pers=$('#selected_pers')
+    ,	ava_pers=$('#available_persons')
+    ,	sel_companies=$('#sel_companies')
+    ,	params =
+    {	'verb':'rm_companies'
+    ,	'ajx_data':companies_array
+    };
+
+    $.ajax(
+    {	url: '/project/ajx_dispatcher'
+    ,	method: "POST"
+    ,	contentType: 'application/json'
+    ,	data: JSON.stringify(params)
+    ,	success: function(data){
+        $.each( data.PEOPLE, function(key, val) {
+            ava_pers.append(new Option(val[1]+' '+val[2], val[0]));
+            sel_pers.find('option[value="'+val[0]+'"]').remove();
+        });
+        $.each( data.COMPANIES, function(key, val) {
+            sel_companiesselected_companies.append(new Option(val[1], val[0]));
+            selected_companies.find('option[value="'+val[0]+'"]').remove();
+        })
+        }
+    ,	error: function(data) {
+            console.log(data);
+            return alertRetFalse(data.responseText);
+        }
+    }
+    );
+}

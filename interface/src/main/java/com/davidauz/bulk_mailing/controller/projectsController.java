@@ -197,7 +197,7 @@ public class projectsController {
             }
         }
         HashMap<String,Object> ret_data=new HashMap<>();
-        ret_data.put("GROUPS",companiesToAdd);
+        ret_data.put("COMPANIES",companiesToAdd);
         ret_data.put("PEOPLE",peopleToAdd);
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonString = null;
@@ -211,5 +211,41 @@ public class projectsController {
         return new ResponseEntity<String>(jsonString, responseHeaders, HttpStatus.OK);
     }
 
+
+
+
+    private ResponseEntity<String> rm_companies(ArrayList<String> companies) {
+// Retrieve groups whose ID is in list
+        Optional<Company> comp_o;
+        Company comp;
+        ArrayList<String[]> companiesToAdd=new ArrayList<String[]>()
+                ,    peopleToAdd=new ArrayList<String[]>()
+                ;
+        for (String s_ID : companies) {
+            comp_o=companyRepository.findById(Long.valueOf(s_ID));
+            if(comp_o.isPresent()){
+                comp=comp_o.get();
+                companiesToAdd.add(new String[]{String.valueOf(comp.getId()),comp.getName()});
+                List<Person> ppl=personRepository.findByCompany_Id(comp.getId());
+                for (Person o_pers : ppl) {
+// Retrieve all people belonging to said group
+                    peopleToAdd.add(new String[]{String.valueOf(o_pers.getPersonId()), o_pers.getFirstName(),o_pers.getFamilyName()});
+                }
+            }
+        }
+        HashMap<String,Object> ret_data=new HashMap<>();
+        ret_data.put("COMPANIES",companiesToAdd);
+        ret_data.put("PEOPLE",peopleToAdd);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = objectMapper.writeValueAsString(ret_data);
+        } catch (JsonProcessingException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.setContentType(MediaType.APPLICATION_JSON);
+        return new ResponseEntity<String>(jsonString, responseHeaders, HttpStatus.OK);
+    }
 }
 
