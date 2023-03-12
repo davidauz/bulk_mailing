@@ -44,6 +44,7 @@ function addGroup() {
 		,	data: JSON.stringify(params)
 		,	success: function(data){
 			$.each( data.PEOPLE, function(key, val) {
+			    sel_pers.find('option[value="'+val[0]+'"]').remove(); // avoid doubles
 				sel_pers.append(new Option(val[1]+' '+val[2], val[0]));
 				ava_pers.find('option[value="'+val[0]+'"]').remove();
 			});
@@ -112,6 +113,7 @@ function addCompany() {
     ,	data: JSON.stringify(params)
     ,	success: function(data){
         $.each( data.PEOPLE, function(key, val) {
+            sel_pers.find('option[value="'+val[0]+'"]').remove();
             sel_pers.append(new Option(val[1]+' '+val[2], val[0]));
             ava_pers.find('option[value="'+val[0]+'"]').remove();
         });
@@ -137,7 +139,6 @@ function removeCompany() {
     {	'verb':'rm_companies'
     ,	'ajx_data':companies_array
     };
-
     $.ajax(
     {	url: '/project/ajx_dispatcher'
     ,	method: "POST"
@@ -149,7 +150,7 @@ function removeCompany() {
             sel_pers.find('option[value="'+val[0]+'"]').remove();
         });
         $.each( data.COMPANIES, function(key, val) {
-            sel_companiesselected_companies.append(new Option(val[1], val[0]));
+            sel_companies.append(new Option(val[1], val[0]));
             selected_companies.find('option[value="'+val[0]+'"]').remove();
         })
         }

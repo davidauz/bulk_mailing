@@ -98,6 +98,8 @@ public class projectsController {
                 return add_groups((ArrayList<String>) requestData.get("groups"));
             case "rm_groups":
                 return rm_groups((ArrayList<String>) requestData.get("groups"));
+            case "rm_companies":
+                return rm_companies((ArrayList<String>) requestData.get("ajx_data"));
             case "add_companies":
                 return add_companies((ArrayList<String>) requestData.get("ajx_data"));
         }
