@@ -205,12 +205,6 @@ function alertRetFalse(resp_ext){
 }
 
 
-function removeGroup() {
-	$('#selected_pers option:selected').each(function(idx, opt){
-		$('#available_persons').append(opt);
-		$('#selected_pers').find('option[value="'+opt.value+'"]').remove();
-	});
-}
 
 
 function removePerson() {
@@ -279,6 +273,42 @@ function addGroup() {
 		}
 		);
 	}
+
+function removeGroup(){
+		var groups_array=$('#selected_groups').val()
+		,	sel_pers=$('#selected_pers')
+		,	ava_pers=$('#available_persons')
+		,	selected_groups=$('#selected_groups')
+		,	sel_groups=$('#sel_groups')
+		,	params =
+		{	'verb':'rm_groups'
+		,	'groups':groups_array
+		};
+
+		$.ajax(
+		{	url: '/project/ajx_dispatcher'
+		,	method: "POST"
+		,	contentType: 'application/json'
+		,	data: JSON.stringify(params)
+		,	success: function(data){
+			$.each( data.PEOPLE, function(key, val) {
+				ava_pers.append(new Option(val[1]+' '+val[2], val[0]));
+				sel_pers.find('option[value="'+val[0]+'"]').remove();
+			});
+			$.each( data.GROUPS, function(key, val) {
+				sel_groups.append(new Option(val[1], val[0]));
+				selected_groups.find('option[value="'+val[0]+'"]').remove();
+			})
+			}
+		,	error: function(data) {
+				console.log(data);
+				return alertRetFalse(data.responseText);
+			}
+		}
+		);
+	}
+
+
 </script>
 
 

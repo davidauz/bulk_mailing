@@ -95,6 +95,8 @@ public class projectsController {
         switch(str_verb){
             case "add_groups":
                 return add_groups((ArrayList<String>) requestData.get("groups"));
+            case "rm_groups":
+                return rm_groups((ArrayList<String>) requestData.get("groups"));
         }
         return ResponseEntity.ok("success");
     }
@@ -131,5 +133,43 @@ public class projectsController {
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
         return new ResponseEntity<String>(jsonString, responseHeaders, HttpStatus.OK);
     }
+
+
+
+    private ResponseEntity<String> rm_groups(ArrayList<String> groups) {
+// Retrieve groups whose ID is in list
+        Optional<Group> gr_o;
+        Group gr;
+        ArrayList<String[]> groupsToRemove=new ArrayList<String[]>()
+        ,    peopleToRemove=new ArrayList<String[]>()
+        ;
+        for (String s_ID : groups) {
+            gr_o=groupRepository.findById(Long.valueOf(s_ID));
+            if(gr_o.isPresent()){
+                gr=gr_o.get();
+                groupsToRemove.add(new String[]{String.valueOf(gr.getGroupId()),gr.getGroupName()});
+                for (Person o_pers : gr.getPeople()) {
+// Retrieve all people belonging to said group
+                    peopleToRemove.add(new String[]{String.valueOf(o_pers.getPersonId()), o_pers.getFirstName(),o_pers.getFamilyName()});
+                }
+            }
+        }
+        HashMap<String,Object> ret_data=new HashMap<>();
+        ret_data.put("GROUPS",groupsToRemove);
+        ret_data.put("PEOPLE",peopleToRemove);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = objectMapper.writeValueAsString(ret_data);
+        } catch (JsonProcessingException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.setContentType(MediaType.APPLICATION_JSON);
+        return new ResponseEntity<String>(jsonString, responseHeaders, HttpStatus.OK);
+    }
+
+
+
 }
 
