@@ -25,15 +25,19 @@ public class Project
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable=false, unique=true)
-    @Size(min=2, max=30)
+    @Column(nullable=false)
+    @Size(min=2)
     @NotNull
-    private String name;
+    private String mailSubject;
 
     @Column
     @Size(min=0, max=30)
     @Nullable
     private String description;
+
+    @Column
+    @NotNull
+    private Long postId;
 
     @ManyToMany
     @JoinTable(

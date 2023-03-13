@@ -22,7 +22,12 @@
 
 	<div style="width:80%">
 
+
+
+
 		<form th:action="@{/project/insert}" th:object="${project}" method="post" class="form-horizontal">
+
+
 			<h3 th:if="${project.Id}">Edit project</h3>
 			<h3 th:unless="${project.Id}">New project</h3>
 
@@ -37,6 +42,49 @@
 					name="Id"
 					th:field="*{Id}"
 			/>
+
+			<div class="form-group row">
+				<label class="col-sm-2 col-form-label" th:for="mailSubject">Description:</label>
+				<div class="col-sm-10">
+					<input
+							type="text"
+							required
+							class="form-control"
+							id="projectName"
+							name="projectName"
+							placeholder="Christmas wishes 2023"
+							th:field="*{description}"
+							th:classappend="${#fields.hasErrors('description')} ? 'is-invalid' : ''"
+					/>
+					<div
+							class="invalid-feedback"
+							th:if="${#fields.hasErrors('description')}"
+							th:errors="*{groupName}">Invalid project description
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label class="col-sm-2 col-form-label" th:for="mailSubject">Mail subject:</label>
+				<div class="col-sm-10">
+					<input
+							type="text"
+							required
+							class="form-control"
+							id="mailSubject"
+							name="mailSubject"
+							placeholder="Merry Christmas 2023!"
+							th:field="*{mailSubject}"
+							th:classappend="${#fields.hasErrors('mailSubject')} ? 'is-invalid' : ''"
+					/>
+					<div
+							class="invalid-feedback"
+							th:if="${#fields.hasErrors('mailSubject')}"
+							th:errors="*{groupName}">Invalid mail subject
+					</div>
+				</div>
+			</div>
+
 
 
 			<div class="form-group row" id="groups_div">
@@ -88,8 +136,6 @@
 				</div>
 			</div>
 
-
-
 			<div class="form-group row" id="companies_div">
 				<label class="col-sm-2 col-form-label" th:for="people">Companies:</label>
 				<div class="col-sm-10">
@@ -138,8 +184,6 @@
 					</div>
 				</div>
 			</div>
-
-
 
 			<div class="form-group row" id="persons_div">
 				<label class="col-sm-2 col-form-label" th:for="people">Individuals:</label>
@@ -190,16 +234,28 @@
 				</div>
 			</div>
 
-
-
-
-
+			<div class="form-group row">
+				<label class="col-sm-2 col-form-label" th:for="company">Mail body:</label>
+				<div class="col-sm-10">
+					<select class="form-control" id="mailBody" name=mailBody style="width:50%;float:left;">
+						<option value="0">--SELECT--</option>
+						<option
+								th:each="text : ${all_texts}"
+								th:value="${text.key}"
+								th:text="${text.value}"
+						></option>
+					</select>
+					<div
+							class="invalid-feedback"
+							th:if="${#fields.hasErrors('mailBody')}"
+							th:errors="*{mailBody}">mailBody
+					</div>
+				</div>
+			</div>
 
 			<button type="submit">Submit</button>
 		</form>
 	</div>
-
-
 
 
 </section>

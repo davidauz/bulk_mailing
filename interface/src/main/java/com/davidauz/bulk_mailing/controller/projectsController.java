@@ -4,11 +4,7 @@ import com.davidauz.bulk_mailing.entity.Company;
 import com.davidauz.bulk_mailing.entity.Group;
 import com.davidauz.bulk_mailing.entity.Person;
 import com.davidauz.bulk_mailing.entity.Project;
-import com.davidauz.bulk_mailing.repository.CompanyRepository;
-import com.davidauz.bulk_mailing.repository.GroupRepository;
-import com.davidauz.bulk_mailing.repository.PersonRepository;
-import com.davidauz.bulk_mailing.repository.ProjectsRepository;
-import com.fasterxml.classmate.Annotations;
+import com.davidauz.bulk_mailing.repository.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +17,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 @Controller
@@ -38,6 +36,7 @@ public class projectsController {
 
     @Autowired private GroupRepository groupRepository;
 
+    @Autowired private PostRepository postRepository;
 
     @GetMapping("/projects")
     public String getAll
@@ -54,7 +53,7 @@ public class projectsController {
             if (keyword == null)
                 projects_page = projectsRepository.findAll(paging);
             else {
-                projects_page = projectsRepository.findByNameContainingIgnoreCase(keyword, paging);
+                projects_page = projectsRepository.findByMailSubjectContainingIgnoreCase(keyword, paging);
                 model.addAttribute("keyword", keyword);
             }
 
@@ -77,9 +76,16 @@ public class projectsController {
     public String company_new
     (   Model model
     ){
+        Long id;
+        String str;
+        Map<Long, String> txt_id_titles = new HashMap<>();
+
         model.addAttribute("all_persons", personRepository.findAll());
         model.addAttribute("all_companies", companyRepository.findAll());
         model.addAttribute("all_groups", groupRepository.findAll());
+        for(IdTitle idt : postRepository.findAllBy())
+            txt_id_titles.put(idt.getId(), idt.getTitle());
+        model.addAttribute("all_texts", txt_id_titles);
         model.addAttribute("project", new Project());
         return "forms/project_form";
     }

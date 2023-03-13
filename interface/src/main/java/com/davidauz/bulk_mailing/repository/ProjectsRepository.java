@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProjectsRepository extends JpaRepository<Project, Long> {
-    Page<Project> findByNameContainingIgnoreCase(String keyword, Pageable paging);
+    Page<Project> findByMailSubjectContainingIgnoreCase(String keyword, Pageable paging);
 }
 
 
