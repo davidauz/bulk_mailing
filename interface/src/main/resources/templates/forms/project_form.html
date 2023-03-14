@@ -22,10 +22,7 @@
 
 	<div style="width:80%">
 
-
-
-
-		<form th:action="@{/project/insert}" th:object="${project}" method="post" class="form-horizontal">
+		<form action="#" th:action="@{/project/insert}" th:object="${project}" method="post" class="form-horizontal">
 
 
 			<h3 th:if="${project.Id}">Edit project</h3>
@@ -86,11 +83,11 @@
 			</div>
 
 			<div class="form-group row">
-				<label class="col-sm-2 col-form-label" th:for="company">Mail body:</label>
+				<label class="col-sm-2 col-form-label" th:for="postId">Mail body:</label>
 				<div class="col-sm-10">
 					<select class="form-control"
-							id="mailBody"
-							name=mailBody
+							id="postId"
+							name=postId
 							style="width:50%;float:left;"
 					>
 						<option value="0">--SELECT--</option>
@@ -98,6 +95,7 @@
 								th:each="text : ${all_texts}"
 								th:value="${text.key}"
 								th:text="${text.value}"
+								th:selected="${text.key==project.postId}"
 						></option>
 					</select>
 				</div>
@@ -121,16 +119,9 @@
 						></option>
 					</select>
 					<div style="float:left;text-align:center">
-					<a
-							class="btn btn-primary"
-							onclick="addGroup()"
-					>Add ➡</a>
+						<a class="btn btn-primary" onclick="addGroup()">Add ➡</a>
 						</br>
-						<span
-								class="btn btn-primary"
-								onclick="removeGroup()"
-						>⬅ Remove
-					</span>
+						<span class="btn btn-primary" onclick="removeGroup()">⬅ Remove</span>
 					</div>
 					<div style="width:30%;float:left;">
 						<select
@@ -250,9 +241,8 @@
 				</div>
 			</div>
 
-
-
 			<button type="submit">Submit</button>
+			<button type="submit" th:formaction="@{/projects/save_new}" >Save as New</button>
 		</form>
 	</div>
 

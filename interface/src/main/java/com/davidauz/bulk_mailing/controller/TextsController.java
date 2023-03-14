@@ -96,13 +96,13 @@ public class TextsController {
 
     @PostMapping("/texts/page/{pageNum}")
     public String companies_page
-            (   Model model
-                    ,   @RequestParam(required = false) String keyword
-                    ,   @RequestParam(defaultValue = "1") int currentPage
-                    ,   @RequestParam(defaultValue = "30") int pageSize
-                    ,   @RequestParam(defaultValue = "0") int totalPages
-                    ,   @PathVariable String pageNum
-            ){
+    (   Model model
+            ,   @RequestParam(required = false) String keyword
+            ,   @RequestParam(defaultValue = "1") int currentPage
+            ,   @RequestParam(defaultValue = "30") int pageSize
+            ,   @RequestParam(defaultValue = "0") int totalPages
+            ,   @PathVariable String pageNum
+    ){
         return texts_search(model, keyword,Integer.valueOf(pageNum),pageSize);
     }
 

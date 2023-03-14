@@ -30,6 +30,8 @@
 
         <div>
             <form th:action="@{/projects/search}" method="post" id="searchForm" >
+
+
                 <div class="row">
                     <div class="col">
                         <div class="search">
@@ -74,7 +76,7 @@
                 <thead class="thead-light">
                 <tr>
                     <th scope="col">Id</th>
-                    <th scope="col">Name</th>
+                    <th scope="col">Subject</th>
                     <th scope="col">Description</th>
                     <th scope="col">Actions</th>
                 </tr>
@@ -82,8 +84,8 @@
                 <tbody>
                 <tr th:each="project : ${projects}">
                     <th scope="row">[[${project.id}]]</th>
-                    <td>[[${project.name}]]</td>
-                    <td>[[${company.description}]]</td>
+                    <td>[[${project.mailSubject}]]</td>
+                    <td>[[${project.description}]]</td>
                     <td>
                         <a th:if="${project.active}" class="fa-regular bi-check-square"
                            th:href="@{'/projects/' + ${project.id} + '/published/false'}" title="Disable this project"></a>
@@ -93,7 +95,7 @@
                            class="fa-regular bi-pencil icon-dark"></a>
                         <a
                             th:href="@{'/projects/delete/' + ${project.id}}"
-                            th:projectTitle="${project.name}" id="btnDelete"
+                            th:projectTitle="${project.mailSubject}" id="btnDelete"
                             title="Delete this project"
                             class="fa-regular bi-trash icon-dark btn-delete"
                             onclick="return confirm('Are you sure you wish to delete this project?')"

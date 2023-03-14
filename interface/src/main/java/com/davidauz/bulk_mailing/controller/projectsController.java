@@ -1,9 +1,6 @@
 package com.davidauz.bulk_mailing.controller;
 
-import com.davidauz.bulk_mailing.entity.Company;
-import com.davidauz.bulk_mailing.entity.Group;
-import com.davidauz.bulk_mailing.entity.Person;
-import com.davidauz.bulk_mailing.entity.Project;
+import com.davidauz.bulk_mailing.entity.*;
 import com.davidauz.bulk_mailing.repository.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,10 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
@@ -73,7 +67,7 @@ public class projectsController {
 
 
     @GetMapping(value = "/project_new")
-    public String company_new
+    public String project_new
     (   Model model
     ){
         Long id;
@@ -255,5 +249,57 @@ public class projectsController {
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
         return new ResponseEntity<String>(jsonString, responseHeaders, HttpStatus.OK);
     }
+
+
+
+
+
+
+    @GetMapping("/projects/edit/{projectId}")
+    public String project_edit
+    (   Model model
+    ,   @PathVariable Long projectId
+    ){
+        Project comp = projectsRepository.findById(projectId).get();
+        Map<Long, String> txt_id_titles = new HashMap<>();
+        List<Person> lp = personRepository.findAll();
+        for(Person p : comp.getPeople())
+            lp.remove(p);
+        model.addAttribute("all_persons", lp);
+        model.addAttribute("all_companies", companyRepository.findAll());
+        model.addAttribute("all_groups", groupRepository.findAll());
+        for(IdTitle idt : postRepository.findAllBy())
+            txt_id_titles.put(idt.getId(), idt.getTitle());
+        model.addAttribute("all_texts", txt_id_titles);
+        model.addAttribute("project", comp);
+        return "forms/project_form";
+    }
+
+
+
+    @PostMapping("/project/insert")
+    public String project_insert
+    (   Project pro
+    ,   Model model
+    ) {
+        projectsRepository.save(pro);
+        return project_edit(model, pro.getId());
+    }
+
+
+
+    @PostMapping("/projects/save_new")
+    public String projectSaveAsNew
+    (   Project pro
+            ,   Model model
+    ) {
+        pro.setId(null);
+        projectsRepository.save(pro);
+        return project_edit(model, pro.getId());
+    }
+
+
+
+
 }
 
