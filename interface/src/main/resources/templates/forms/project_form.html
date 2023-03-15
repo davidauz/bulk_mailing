@@ -22,8 +22,14 @@
 
 	<div style="width:80%">
 
-		<form action="#"   onSubmit='fill_values()'  th:action="@{/project/insert}" th:object="${project}" method="post" class="form-horizontal">
-
+		<form
+			action="#"
+			onSubmit='fill_values()'
+			th:action="@{/project/insert}"
+			th:object="${project}"
+			method="post"
+			class="form-horizontal"
+		>
 
 			<h3 th:if="${project.Id}">Edit project</h3>
 			<h3 th:unless="${project.Id}">New project</h3>
@@ -179,7 +185,7 @@
 								multiple=multiple
 								id=selected_companies
 								name=selected_companies
-								th:field="*{people}"
+								th:field="*{companies}"
 								style="float:left;"
 						>
 							<option

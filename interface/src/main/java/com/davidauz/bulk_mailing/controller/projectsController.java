@@ -287,6 +287,40 @@ public class projectsController {
     }
 
 
+    @GetMapping("/projects/delete/{projId}")
+    public String project_delete
+    (   Model model
+    ,   @PathVariable Long projId
+    ,   @RequestParam(required = false) String keyword
+    ,   @RequestParam(defaultValue = "1") int page
+    ,   @RequestParam(defaultValue = "30") int pageSize
+    ){
+        projectsRepository.deleteById(projId);
+        return getAll(model, keyword, page, pageSize);
+    }
+
+
+    @GetMapping("/projects/{projId}/published/{status}")
+    public String proj_set_published
+    (   Model model
+            ,   @PathVariable Long projId
+            ,   @PathVariable("status") boolean published
+            ,   @RequestParam(required = false) String keyword
+            ,   @RequestParam(defaultValue = "1") int page
+            ,   @RequestParam(defaultValue = "30") int pageSize
+    ){
+        Project proj = null;
+        try {
+            proj = projectsRepository.findById(projId).orElseThrow(() -> new Exception("`" + projId + "`: no such Group ID"));
+            proj.setActive(published);
+            projectsRepository.save(proj);
+        } catch (Exception e) {
+            model.addAttribute("message", e.getMessage());
+        }
+        return getAll(model, keyword, page, pageSize);
+    }
+
+
 
     @PostMapping("/projects/save_new")
     public String projectSaveAsNew
