@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.slf4j.Logger;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 @Controller
 public class ErrorController implements org.springframework.boot.web.servlet.error.ErrorController {
 
@@ -40,6 +43,10 @@ public class ErrorController implements org.springframework.boot.web.servlet.err
         } else if (statusCode == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
             String url = (String) request.getAttribute(RequestDispatcher.ERROR_REQUEST_URI);
             model.addAttribute("excmgs", ((Exception)exception).getMessage());
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            ((Exception)exception).printStackTrace(pw);
+            model.addAttribute("stacktrace",sw.toString());
             return "error/500";
         }
 
