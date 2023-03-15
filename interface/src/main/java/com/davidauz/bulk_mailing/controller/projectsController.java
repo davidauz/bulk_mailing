@@ -332,6 +332,15 @@ public class projectsController {
         return project_edit(model, pro.getId());
     }
 
+    @PostMapping("/projects/search")
+    public String projects_search
+    (   Model model
+            ,   @RequestParam(required = false) String keyword
+            ,   @RequestParam(defaultValue = "1") int currentPage
+            ,   @RequestParam(defaultValue = "30") int pageSize
+    ){
+        return getAll(model, keyword,currentPage,pageSize);
+    }
 
 
 
