@@ -34,6 +34,7 @@ public class SpringSecurity {
     ,	"/do_login/**"
     ,	"/register/**"
     ,	"/css/**"
+    ,	"/webfonts/**"
     ,	"/images/**"
     };
 
