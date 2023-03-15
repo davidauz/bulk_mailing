@@ -87,19 +87,21 @@
                     <td>[[${project.mailSubject}]]</td>
                     <td>[[${project.description}]]</td>
                     <td>
-                        <a th:if="${project.active}" class="fa-regular bi-check-square"
-                           th:href="@{'/projects/' + ${project.id} + '/published/false'}" title="Disable this project"></a>
-                        <a th:if="! ${project.active}" class="fa-regular bi-square"
-                           th:href="@{'/projects/' + ${project.id} + '/published/true'}" title="Enable this project"></a>
-                        <a th:href="@{'/projects/edit/' + ${project.id}}" title="Edit this project"
-                           class="fa-regular bi-pencil icon-dark"></a>
+                        <a th:if="${project.active}" th:href="@{'/projects/' + ${project.id} + '/published/false'}" title="Disable this project">
+				<i class="fas fa-check"></i>
+				</a>
+                        <a th:if="! ${project.active}"  th:href="@{'/projects/' + ${project.id} + '/published/true'}" title="Enable this project">
+				<i class="fas fa-circle"></i>
+				</a>
+                        <a th:href="@{'/projects/edit/' + ${project.id}}" title="Edit this project" class="fas fa-pencil">
+				<i class="fas fa-marker"></i>
+				</a>
                         <a
                             th:href="@{'/projects/delete/' + ${project.id}}"
                             th:projectTitle="${project.mailSubject}" id="btnDelete"
                             title="Delete this project"
-                            class="fa-regular bi-trash icon-dark btn-delete"
                             onclick="return confirm('Are you sure you wish to delete this project?')"
-                        >
+                        ><i class="fas fa-trash"></i>
                         </a>
                     </td>
                 </tr>

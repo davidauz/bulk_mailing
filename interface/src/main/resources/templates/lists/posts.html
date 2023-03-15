@@ -88,14 +88,13 @@
                     <td>[[${post.title}]]</td>
                     <td>
                         <a th:href="@{'/texts/edit/' + ${post.id}}" title="Edit this text"
-                           class="fa-regular bi-pencil icon-dark"></a>                        &nbsp;
+                          ><i class="fas fa-marker"></i></a>
                         <a
                             th:href="@{'/texts/delete/' + ${post.id}}"
                             th:title="${post.title}" id="btnDelete"
                             title="Delete this text"
-                            class="fa-regular bi-trash icon-dark btn-delete"
                             onclick="return confirm('Are you sure you wish to delete this text?')"
-                        >
+                        ><i class="fas fa-trash"></i>
                         </a>
                     </td>
                 </tr>

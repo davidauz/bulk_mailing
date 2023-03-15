@@ -89,20 +89,18 @@
                     <td>[[${group.groupName}]]</td>
                     <td>[[${group.groupDesc}]]</td>
                     <td>
-                        <a th:if="${group.active}" class="fa-regular bi-check-square"
-                           th:href="@{'/groups/' + ${group.groupId} + '/published/false'}" title="Disable this group"></a>
-                        <a th:if="! ${group.active}" class="fa-regular bi-square"
-                           th:href="@{'/groups/' + ${group.groupId} + '/published/true'}" title="Disable this group"></a>
-                        <a th:href="@{'/groups/edit/' + ${group.groupId}}" title="Edit this group"
-                           class="fa-regular bi-pencil icon-dark"></a>
+                        <a th:if="${group.active}"
+                           th:href="@{'/groups/' + ${group.groupId} + '/published/false'}" title="Disable this group"><i class="fas fa-check"></i></a>
+                        <a th:if="! ${group.active}"
+                           th:href="@{'/groups/' + ${group.groupId} + '/published/true'}" title="Enable this group"><i class="fas fa-circle"></i></a>
+                        <a th:href="@{'/groups/edit/' + ${group.groupId}}" title="Edit this group"><i class="fas fa-marker"></i></a>
                         &nbsp;
                         <a
                             th:href="@{'/groups/delete/' + ${group.groupId}}"
                             th:title="${group.groupName}" id="btnDelete"
                             title="Delete this group"
-                            class="fa-regular bi-trash icon-dark btn-delete"
                             onclick="return confirm('Are you sure you wish to delete this group?')"
-                        >
+                        ><i class="fas fa-trash"></i>
                         </a>
                     </td>
                 </tr>

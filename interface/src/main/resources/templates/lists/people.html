@@ -97,20 +97,19 @@
                         <div th:unless="${person.groups}">-</div>
                     </td>
                     <td>
-                        <a th:if="${person.active}" class="fa-regular bi-check-square"
-                           th:href="@{'/people/' + ${person.personId} + '/published/false'}" title="Disable this person"></a>
-                        <a th:if="! ${person.active}" class="fa-regular bi-square"
-                           th:href="@{'/people/' + ${person.personId} + '/published/true'}" title="Disable this person"></a>
+                        <a th:if="${person.active}" 
+                           th:href="@{'/people/' + ${person.personId} + '/published/false'}" title="Disable this person"><i class="fas fa-check"></i></a>
+                        <a th:if="! ${person.active}" 
+                           th:href="@{'/people/' + ${person.personId} + '/published/true'}" title="Disable this person"><i class="fas fa-circle"></i></a>
                         <a th:href="@{'/people/edit/' + ${person.personId}}" title="Edit this person"
-                           class="fa-regular bi-pencil icon-dark"></a>
+                           ><i class="fas fa-marker"></i></a>
                         &nbsp;
                         <a
                             th:href="@{'/people/delete/' + ${person.personId}}"
                             th:title="${person.firstName}" id="btnDelete"
                             title="Delete this person"
-                            class="fa-regular bi-trash icon-dark btn-delete"
                             onclick="return confirm('Are you sure you wish to delete this person?')"
-                        >
+                        ><i class="fas fa-trash"></i>
                         </a>
                     </td>
                 </tr>

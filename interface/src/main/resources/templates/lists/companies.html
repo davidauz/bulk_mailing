@@ -96,23 +96,18 @@
                     <td>[[${company.city}]]</td>
                     <td><span th:if="${company.nation}">[[${company.nation.nation}]]</span></td>
                     <td>
-                        <a th:if="${company.active}" class="fa-regular bi-check-square"
-                           th:href="@{'/companies/' + ${company.id} + '/published/false'}" title="Disable this company"></a>
-                        <a th:if="! ${company.active}" class="fa-regular bi-square"
-                           th:href="@{'/companies/' + ${company.id} + '/published/true'}" title="Enable this company"></a>
+                        <a th:if="${company.active}" th:href="@{'/companies/' + ${company.id} + '/published/false'}" title="Disable this company"><i class="fas fa-check"></i></a>
+                        <a th:if="! ${company.active}"  th:href="@{'/companies/' + ${company.id} + '/published/true'}" title="Enable this company"><i class="fas fa-circle"></i></a>
                     </td>
                     <td>
-                        <a th:href="@{'/companies/edit/' + ${company.id}}" title="Edit this company"
-                           class="fa-regular bi-pencil icon-dark"></a>
+                        <a th:href="@{'/companies/edit/' + ${company.id}}" title="Edit this company"><i class="fas fa-marker"></i></a>
                         &nbsp;
                         <a
                             th:href="@{'/companies/delete/' + ${company.id}}"
                             th:companyTitle="${company.name}" id="btnDelete"
                             title="Delete this company"
-                            class="fa-regular bi-trash icon-dark btn-delete"
                             onclick="return confirm('Are you sure you wish to delete this company?')"
-                        >
-                        </a>
+                        ><i class="fas fa-trash"></i></a>
                     </td>
                 </tr>
                 </tbody>
