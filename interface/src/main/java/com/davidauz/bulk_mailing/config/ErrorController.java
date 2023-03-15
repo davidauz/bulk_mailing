@@ -36,11 +36,11 @@ public class ErrorController implements org.springframework.boot.web.servlet.err
         if (statusCode == HttpStatus.NOT_FOUND.value()) {
             String url = (String) request.getAttribute(RequestDispatcher.ERROR_REQUEST_URI);
             model.addAttribute("url", url);
-            return "404";
+            return "error/404";
         } else if (statusCode == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
             String url = (String) request.getAttribute(RequestDispatcher.ERROR_REQUEST_URI);
             model.addAttribute("url", url);
-            return "500";
+            return "error/500";
         }
 
         // add error details to model
@@ -49,6 +49,6 @@ public class ErrorController implements org.springframework.boot.web.servlet.err
         model.addAttribute("exception", exception);
 
         // return custom error page
-        return "error";
+        return "/error/error";
     }
 }
