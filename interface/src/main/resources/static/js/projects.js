@@ -21,8 +21,9 @@ function addPerson() {
 
 
 function fill_values(){
-	$('#member_of option').prop('selected', true);
-	console.log($('#member_of'));
+	$('#selected_pers option').prop('selected', true);
+	$('#selected_companies option').prop('selected', true);
+	$('#selected_groups option').prop('selected', true);
 }
 
 

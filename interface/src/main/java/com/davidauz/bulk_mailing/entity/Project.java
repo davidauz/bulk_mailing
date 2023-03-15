@@ -57,7 +57,6 @@ public class Project
     private List<Company> companies;
 
 
-
     @ManyToMany
     @JoinTable(
             name="projects_groups",

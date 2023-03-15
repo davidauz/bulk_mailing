@@ -22,7 +22,7 @@
 
 	<div style="width:80%">
 
-		<form action="#" th:action="@{/project/insert}" th:object="${project}" method="post" class="form-horizontal">
+		<form action="#"   onSubmit='fill_values()'  th:action="@{/project/insert}" th:object="${project}" method="post" class="form-horizontal">
 
 
 			<h3 th:if="${project.Id}">Edit project</h3>
