@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:th="https://www.thymeleaf.org"
+    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{workflow_layout.html}">
+
+    <head>
+    <title>Bulk mailing: ERROR</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap-icons/font/bootstrap-icons.css}">
+    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+    </head>
+
+<body>
+<section layout:fragment="content">
+
+    <h1>Error</h1>
+    <p>Status: <span th:text="${status}"></span></p>
+    <p>Message: <span th:text="${message}"></span></p>
+    <p>Exception: <span th:text="${exception}"></span></p>
+
+
+</section>
+</div>
+</body>
+</html>
