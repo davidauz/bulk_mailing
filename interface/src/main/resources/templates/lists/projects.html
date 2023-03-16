@@ -13,9 +13,27 @@
     <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
         <script type="text/javascript" th:src="@{/webjars/htmx.org/dist/htmx.min.js}"></script>
     <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+<style>
+.nacost { display: none; }
+.visibil {
+	display: block;
+	color: black;
+	line-height: 1.2em;
+	margin: 20px 20px;
+}
+</style>
     </head>
 <body>
 <section layout:fragment="content">
+
+
+
+    <div id="modaldialog" class="nacost" style="display:block;">
+            <h2 >Modal Dialog</h2>
+            <p>This modal dialog was loaded dynamically by HTMX.</p>
+    </div>
+
+
 
     <div class="container-fluid" style="max-width: 90%; margin: 0;">
         <h2 class="text-center">Projects</h2>
@@ -86,24 +104,56 @@
                     <th scope="row">[[${project.id}]]</th>
                     <td>[[${project.mailSubject}]]</td>
                     <td>[[${project.description}]]</td>
+
+
+
+
+
+
+
+
+
+
+
+
+
                     <td>
-                        <a th:if="${project.active}" th:href="@{'/projects/' + ${project.id} + '/published/false'}" title="Disable this project">
-				<i class="fas fa-check"></i>
-				</a>
-                        <a th:if="! ${project.active}"  th:href="@{'/projects/' + ${project.id} + '/published/true'}" title="Enable this project">
-				<i class="fas fa-circle"></i>
-				</a>
+                        <a href='#'
+                            hx-target='#modaldialog'
+                            hx-trigger=click
+                           th:attr="hx-post='/projects/schedule/' + ${project.id}"
+                            _='on htmx:afterOnLoad wait 10ms then add .visibil to #modaldialog'
+                            th:if="${project.active}"
+                            title="Schedule this project"
+                        >
+                            <i class="fas fa-paper-plane"></i>
+                        </a>
                         <a th:href="@{'/projects/edit/' + ${project.id}}" title="Edit this project" class="fas fa-pencil">
-				<i class="fas fa-marker"></i>
-				</a>
+                            <i class="fas fa-marker"></i>
+                        </a>
                         <a
                             th:href="@{'/projects/delete/' + ${project.id}}"
                             th:projectTitle="${project.mailSubject}" id="btnDelete"
                             title="Delete this project"
                             onclick="return confirm('Are you sure you wish to delete this project?')"
-                        ><i class="fas fa-trash"></i>
+                            ><i class="fas fa-trash"></i>
                         </a>
                     </td>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 </tr>
                 </tbody>
             </table>
@@ -118,7 +168,6 @@
         </div>
 
     </div>
-
 
 
 </section>

@@ -12,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -70,8 +71,6 @@ public class projectsController {
     public String project_new
     (   Model model
     ){
-        Long id;
-        String str;
         Map<Long, String> txt_id_titles = new HashMap<>();
 
         model.addAttribute("all_persons", personRepository.findAll());
@@ -86,25 +85,6 @@ public class projectsController {
 
 
 
-    @PostMapping("/project/ajx_dispatcher")
-    public ResponseEntity<String> handleAjxRequest
-    (   @RequestBody Map<String, Object> requestData
-    ) {
-        String str_verb= (String) requestData.get("verb");
-        if (str_verb == null)
-            return ResponseEntity.badRequest().body("VERB parameter is missing");
-        switch(str_verb){
-            case "add_groups":
-                return add_groups((ArrayList<String>) requestData.get("groups"));
-            case "rm_groups":
-                return rm_groups((ArrayList<String>) requestData.get("groups"));
-            case "rm_companies":
-                return rm_companies((ArrayList<String>) requestData.get("ajx_data"));
-            case "add_companies":
-                return add_companies((ArrayList<String>) requestData.get("ajx_data"));
-        }
-        return ResponseEntity.ok("success");
-    }
 
     private ResponseEntity<String> add_groups(ArrayList<String> groups) {
 // Retrieve groups whose ID is in list
@@ -303,11 +283,11 @@ public class projectsController {
     @GetMapping("/projects/{projId}/published/{status}")
     public String proj_set_published
     (   Model model
-            ,   @PathVariable Long projId
-            ,   @PathVariable("status") boolean published
-            ,   @RequestParam(required = false) String keyword
-            ,   @RequestParam(defaultValue = "1") int page
-            ,   @RequestParam(defaultValue = "30") int pageSize
+    ,   @PathVariable Long projId
+    ,   @PathVariable("status") boolean published
+    ,   @RequestParam(required = false) String keyword
+    ,   @RequestParam(defaultValue = "1") int page
+    ,   @RequestParam(defaultValue = "30") int pageSize
     ){
         Project proj = null;
         try {
@@ -335,13 +315,46 @@ public class projectsController {
     @PostMapping("/projects/search")
     public String projects_search
     (   Model model
-            ,   @RequestParam(required = false) String keyword
-            ,   @RequestParam(defaultValue = "1") int currentPage
-            ,   @RequestParam(defaultValue = "30") int pageSize
+    ,   @RequestParam(required = false) String keyword
+    ,   @RequestParam(defaultValue = "1") int currentPage
+    ,   @RequestParam(defaultValue = "30") int pageSize
     ){
         return getAll(model, keyword,currentPage,pageSize);
     }
 
+
+
+    @PostMapping("/project/ajx_dispatcher")
+    public ResponseEntity<String> handleAjxRequest
+    (   @RequestBody Map<String, Object> requestData
+    ) {
+        String str_verb= (String) requestData.get("verb");
+        if (str_verb == null)
+            return ResponseEntity.badRequest().body("VERB parameter is missing");
+        switch(str_verb){
+            case "add_groups":
+                return add_groups((ArrayList<String>) requestData.get("groups"));
+            case "rm_groups":
+                return rm_groups((ArrayList<String>) requestData.get("groups"));
+            case "rm_companies":
+                return rm_companies((ArrayList<String>) requestData.get("ajx_data"));
+            case "add_companies":
+                return add_companies((ArrayList<String>) requestData.get("ajx_data"));
+        }
+        return ResponseEntity.ok("success");
+    }
+
+    @PostMapping("/projects/schedule/{projectId}")
+    public ResponseEntity<String>  proj_scheduling
+    (   //@RequestBody Map<String, Object> requestData
+    ) {
+//        do_scheduling(projectId);
+        return ResponseEntity.ok("success");
+    }
+
+    @Async
+    private void do_scheduling(Long projectId) {
+    }
 
 
 }

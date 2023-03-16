@@ -1,4 +1,4 @@
-package com.davidauz.bulk_mailing.common_classes;
+package com.davidauz.bulk_mailing.common_classes.impl;
 
 import com.davidauz.bulk_mailing.common_classes.entity.ConfigurationPair;
 import com.davidauz.bulk_mailing.common_classes.entity.blk_MailMessage;

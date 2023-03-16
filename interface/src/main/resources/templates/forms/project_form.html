@@ -247,6 +247,12 @@
 				</div>
 			</div>
 
+			<div class="form-group row">
+				<label for="active">Active:</label>
+				<input type="checkbox" id="active" th:field="*{active}" th:value="${active}" />
+				<div th:if="${#fields.hasErrors('active')}" th:errors="*{active}">active Error</div>
+			</div>
+
 			<button type="submit">Submit</button>
 			<button type="submit" th:formaction="@{/projects/save_new}" >Save as New</button>
 		</form>
