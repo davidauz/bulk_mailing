@@ -28,7 +28,7 @@
 
 
 
-    <div id="modaldialog" class="nacost" style="display:block;">
+    <div id="modaldialog" class="nacost">
             <h2 >Modal Dialog</h2>
             <p>This modal dialog was loaded dynamically by HTMX.</p>
     </div>
@@ -119,7 +119,7 @@
 
                     <td>
                         <a href='#'
-                            hx-target='#modaldialog'
+
                             hx-trigger=click
                            th:attr="hx-post='/projects/schedule/' + ${project.id}"
                             _='on htmx:afterOnLoad wait 10ms then add .visibil to #modaldialog'
