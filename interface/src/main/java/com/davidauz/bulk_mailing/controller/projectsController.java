@@ -340,22 +340,37 @@ public class projectsController {
                 return rm_companies((ArrayList<String>) requestData.get("ajx_data"));
             case "add_companies":
                 return add_companies((ArrayList<String>) requestData.get("ajx_data"));
+            case "schedule_send":
+                return scheduleSend((Integer) requestData.get("projn"));
         }
         return ResponseEntity.ok("success");
     }
 
-    @PostMapping("/projects/schedule/{projectId}")
-    public ResponseEntity<String>  proj_scheduling
-    (   //@RequestBody Map<String, Object> requestData
-    ) {
-//        do_scheduling(projectId);
-        return ResponseEntity.ok("success");
-    }
+//    @PostMapping("/projects/schedule/{projectId}")
+//    public ResponseEntity<String>  proj_scheduling
+//    (   //@RequestBody Map<String, Object> requestData
+//    ) {
+////        do_scheduling(projectId);
+//        return ResponseEntity.ok("merda");
+//    }
+//
+//    @Async
+//    private void do_scheduling(Long projectId) {
+//    }
 
-    @Async
-    private void do_scheduling(Long projectId) {
+    private ResponseEntity<String> scheduleSend(Integer nproj) {
+// Retrieve groups whose ID is in list
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.setContentType(MediaType.APPLICATION_JSON);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = objectMapper.writeValueAsString(nproj);
+        } catch (JsonProcessingException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        return new ResponseEntity<String>(jsonString, responseHeaders, HttpStatus.OK);
     }
-
 
 }
 
