@@ -1,9 +1,12 @@
 package com.davidauz.bulk_mailing.controller;
 
+import com.davidauz.bulk_mailing.common_classes.entity.blk_MailMessage;
+import com.davidauz.bulk_mailing.common_classes.entity.blk_MailQueue;
 import com.davidauz.bulk_mailing.entity.*;
 import com.davidauz.bulk_mailing.repository.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import groovy.transform.Undefined;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,6 +35,8 @@ public class projectsController {
     @Autowired private GroupRepository groupRepository;
 
     @Autowired private PostRepository postRepository;
+    @Autowired
+    private blk_MailQueue mailQ;
 
     @GetMapping("/projects")
     public String getAll
@@ -341,7 +346,7 @@ public class projectsController {
             case "add_companies":
                 return add_companies((ArrayList<String>) requestData.get("ajx_data"));
             case "schedule_send":
-                return scheduleSend((Integer) requestData.get("projn"));
+                return scheduleSend((String) requestData.get("projn"));
         }
         return ResponseEntity.ok("success");
     }
@@ -353,20 +358,33 @@ public class projectsController {
 ////        do_scheduling(projectId);
 //        return ResponseEntity.ok("merda");
 //    }
-//
-//    @Async
-//    private void do_scheduling(Long projectId) {
-//    }
 
-    private ResponseEntity<String> scheduleSend(Integer nproj) {
+//    cannot use @Async, not from the same class...
+    public void do_scheduling(Project pro) {
+        Post post = postRepository.findById(pro.getPostId()).orElseThrow(()->new Undefined.EXCEPTION());
+        for(Person per:pro.getPeople()){
+            blk_MailMessage blkmm=new blk_MailMessage();
+            blkmm.setSubject(pro.getMailSubject());
+            blkmm.setBody(post.getContent());
+            blkmm.setRecipient(per.getEmail());
+            mailQ.enqueue(blkmm);
+        }
+    }
+
+    private ResponseEntity<String> scheduleSend(String strproj) {
 // Retrieve groups whose ID is in list
+        Long nproj=Long.valueOf(strproj);
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonString = null;
         try {
+            Project pro=projectsRepository.findById(nproj).orElseThrow(()->new Exception(""));
+            do_scheduling(pro);
+            pro.setActive(false);
+            projectsRepository.save(pro);
             jsonString = objectMapper.writeValueAsString(nproj);
-        } catch (JsonProcessingException e) {
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
         return new ResponseEntity<String>(jsonString, responseHeaders, HttpStatus.OK);

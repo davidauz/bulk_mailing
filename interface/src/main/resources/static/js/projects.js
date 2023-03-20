@@ -8,7 +8,7 @@ function alertRetFalse(resp_ext){
 function scheduleSend(nproj) {
 		var params =
 		{	'verb':'schedule_send'
-		,	'projn':nproj
+		,	'projn':nproj.toString()
 		};
 
 		$.ajax(

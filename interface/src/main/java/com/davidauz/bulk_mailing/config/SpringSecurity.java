@@ -18,7 +18,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
-@EnableAsync
+//@EnableAsync  when and if we'll use threaded methods
 public class SpringSecurity {
 
     @Autowired
