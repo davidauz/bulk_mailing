@@ -26,12 +26,12 @@ public class Person
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long personId;
 
-    @Column(nullable=false, unique=true)
+    @Column(nullable=false)
     @Size(min=2, max=30)
     @NotNull
     private String firstName;
 
-    @Column(nullable=false, unique=true)
+    @Column(nullable=false)
     @Size(min=2, max=30)
     @NotNull
     private String familyName;

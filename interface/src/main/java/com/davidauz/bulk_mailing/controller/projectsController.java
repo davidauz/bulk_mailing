@@ -360,8 +360,8 @@ public class projectsController {
 //    }
 
 //    cannot use @Async, not from the same class...
-    public void do_scheduling(Project pro) {
-        Post post = postRepository.findById(pro.getPostId()).orElseThrow(()->new Undefined.EXCEPTION());
+    public void do_scheduling(Project pro) throws Exception {
+        Post post = postRepository.findById(pro.getPostId()).orElseThrow(()->new Exception("Project text is undefined/non existent"));
         for(Person per:pro.getPeople()){
             blk_MailMessage blkmm=new blk_MailMessage();
             blkmm.setSubject(pro.getMailSubject());
@@ -379,12 +379,13 @@ public class projectsController {
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonString = null;
         try {
-            Project pro=projectsRepository.findById(nproj).orElseThrow(()->new Exception(""));
+            Project pro=projectsRepository.findById(nproj).orElseThrow(()->new Exception("Project not found"));
             do_scheduling(pro);
             pro.setActive(false);
             projectsRepository.save(pro);
             jsonString = objectMapper.writeValueAsString(nproj);
         } catch (Exception e) {
+            String msg=e.getMessage();
             return ResponseEntity.badRequest().body(e.getMessage());
         }
         return new ResponseEntity<String>(jsonString, responseHeaders, HttpStatus.OK);

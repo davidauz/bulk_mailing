@@ -145,14 +145,14 @@ public class SettingsController {
         ,   control_value=parameters.get(control_ID)
         ;
         ConfigurationPair cfg;
-        Optional<ConfigurationPair> o_cfg = cfgRepo.findByName(control_value);
+        Optional<ConfigurationPair> o_cfg = cfgRepo.findByName(control_ID);
         if(o_cfg.isPresent())
             cfg=o_cfg.get();
         else{
             cfg=new ConfigurationPair();
             cfg.setName(control_ID);
         }
-        if (control_value.equals("on")) {
+        if (null==control_value || control_value.equals("on")) {
                 cfg.setValue("1");
                 cfgRepo.save(cfg);
                 return "active";

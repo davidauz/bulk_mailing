@@ -32,7 +32,7 @@ public class MailSenderConfig {
 
     private static final String[][] DEFAULT_PROPERTIES =
     {	{"heartbeat","0"}
-    ,	{"mailer_daemon_active","0"}
+    ,	{"mailer_daemon_running","0"}
     };
 
 

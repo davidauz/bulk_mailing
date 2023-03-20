@@ -40,11 +40,20 @@ public class sendEmailService {
 
     void sendOneEmail(long mail_id) throws Exception {
         Optional<blk_MailMessage> o_blkm = Optional.ofNullable(mailMessageRepo.findById(mail_id).orElseThrow(() -> new Exception("mail ID '" + mail_id + "' not found")));
+        Optional<ConfigurationPair> o_mda= cfgRepo.findByName("last_send_timestamp"); // TODO: this is called at every email, optimize
+        ConfigurationPair mda;
+        if(o_mda.isPresent())
+            mda=o_mda.get();
+        else{
+            mda=new ConfigurationPair();
+            mda.setName("last_send_timestamp");
+        }
         blk_MailMessage blkm=o_blkm.get();
 
         final MimeMessage mimeMessage = JMailSender.createMimeMessage();
         final String text_body = blkm.getBody();
         final MimeMessageHelper helper;
+        Timestamp now_timestamp;
         try {
             helper = new MimeMessageHelper(mimeMessage, true);
             helper.setFrom(cfgRepo.findByName("serveruname").get().getValue());
@@ -52,8 +61,12 @@ public class sendEmailService {
             helper.setSubject(blkm.getSubject());
             helper.setText(text_body, true);
             JMailSender.send(mimeMessage);
+            now_timestamp = new Timestamp(Calendar.getInstance().getTime().getTime());
+            blkm.setTimeSent(now_timestamp);
             blkm.setSentStatus(blk_MailMessage.SENT_STATUS.SENT_SUCCESS);
             mailMessageRepo.save(blkm);
+            mda.setValue(String.valueOf( now_timestamp ));
+            cfgRepo.save(mda);
         } catch (MessagingException e) {
             logger.error("Error in message id=`"+mail_id+"`");
             blkm.setSentStatus(blk_MailMessage.SENT_STATUS.SYSTEM_ERROR);
@@ -77,37 +90,37 @@ public class sendEmailService {
         ConfigurationPair mda;
         Optional<ConfigurationPair> o_mda;
         Timestamp now_timestamp
-                ,        last_sent_timestamp
-                ;
+        ,        last_sent_timestamp
+        ;
         long minimum_time_diff=0
-                ,   present_time_diff
-                ;
+        ,   present_time_diff
+        ,   smallest_id=0
+        ;
 
         if(0==mailMessageRepo.countBySentStatus(blk_MailMessage.SENT_STATUS.ENQUEUED))
             return;
+        try{
         o_mda= cfgRepo.findByName("last_send_timestamp");
         if(o_mda.isPresent()){
             now_timestamp = new Timestamp(Calendar.getInstance().getTime().getTime());
             mda=o_mda.get();
             last_sent_timestamp=Timestamp.valueOf(mda.getValue());
+            logger.info("last_send_timestamp="+last_sent_timestamp);
             o_mda= cfgRepo.findByName("sendingRandomDelay");
             if(o_mda.isPresent())
                 minimum_time_diff=Long.valueOf(o_mda.get().getValue());
-            present_time_diff=now_timestamp.getNanos()-last_sent_timestamp.getNanos();
-            present_time_diff*=1000;
+            logger.info("minimum_time_diff="+minimum_time_diff);
+            long nano1=now_timestamp.getTime();
+            long nano2=last_sent_timestamp.getTime();
+            present_time_diff=now_timestamp.getTime()-last_sent_timestamp.getTime();
+            logger.info("present_time_diff="+present_time_diff);
             if(present_time_diff<minimum_time_diff)
-                return;
+                Thread.sleep(minimum_time_diff);
         }
-        blk_MailMessage blkmm=null;
-        try {
-            long smallest_id=mailMessageRepo.getMinId(blk_MailMessage.SENT_STATUS.ENQUEUED);
-            blkmm=mailMessageRepo.getReferenceById((long)1);
+            smallest_id=mailMessageRepo.getMinId(blk_MailMessage.SENT_STATUS.ENQUEUED);
             sendOneEmail(smallest_id);
         } catch (Exception e) {
-            if(null!=blkmm) {
-                blkmm.setSentStatus(blk_MailMessage.SENT_STATUS.SENT_ERROR);
-                mailMessageRepo.save(blkmm); // TODO: store exception text on message somehow
-            }
+            logger.error("Error in message id=`"+smallest_id+"`");
             throw new RuntimeException(e);
         }
 
