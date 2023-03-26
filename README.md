@@ -1,6 +1,16 @@
 # Bulk Email for the masses
-Uses spring boot, spring security, thymeleaf, htmx, lombok, JPA
+Keywords:
+<ul>
+<li>Multi module</li>
+<li>maven</li>
+<li>spring boot</li>
+<li>spring security</li>
+<li>thymeleaf</li>
+<li>htmx</li>
+<li>lombok</li>
+<li>JPA</li>
+</ul>
 
-This is not for a company that sends thousands of emails per day.
-Such a company should use bulk email services like there are a lot on the internet.
-Instead, this project is aimed at companies that have their own mail provider and wanmt to automate a little certain business email projects.
+<p>This is not for a company that sends thousands of emails per day.</p>
+<p>Such a company should use professional bulk email services.</p>
+<p>Instead, this project is aimed at companies that have their own mail provider and want to automate little business email projects like Xmas wishes, special promotions and such.</p>
