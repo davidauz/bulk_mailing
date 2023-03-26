@@ -1,12 +1,13 @@
 package com.davidauz.bulk_mailing.common_classes.entity;
 
-import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.lang.Nullable;
+
+import javax.persistence.*;
 
 @Getter
 @Setter

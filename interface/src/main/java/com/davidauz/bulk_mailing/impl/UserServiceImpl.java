@@ -10,7 +10,6 @@ import com.davidauz.bulk_mailing.repository.UserRepository;
 import com.davidauz.bulk_mailing.repository.UserValidationRepository;
 import com.davidauz.bulk_mailing.service.IdentityServiceException;
 import com.davidauz.bulk_mailing.service.UserService;
-import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
@@ -176,7 +175,7 @@ public class UserServiceImpl implements UserService {
 
     private void sendConfirmationMail
     (   User user
-    ) throws MessagingException {
+    ) throws Exception {
             blk_MailMessage lmmp = new blk_MailMessage();
             String hLink = web_address + "/register/confirm?token=" + validation(user).getToken();
 

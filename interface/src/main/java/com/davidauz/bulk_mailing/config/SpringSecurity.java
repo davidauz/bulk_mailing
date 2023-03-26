@@ -43,20 +43,20 @@ public class SpringSecurity {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
-                .authorizeRequests((requests) -> requests
-                        .antMatchers(STATIC_RESOURCES_ARRAY).permitAll()
-                        .antMatchers("/users").hasRole("ADMIN")
+                .authorizeHttpRequests((requests) -> requests
+                        .requestMatchers(STATIC_RESOURCES_ARRAY).permitAll()
+                        .requestMatchers("/users").hasRole("ADMIN")
                         .anyRequest().authenticated() // everything is secured by default in Spring but I am taking responsibility
                 )
                 .formLogin(form -> form
-                        .loginPage("/login")
-//                        .loginProcessingUrl("/login") not necessary; it is the default
-                        .defaultSuccessUrl("/dashboard")
-                        .permitAll()
+                                .loginPage("/login")
+//				.loginProcessingUrl("/login") not necessary; it is the default
+                                .defaultSuccessUrl("/dashboard")
+                                .permitAll()
                 ).logout(logout -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                         .permitAll())
-                ;
+        ;
         return http.build();
     }
 
