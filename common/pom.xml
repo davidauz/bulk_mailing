@@ -65,6 +65,29 @@
         </dependency>
     </dependencies>
 
-<!--no spring-boot-maven-plugin: this is a JAR so no need for a main class -->
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.3.1</version>
+                <configuration>
+                    <webResources>
+                        <resource>
+                            <directory>${basedir}/../common/target</directory>
+                            <targetPath>WEB-INF/lib</targetPath>
+                            <includes>
+                                <include>common-*.jar</include>
+                            </includes>
+                        </resource>
+                    </webResources>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <!--no spring-boot-maven-plugin: this is a JAR so no need for a main class -->
 
 </project>
