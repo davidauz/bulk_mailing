@@ -6,15 +6,15 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 @SpringBootApplication
-public class BulkMailing // extends SpringBootServletInitializer
+public class BulkMailing extends SpringBootServletInitializer
  {
 
 	public static void main(String[] args) {
 		SpringApplication.run(BulkMailing.class, args);
 	}
 
-//	@Override
-//	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-//		return builder.sources(BulkMailing.class);
-//	}
+	@Override
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+		return builder.sources(BulkMailing.class);
+	}
 }
