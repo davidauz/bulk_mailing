@@ -22,7 +22,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <!-- <scope>provided</scope> -->
         </dependency>
 
         <dependency>
@@ -31,7 +30,7 @@
             <scope>provided</scope>
         </dependency>
 
-<!--        <dependency>-->
+<!--        <dependency> TODO: investigate wether this is need for tests -->
 <!--            <groupId>org.springframework.boot</groupId>-->
 <!--            <artifactId>spring-boot-starter-test</artifactId>-->
 <!--            <scope>test</scope>-->
@@ -55,7 +54,6 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-<!--        <start-class>com.davidauz.bulk_mailing.BulkMailing</start-class>-->
     </properties>
 
     <build>
@@ -65,23 +63,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-war-plugin</artifactId>-->
-<!--                <version>3.3.1</version>-->
-<!--                <configuration>-->
-<!--                    <webResources>-->
-<!--                    <resource>-->
-<!--                        <directory>${basedir}/../common/target</directory>-->
-<!--                        <targetPath>WEB-INF/lib</targetPath>-->
-<!--                        <includes>-->
-<!--                            <include>common-*.jar</include>-->
-<!--                        </includes>-->
-<!--                    </resource>-->
-<!--                    </webResources>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
         </plugins>
     </build>
 

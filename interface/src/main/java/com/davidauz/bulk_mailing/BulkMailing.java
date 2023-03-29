@@ -6,8 +6,8 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 @SpringBootApplication
-public class BulkMailing extends SpringBootServletInitializer
- {
+public class BulkMailing extends SpringBootServletInitializer {
+// SpringBootServletInitializer is needed for running in Tomcat
 
 	public static void main(String[] args) {
 		SpringApplication.run(BulkMailing.class, args);
@@ -15,6 +15,7 @@ public class BulkMailing extends SpringBootServletInitializer
 
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+// also for running in Tomcat
 		return builder.sources(BulkMailing.class);
 	}
 }
