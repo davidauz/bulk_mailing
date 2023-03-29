@@ -5,6 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.DependsOn;
@@ -30,7 +31,8 @@ import java.util.concurrent.ScheduledFuture;
 @DependsOn("mailMessageRepository")
 @EnableJpaRepositories(basePackages = "com.davidauz.bulk_mailing.common_classes")
 @EnableScheduling
-public class MailerDaemonApplication {
+public class MailerDaemonApplication  extends SpringBootServletInitializer  {
+// SpringBootServletInitializer is for running in Tomcat
 
     @Autowired
     private ConfigurationRepository cfgRepo;
@@ -60,6 +62,12 @@ public class MailerDaemonApplication {
     public ScheduledFuture<?> scheduleMyBackgroundTask(TaskScheduler taskScheduler) {
         Duration dur= Duration.ofSeconds(5);
         return taskScheduler.scheduleAtFixedRate(get_md_background_task(), dur);
+    }
+
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+// also for running in Tomcat
+        return builder.sources(MailerDaemonApplication.class);
     }
 }
 
