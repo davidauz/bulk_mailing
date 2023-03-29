@@ -39,7 +39,7 @@ public class MailerDaemonApplication  extends SpringBootServletInitializer  {
 
     public static void main(String[] args) {
         new SpringApplicationBuilder(MailerDaemonApplication.class)
-                .web(WebApplicationType.SERVLET)
+                .web(WebApplicationType.NONE)
                 .sources(MailerDaemonApplication.class)
                 .run(args);
     }
