@@ -1,7 +1,7 @@
 package com.davidauz.bulk_mailing.controller;
 
-import com.davidauz.bulk_mailing.common_classes.entity.ConfigurationPair;
-import com.davidauz.bulk_mailing.common_classes.repo.ConfigurationRepository;
+import com.davidauz.bulk_mailing.blkm_common.entity.ConfigurationPair;
+import com.davidauz.bulk_mailing.blkm_common.repo.ConfigurationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;

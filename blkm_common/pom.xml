@@ -13,7 +13,7 @@
     <packaging>jar</packaging>
 
     <groupId>davidauz</groupId>
-    <artifactId>common</artifactId>
+    <artifactId>blkm_common</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <description>Common classes for the Bulk Mailing project</description>
 
@@ -76,10 +76,10 @@
                 <configuration>
                     <webResources>
                         <resource>
-                            <directory>${basedir}/../common/target</directory>
+                            <directory>${basedir}/../blkm_common/target</directory>
                             <targetPath>WEB-INF/lib</targetPath>
                             <includes>
-                                <include>common-*.jar</include>
+                                <include>blkm_common-*.jar</include>
                             </includes>
                         </resource>
                     </webResources>

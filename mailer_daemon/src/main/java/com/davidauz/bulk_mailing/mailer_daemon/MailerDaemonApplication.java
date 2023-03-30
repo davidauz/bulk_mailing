@@ -1,6 +1,6 @@
 package com.davidauz.bulk_mailing.mailer_daemon;
 
-import com.davidauz.bulk_mailing.common_classes.repo.ConfigurationRepository;
+import com.davidauz.bulk_mailing.blkm_common.repo.ConfigurationRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,15 +21,15 @@ import java.time.Duration;
 import java.util.Properties;
 import java.util.concurrent.ScheduledFuture;
 
-@SpringBootApplication(scanBasePackages = "com.davidauz.bulk_mailing.common_classes.*") //  this annotation is a composition of the
+@SpringBootApplication(scanBasePackages = "com.davidauz.bulk_mailing.blkm_common.*") //  this annotation is a composition of the
 // @Configuration,
 // @ComponentScan,
 // and @EnableAutoConfiguration annotations.
 // With this default setting, Spring Boot will auto scan for components in the current package
 // (containing the @SpringBoot main class) and its sub packages.
-@ComponentScan(basePackages={"com.davidauz.bulk_mailing.*", "com.davidauz.bulk_mailing.common_classes.*", "com.davidauz.bulk_mailing.mailer_daemon.config.*"})
+@ComponentScan(basePackages={"com.davidauz.bulk_mailing.*", "com.davidauz.bulk_mailing.blkm_common.*", "com.davidauz.bulk_mailing.mailer_daemon.config.*"})
 @DependsOn("mailMessageRepository")
-@EnableJpaRepositories(basePackages = "com.davidauz.bulk_mailing.common_classes")
+@EnableJpaRepositories(basePackages = "com.davidauz.bulk_mailing.blkm_common")
 @EnableScheduling
 public class MailerDaemonApplication  extends SpringBootServletInitializer  {
 // SpringBootServletInitializer is for running in Tomcat

@@ -1,4 +1,4 @@
-package com.davidauz.bulk_mailing.common_classes.entity;
+package com.davidauz.bulk_mailing.blkm_common.entity;
 
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;

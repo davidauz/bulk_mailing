@@ -1,6 +1,6 @@
-package com.davidauz.bulk_mailing.common_classes.repo;
+package com.davidauz.bulk_mailing.blkm_common.repo;
 
-import com.davidauz.bulk_mailing.common_classes.entity.ConfigurationPair;
+import com.davidauz.bulk_mailing.blkm_common.entity.ConfigurationPair;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package com.davidauz.bulk_mailing.common_classes;
+package com.davidauz.bulk_mailing.blkm_common;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
