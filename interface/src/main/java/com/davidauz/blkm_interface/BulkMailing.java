@@ -8,16 +8,8 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-@SpringBootApplication(scanBasePackages =
-{	"com.davidauz.blkm_common.*"
-//,	"com.davidauz.blkm_common.repo"
-//,	"com.davidauz.blkm_common.repo.*"
-})
-@EntityScan(basePackages=
-{	"com.davidauz.bulk_mailing.*"
-,	"com.davidauz.blkm_common.*"
-}
-)
+@SpringBootApplication(scanBasePackages={"com.davidauz.blkm_common"})
+@EntityScan(basePackages={"com.davidauz.blkm_common"})
 @EnableJpaRepositories(basePackages = "com.davidauz.blkm_common")
 public class BulkMailing extends SpringBootServletInitializer {
 // SpringBootServletInitializer is needed for running in Tomcat
