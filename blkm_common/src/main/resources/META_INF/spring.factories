@@ -1,4 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-    com.davidauz.blk_common.entity.*, \
-    com.davidauz.blk_common.impl.*, \
-    com.davidauz.blk_common.repo.*
