@@ -49,7 +49,7 @@ public class SpringSecurity {
                 )
                 .formLogin(form -> form
                                 .loginPage("/login")
-//				.loginProcessingUrl("/login") not necessary; it is the default
+				                .loginProcessingUrl("/login") // not necessary? it is supposed to be the default
                                 .defaultSuccessUrl("/dashboard")
                                 .permitAll()
                 ).logout(logout -> logout
