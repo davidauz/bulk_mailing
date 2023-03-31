@@ -14,8 +14,8 @@
 <!-- packaging=jar for 'java -jar' -->
 <!-- packaging=war for tomcat -->
 
-    <artifactId>interface</artifactId>
-    <name>interface</name>
+    <artifactId>blkm_interface</artifactId>
+    <name>blkm_interface</name>
     <description>Bulk mailing interface</description>
 
     <dependencies>
