@@ -1,6 +1,7 @@
-package com.davidauz.blkm_send_d;
+package com.davidauz.blkm_read_d;
 
 import com.davidauz.blkm_common.repo.ConfigurationRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -8,12 +9,10 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.Duration;
 import java.util.concurrent.ScheduledFuture;
@@ -25,19 +24,19 @@ import java.util.concurrent.ScheduledFuture;
 // With this default setting, Spring Boot will auto scan for components in the current package
 // (containing the @SpringBoot main class) and its sub packages.
 @EntityScan(basePackages={"com.davidauz.blkm_common"})
-@ComponentScan(basePackages={"com.davidauz.bulk_mailing", "com.davidauz.blkm_common", "com.davidauz.blkm_send_d"})
+@ComponentScan(basePackages={"com.davidauz.bulk_mailing", "com.davidauz.blkm_common", "com.davidauz.blkm_read_d"})
 @EnableJpaRepositories(basePackages = "com.davidauz.blkm_common")
 @EnableScheduling
-public class MailerDaemonApplication  extends SpringBootServletInitializer  {
+public class blkm_read_mail_daemon extends SpringBootServletInitializer  {
 // SpringBootServletInitializer is for running in Tomcat
 
     @Autowired
     private ConfigurationRepository cfgRepo;
 
     public static void main(String[] args) {
-        new SpringApplicationBuilder(MailerDaemonApplication.class)
+        new SpringApplicationBuilder(blkm_read_mail_daemon.class)
                 .web(WebApplicationType.NONE)
-                .sources(MailerDaemonApplication.class)
+                .sources(blkm_read_mail_daemon.class)
                 .run(args);
     }
 
@@ -52,7 +51,7 @@ public class MailerDaemonApplication  extends SpringBootServletInitializer  {
 
     @Bean
     public Runnable get_md_background_task() {
-        return new md_background_task();
+        return new blkm_read_task();
     }
 
     @Bean
@@ -64,7 +63,7 @@ public class MailerDaemonApplication  extends SpringBootServletInitializer  {
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
 // also for running in Tomcat
-        return builder.sources(MailerDaemonApplication.class);
+        return builder.sources(blkm_read_task.class);
     }
 }
 

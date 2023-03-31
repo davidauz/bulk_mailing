@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Optional;
 
-public class md_background_task implements Runnable {
+public class blkm_send_task implements Runnable {
 
     @Autowired
 	blk_MailQueue blk_mailQueue;
