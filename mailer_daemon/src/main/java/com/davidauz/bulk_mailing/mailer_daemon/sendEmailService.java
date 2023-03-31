@@ -1,17 +1,17 @@
 package com.davidauz.bulk_mailing.mailer_daemon;
 
-import com.davidauz.bulk_mailing.blkm_common.entity.*;
-import com.davidauz.bulk_mailing.blkm_common.repo.*;
+import com.davidauz.blkm_common.entity.ConfigurationPair;
+import com.davidauz.blkm_common.entity.blk_MailMessage;
+import com.davidauz.blkm_common.repo.ConfigurationRepository;
+import com.davidauz.blkm_common.repo.MailMessageRepository;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;

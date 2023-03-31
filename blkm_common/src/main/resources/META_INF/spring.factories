@@ -1,4 +1,4 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-    com.davidauz.bulk_mailing.blk_common.entity.*, \
-    com.davidauz.bulk_mailing.blk_common.impl.*, \
-    com.davidauz.bulk_mailing.blk_common.repo.*
+    com.davidauz.blk_common.entity.*, \
+    com.davidauz.blk_common.impl.*, \
+    com.davidauz.blk_common.repo.*

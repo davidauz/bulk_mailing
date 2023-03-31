@@ -1,26 +1,26 @@
 package com.davidauz.bulk_mailing.mailer_daemon;
 
-import com.davidauz.bulk_mailing.blkm_common.entity.*;
-import com.davidauz.bulk_mailing.blkm_common.repo.*;
+import com.davidauz.blkm_common.entity.ConfigurationPair;
+import com.davidauz.blkm_common.entity.blk_MailQueue;
+import com.davidauz.blkm_common.repo.ConfigurationRepository;
+import com.davidauz.blkm_common.repo.MailMessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.sql.Timestamp;
-import java.util.Calendar;
 import java.util.Optional;
 
 public class md_background_task implements Runnable {
 
     @Autowired
-    blk_MailQueue blk_mailQueue;
+	blk_MailQueue blk_mailQueue;
 
     @Autowired
-    private com.davidauz.bulk_mailing.blkm_common.repo.ConfigurationRepository configurationRepository;
+    private ConfigurationRepository configurationRepository;
 
     @Autowired
     private sendEmailService sendEmailSrvc;
 
     @Autowired
-    MailMessageRepository mailMessageRepository;
+	MailMessageRepository mailMessageRepository;
 
     @Override
     public void run(){

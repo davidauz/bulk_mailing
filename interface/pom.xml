@@ -45,7 +45,7 @@
     </properties>
 
     <build>
-        <finalName>bulk_mailing</finalName>
+        <finalName>blkm_interface</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

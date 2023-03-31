@@ -1,6 +1,6 @@
-package com.davidauz.bulk_mailing.blkm_common.repo;
+package com.davidauz.blkm_common.repo;
 
-import com.davidauz.bulk_mailing.blkm_common.entity.blk_MailMessage;
+import com.davidauz.blkm_common.entity.blk_MailMessage;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,13 +15,13 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.test.context.ContextConfiguration;
 
 
-@SpringBootApplication(scanBasePackages = "com.davidauz.bulk_mailing.blkm_common.*")
+@SpringBootApplication(scanBasePackages = "com.davidauz.blkm_common.*")
 @SpringBootTest
 @ContextConfiguration
-@ComponentScan(basePackages={"com.davidauz.bulk_mailing.blkm_common.*"})
-@EntityScan(basePackages={"com.davidauz.bulk_mailing.blkm_common.*"})
+@ComponentScan(basePackages={"com.davidauz.blkm_common.*"})
+@EntityScan(basePackages={"com.davidauz.blkm_common.*"})
 @DependsOn("mailMessageRepository")
-@EnableJpaRepositories(basePackages = "com.davidauz.bulk_mailing.blkm_common.*")
+@EnableJpaRepositories(basePackages = "com.davidauz.blkm_common.*")
 class MailMessageRepositoryTest {
 
     private static final Logger logger = LoggerFactory.getLogger(MailMessageRepositoryTest.class);

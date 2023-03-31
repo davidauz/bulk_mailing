@@ -1,7 +1,7 @@
 package com.davidauz.bulk_mailing.mailer_daemon.config;
 
-import com.davidauz.bulk_mailing.blkm_common.entity.ConfigurationPair;
-import com.davidauz.bulk_mailing.blkm_common.repo.ConfigurationRepository;
+import com.davidauz.blkm_common.entity.ConfigurationPair;
+import com.davidauz.blkm_common.repo.ConfigurationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
