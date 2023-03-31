@@ -1,4 +1,4 @@
-package com.davidauz.bulk_mailing.mailer_daemon;
+package com.davidauz.blkm_send_d;
 
 import com.davidauz.blkm_common.entity.ConfigurationPair;
 import com.davidauz.blkm_common.entity.blk_MailQueue;
@@ -24,7 +24,7 @@ public class md_background_task implements Runnable {
 
     @Override
     public void run(){
-        Optional<ConfigurationPair> o_mda = configurationRepository.findByName("mailer_daemon_running");
+        Optional<ConfigurationPair> o_mda = configurationRepository.findByName("send_mail_daemon_running");
         if(o_mda.isPresent()){
             ConfigurationPair mda=o_mda.get();
             if("0".equals(mda.getValue()))

@@ -1,4 +1,4 @@
-package com.davidauz.bulk_mailing.mailer_daemon.controllers;
+package com.davidauz.blkm_send_d.controllers;
 
 
 import org.springframework.beans.factory.annotation.Autowired;

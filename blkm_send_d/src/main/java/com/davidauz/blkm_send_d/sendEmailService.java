@@ -1,4 +1,4 @@
-package com.davidauz.bulk_mailing.mailer_daemon;
+package com.davidauz.blkm_send_d;
 
 import com.davidauz.blkm_common.entity.ConfigurationPair;
 import com.davidauz.blkm_common.entity.blk_MailMessage;

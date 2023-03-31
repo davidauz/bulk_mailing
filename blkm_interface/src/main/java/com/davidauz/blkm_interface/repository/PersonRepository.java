@@ -1,6 +1,7 @@
 package com.davidauz.blkm_interface.repository;
 
 import com.davidauz.blkm_interface.entity.Person;
+import com.davidauz.blkm_interface.entity.Person;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

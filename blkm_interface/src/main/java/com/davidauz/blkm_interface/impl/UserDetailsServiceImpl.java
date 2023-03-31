@@ -2,6 +2,8 @@ package com.davidauz.blkm_interface.impl;
 
 import com.davidauz.blkm_interface.entity.Role;
 import com.davidauz.blkm_interface.entity.User;
+import com.davidauz.blkm_interface.entity.Role;
+import com.davidauz.blkm_interface.entity.User;
 import com.davidauz.blkm_interface.repository.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

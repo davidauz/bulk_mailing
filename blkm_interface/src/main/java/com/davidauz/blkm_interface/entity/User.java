@@ -1,6 +1,7 @@
 package com.davidauz.blkm_interface.entity;
 
 import com.davidauz.blkm_interface.util.TimeUtil;
+import com.davidauz.blkm_interface.util.TimeUtil;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

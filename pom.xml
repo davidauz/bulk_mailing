@@ -5,8 +5,8 @@
     <packaging>pom</packaging>
     <modules>
 		<module>blkm_common</module>
-		<module>mailer_daemon</module>
-		<module>interface</module>
+		<module>blkm_interface</module>
+		<module>blkm_send_d</module>
 	</modules>
     <parent>
 		<groupId>org.springframework.boot</groupId>

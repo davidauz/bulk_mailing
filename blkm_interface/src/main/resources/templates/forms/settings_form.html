@@ -279,27 +279,27 @@
 						<p>No save button.</p>
 						<div class="mb-3">
 							<div class="form-check form-switch">
-								<input th:if="'1'==${settings_map.get('mailer_daemon_running')}" checked=checked
+								<input th:if="'1'==${settings_map.get('send_mail_daemon_running')}" checked=checked
 									   class="form-check-input"
-									   hx-post="/settings/toggle/mailer_daemon_running"
-									   hx-target="#mailer_daemon_running"
+									   hx-post="/settings/toggle/send_mail_daemon_running"
+									   hx-target="#send_mail_daemon_running"
 									   hx-swap="innerHTML"
 									   hx-trigger="click"
-									   hx-vals='{"checkbox": "mailer_daemon_running"}'
-									   name="mailer_daemon_running"
+									   hx-vals='{"checkbox": "send_mail_daemon_running"}'
+									   name="send_mail_daemon_running"
 									   type="checkbox"
 								>
-								<input th:unless="'1'==${settings_map.get('mailer_daemon_running')}"
+								<input th:unless="'1'==${settings_map.get('send_mail_daemon_running')}"
 									   class="form-check-input"
-									   hx-post="/settings/toggle/mailer_daemon_running"
-									   hx-target="#mailer_daemon_running"
+									   hx-post="/settings/toggle/send_mail_daemon_running"
+									   hx-target="#send_mail_daemon_running"
 									   hx-swap="innerHTML"
 									   hx-trigger="click"
-									   hx-vals='{"checkbox": "mailer_daemon_running"}'
-									   name="mailer_daemon_running"
+									   hx-vals='{"checkbox": "send_mail_daemon_running"}'
+									   name="send_mail_daemon_running"
 									   type="checkbox"
 								>
-								Mailer daemon status <span id="mailer_daemon_running" name="mailer_daemon_running"></span>
+								Mailer daemon status <span id="send_mail_daemon_running" name="send_mail_daemon_running"></span>
 							</div>
 						</div>
 					</div>

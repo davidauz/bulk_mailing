@@ -1,4 +1,4 @@
-package com.davidauz.bulk_mailing.mailer_daemon.config;
+package com.davidauz.blkm_send_d.config;
 
 import com.davidauz.blkm_common.entity.ConfigurationPair;
 import com.davidauz.blkm_common.repo.ConfigurationRepository;
@@ -32,7 +32,7 @@ public class MailSenderConfig {
 
     private static final String[][] DEFAULT_PROPERTIES =
     {	{"heartbeat","0"}
-    ,	{"mailer_daemon_running","0"}
+    ,	{"send_mail_daemon_running","0"}
     };
 
 

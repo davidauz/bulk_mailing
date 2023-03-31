@@ -1,4 +1,4 @@
-package com.davidauz.bulk_mailing.mailer_daemon.config;
+package com.davidauz.blkm_send_d.config;
 
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;

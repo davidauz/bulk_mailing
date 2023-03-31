@@ -14,9 +14,9 @@
 <!-- packaging=jar for 'java -jar' -->
 <!-- packaging=war for tomcat -->
 
-    <artifactId>mailer_daemon</artifactId>
-    <name>mailer_daemon</name>
-    <description>Bulk mailing mailoer daemon</description>
+    <artifactId>blkm_send_d</artifactId>
+    <name>blkm_send_d</name>
+    <description>Bulk mailing send mail daemon</description>
 
     <dependencies>
         <!-- email -->

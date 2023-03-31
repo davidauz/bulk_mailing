@@ -1,4 +1,4 @@
-package com.davidauz.bulk_mailing.mailer_daemon;
+package com.davidauz.blkm_send_d;
 
 import com.davidauz.blkm_common.repo.ConfigurationRepository;
 import org.springframework.boot.WebApplicationType;
@@ -25,7 +25,7 @@ import java.util.concurrent.ScheduledFuture;
 // With this default setting, Spring Boot will auto scan for components in the current package
 // (containing the @SpringBoot main class) and its sub packages.
 @EntityScan(basePackages={"com.davidauz.blkm_common"})
-@ComponentScan(basePackages={"com.davidauz.bulk_mailing", "com.davidauz.blkm_common"})
+@ComponentScan(basePackages={"com.davidauz.bulk_mailing", "com.davidauz.blkm_common", "com.davidauz.blkm_send_d"})
 @EnableJpaRepositories(basePackages = "com.davidauz.blkm_common")
 @EnableScheduling
 public class MailerDaemonApplication  extends SpringBootServletInitializer  {

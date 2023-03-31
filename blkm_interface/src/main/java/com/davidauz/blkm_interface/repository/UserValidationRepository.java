@@ -2,6 +2,7 @@ package com.davidauz.blkm_interface.repository;
 
 
 import com.davidauz.blkm_interface.entity.UserValidation;
+import com.davidauz.blkm_interface.entity.UserValidation;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
