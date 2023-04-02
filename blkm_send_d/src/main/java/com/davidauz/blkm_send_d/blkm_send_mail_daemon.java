@@ -30,8 +30,8 @@ import java.util.concurrent.ScheduledFuture;
 public class blkm_send_mail_daemon extends SpringBootServletInitializer  {
 // SpringBootServletInitializer is for running in Tomcat
 
-    @Autowired
-    private ConfigurationRepository cfgRepo;
+//    @Autowired TODO: remove if not necessary
+//    private ConfigurationRepository cfgRepo;
 
     public static void main(String[] args) {
         new SpringApplicationBuilder(blkm_send_mail_daemon.class)
@@ -50,14 +50,14 @@ public class blkm_send_mail_daemon extends SpringBootServletInitializer  {
     }
 
     @Bean
-    public Runnable get_md_background_task() {
+    public Runnable get_sm_background_task() {
         return new blkm_send_task();
     }
 
     @Bean
     public ScheduledFuture<?> scheduleMyBackgroundTask(TaskScheduler taskScheduler) {
         Duration dur= Duration.ofSeconds(5);
-        return taskScheduler.scheduleAtFixedRate(get_md_background_task(), dur);
+        return taskScheduler.scheduleAtFixedRate(get_sm_background_task(), dur);
     }
 
     @Override

@@ -16,8 +16,8 @@ public class blkm_read_task implements Runnable {
     @Autowired
     private ConfigurationRepository configurationRepository;
 
-//    @Autowired
-//    private sendEmailService sendEmailSrvc;
+    @Autowired
+    private readEmailService readEmailSrvc;
 
     @Autowired
 	MailMessageRepository mailMessageRepository;
@@ -29,9 +29,9 @@ public class blkm_read_task implements Runnable {
             ConfigurationPair mda=o_mda.get();
             if("0".equals(mda.getValue()))
                 return;
-            mailMessageRepository.update_heart_beat();
+            mailMessageRepository.update_heart_beat_r();
 
-//            sendEmailSrvc.send_messages_in_queue();
+            readEmailSrvc.read_messages_in_inbox();
         }
     }
 }

@@ -34,6 +34,57 @@ public class SettingsController {
 
 
 
+
+    @PostMapping(path = "/settings/readingRules", produces = MediaType.TEXT_HTML_VALUE)
+    @ResponseBody // returning raw content and not a template name
+    public String save_reading_rules_settings
+    (   Model model
+    ,   @RequestParam("imap_server") String imap_server
+    ,   @RequestParam("IMAPserverPort") String IMAPserverPort
+    ,   @RequestParam(name="imap_user_same", required=false) String imap_user_same
+    ,   @RequestParam(name="imap_uname", required=false) String imap_uname
+    ,   @RequestParam(name="imap_password", required=false) String imap_password
+    ,   @RequestParam(name="imap_password2", required=false) String imap_password2
+    ) {
+        try {
+            try { Integer.parseInt(IMAPserverPort); }
+            catch (NumberFormatException e){
+                throw new Exception("`"+IMAPserverPort+"` is not a number");
+            }
+            if(null!=imap_user_same && imap_user_same.equals("on") ){
+                imap_uname=cfgRepo.findByName("serveruname").orElseThrow(() ->new Exception("IMAP user same as SMTP user but SMTP user name not found")).getValue();
+                imap_password=cfgRepo.findByName("serverpassword").orElseThrow(() ->new Exception("IMAP password same as SMTP password  but SMTP password  name not found")).getValue();
+            }
+
+            String[][] configs = new String[][]
+            {	{"imap_server", imap_server}
+            ,	{"IMAPserverPort", IMAPserverPort}
+            ,	{"imap_user_same", imap_user_same}
+            ,	{"imap_uname", imap_uname}
+            ,	{"imap_password", imap_password}
+            ,	{"imap_password2", imap_password2}
+            };
+
+            for (String[] strp : configs) {
+                Optional<ConfigurationPair> cfg = cfgRepo.findByName(strp[0]);
+                ConfigurationPair cp = null;
+                if (cfg.isPresent()) {
+                    cp = cfg.get();
+                    cp.setValue(strp[1]);
+                } else {
+                    cp = new ConfigurationPair();
+                    cp.setName(strp[0]);
+                    cp.setValue(strp[1]);
+                }
+                cfgRepo.save(cp);
+            }
+            return " Changes were saved";
+        } catch (Exception e) {
+            return "Changes were NOT saved because: " + e.getMessage();
+        }
+    }
+
+
     @PostMapping(path = "/settings/sendingRules", produces = MediaType.TEXT_HTML_VALUE)
     @ResponseBody // returning raw content and not a template name
     public String save_sending_rules_settings
@@ -53,10 +104,6 @@ public class SettingsController {
             , {"message_send_randomize", message_send_randomize}
             };
             for (String[] strp : configs) {
-//                try { Integer.parseInt(strp[1]); }
-//                catch (NumberFormatException e){
-//                    throw new Exception("`"+strp[1]+"` is not a number");
-//                }
                 Optional<ConfigurationPair> cfg = cfgRepo.findByName(strp[0]);
                 ConfigurationPair cp = null;
                 if (cfg.isPresent()) {
@@ -87,8 +134,6 @@ public class SettingsController {
     ,   @RequestParam("serverpassword") String serverpassword
     ,   @RequestParam("serverpassword2") String serverpassword2
     ,   @RequestParam("authtype") String authtype
-    ,   @RequestParam("imapserver") String imapserver
-    ,   @RequestParam("IMAPserverPort") String IMAPserverPort
     ) {
         try {
             if (!serverpassword.equals(serverpassword2))
@@ -97,21 +142,15 @@ public class SettingsController {
             catch (NumberFormatException e){
                 throw new Exception("`"+SMTPPort+"` is not a number");
             }
-            try { Integer.parseInt(IMAPserverPort); }
-            catch (NumberFormatException e){
-                throw new Exception("`"+IMAPserverPort+"` is not a number");
-            }
 
             String[][] configs = new String[][]
-                    {{"SMTPServer", SMTPServer}
-                            , {"serveruname", serveruname}
-                            , {"SMTPPort", SMTPPort}
-                            , {"serverpassword", serverpassword}
-                            , {"serverpassword2", serverpassword2}
-                            , {"authtype", authtype}
-                            , {"imapserver", imapserver}
-                            , {"IMAPserverPort", IMAPserverPort}
-                    };
+            {	{"SMTPServer", SMTPServer}
+            ,	{"SMTPPort", SMTPPort}
+            ,	{"serveruname", serveruname}
+            ,	{"serverpassword", serverpassword}
+            ,	{"serverpassword2", serverpassword2}
+            ,	{"authtype", authtype}
+            };
             for (String[] strp : configs) {
                 Optional<ConfigurationPair> cfg = cfgRepo.findByName(strp[0]);
                 ConfigurationPair cp = null;

@@ -29,7 +29,7 @@ public class blkm_send_task implements Runnable {
             ConfigurationPair mda=o_mda.get();
             if("0".equals(mda.getValue()))
                 return;
-            mailMessageRepository.update_heart_beat();
+            mailMessageRepository.update_heart_beat_s();
 
             sendEmailSrvc.send_messages_in_queue();
         }

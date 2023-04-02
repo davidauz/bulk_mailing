@@ -14,14 +14,11 @@ import java.util.Properties;
 public class MailSenderConfig {
 
 
-
     private static final String[][] MANDATORY_PROPERTIES =
-    {	{"IMAPserverPort","143"}
-    ,	{"SMTPPort", "25"}
+    {	{"SMTPPort", "25"}
     ,	{"SMTPServer","example.smtp.com"}
     ,	{"authtype","STARTTLS"}
     ,	{"batchSize","5"}
-    ,	{"imapserver","example.imap.com"}
     ,	{"maxMessagesInADay","19"}
     ,	{"minPauseBatch","5000"}
     ,	{"sendingRandomDelay","2000"}
@@ -31,7 +28,7 @@ public class MailSenderConfig {
     };
 
     private static final String[][] DEFAULT_PROPERTIES =
-    {	{"heartbeat","0"}
+    {	{"heartbeat_s","0"}
     ,	{"send_mail_daemon_running","0"}
     };
 
@@ -84,11 +81,6 @@ public class MailSenderConfig {
             props.put("mail.smtp.auth", "true");
             props.put("mail.smtp.starttls.enable", "true");
             props.put("mail.debug", "true");
-
-//https://javaee.github.io/javamail/docs/api/com/sun/mail/smtp/package-summary.html
-//https://javaee.github.io/javamail/docs/api/com/sun/mail/imap/package-summary.html
-//https://javaee.github.io/javamail/docs/api/com/sun/mail/pop3/package-summary.html
-//https://connector.sourceforge.net/doc-files/Properties.html
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

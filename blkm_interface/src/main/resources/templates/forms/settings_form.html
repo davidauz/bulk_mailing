@@ -13,7 +13,9 @@
 	<script type="text/javascript" th:src="@{/webjars/htmx.org/dist/htmx.min.js}"></script>
 	<script type="text/javascript" th:src="@{/webjars/hyperscript.org/dist/_hyperscript.js}"></script>
 	<style>
-		.sending-form{
+		.sending_form{
+		}
+		.reading_form{
 		}
 	</style>
 </head>
@@ -44,12 +46,12 @@
 							<label class="col-sm-2 col-form-label" th:for="SMTPServer">SMTP server:</label>
 							<div class="col-sm-10">
 								<input	type="text"
-										  required
-										  class="form-control"
-										  id="SMTPServer"
-										  name="SMTPServer"
-										  placeholder="smtp.provider.com"
-										  th:value="${settings_map.get('SMTPServer')}"
+								required
+								class="form-control"
+								id="SMTPServer"
+								name="SMTPServer"
+								placeholder="smtp.provider.com"
+								th:value="${settings_map.get('SMTPServer')}"
 								/>
 							</div>
 						</div>
@@ -59,12 +61,12 @@
 							<label class="col-sm-2 col-form-label" th:for="SMTPPort">SMTP Server port:</label>
 							<div class="col-sm-10">
 								<input	type="text"
-										  required
-										  class="form-control"
-										  id="SMTPPort"
-										  name="SMTPPort"
-										  placeholder="587"
-										  th:value="${settings_map.get('SMTPPort')}"
+								required
+								class="form-control"
+								id="SMTPPort"
+								name="SMTPPort"
+								placeholder="587"
+								th:value="${settings_map.get('SMTPPort')}"
 								/>
 							</div>
 						</div>
@@ -74,12 +76,12 @@
 							<label class="col-sm-2 col-form-label" th:for="serveruname">User name:</label>
 							<div class="col-sm-10">
 								<input	type="text"
-										  required
-										  class="form-control"
-										  id="serveruname"
-										  name="serveruname"
-										  placeholder="my_user_name"
-										  th:value="${settings_map.get('serveruname')}"
+								required
+								class="form-control"
+								id="serveruname"
+								name="serveruname"
+								placeholder="my_user_name"
+								th:value="${settings_map.get('serveruname')}"
 								/>
 							</div>
 						</div>
@@ -89,12 +91,12 @@
 							<label class="col-sm-2 col-form-label" th:for="serverpassword">Password:</label>
 							<div class="col-sm-10">
 								<input	type="password"
-										  required
-										  class="form-control"
-										  id="serverpassword"
-										  name="serverpassword"
-										  placeholder="super_secret_password"
-										  th:value="${settings_map.get('serverpassword')}"
+								required
+								class="form-control"
+								id="serverpassword"
+								name="serverpassword"
+								placeholder="super_secret_password"
+								th:value="${settings_map.get('serverpassword')}"
 								/>
 							</div>
 						</div>
@@ -103,12 +105,12 @@
 						<label class="col-sm-2 col-form-label" th:for="serverpassword2">Confirm password:</label>
 						<div class="col-sm-10">
 							<input	type="password"
-									  required
-									  class="form-control"
-									  id="serverpassword2"
-									  name="serverpassword2"
-									  placeholder="confirm password"
-									  th:value="${settings_map.get('serverpassword')}"
+							required
+							class="form-control"
+							id="serverpassword2"
+							name="serverpassword2"
+							placeholder="confirm password"
+							th:value="${settings_map.get('serverpassword')}"
 							/>
 						</div>
 					</div>
@@ -119,16 +121,16 @@
 							<label class="col-sm-2 col-form-label" th:for="authtype">Authentication type:</label>
 							<div class="col-sm-10">
 								<select	th:selected="${settings_map.get('authtype')}"
-										class="form-control"
-										id=authtype
-										name=authtype
-										style="width:30%;float:left;"
+								class="form-control"
+								id=authtype
+								name=authtype
+								style="width:30%;float:left;"
 								>
-									<option value="NONE">None</option>
-									<option th:if="'STARTTLS'==${settings_map.get('authtype')}" selected=selected value="STARTTLS">STARTTLS</option>
-									<option th:unless="'STARTTLS'==${settings_map.get('authtype')}" value="STARTTLS">STARTTLS</option>
-									<option th:if="'SSL_TLS'==${settings_map.get('authtype')}" selected=selected value="SSL_TLS">SSL/TLS</option>
-									<option th:unless="'SSL_TLS'==${settings_map.get('authtype')}" value="SSL_TLS">SSL/TLS</option>
+								<option value="NONE">None</option>
+								<option th:if="'STARTTLS'==${settings_map.get('authtype')}" selected=selected value="STARTTLS">STARTTLS</option>
+								<option th:unless="'STARTTLS'==${settings_map.get('authtype')}" value="STARTTLS">STARTTLS</option>
+								<option th:if="'SSL_TLS'==${settings_map.get('authtype')}" selected=selected value="SSL_TLS">SSL/TLS</option>
+								<option th:unless="'SSL_TLS'==${settings_map.get('authtype')}" value="SSL_TLS">SSL/TLS</option>
 								</select>
 							</div>
 						</div>
@@ -141,55 +143,96 @@
 						   hx-swap="innerHTML"
 						   class="btn btn-primary"
 						>Save changes</a><span id="mailServerResults"></span>
-					</div>
+					</div> <!--SMTP tab-->
 
 					<div class="tab-pane" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
-						<h3>Checking sent messages on server</h3>
+						<h3>Checking sent messages</h3>
+
 						<div class="form-group row">
-							<label class="col-sm-2 col-form-label" th:for="imapserver">IMAP server:</label>
+							<label class="col-sm-2 col-form-label" th:for="imap_server">IMAP server:</label>
+							<div class="col-sm-10">
+							<input	type="text"
+							required
+							class="reading_form form-control"
+							id="imap_server"
+							name="imap_server"
+							placeholder="imap.provider.com"
+							th:value="${settings_map.get('imap_server')}"
+							/>
+							</div>
+						</div>
+
+
+
+
+						<div class="form-check form-switch">
+							<input th:if="'on'==${settings_map.get('imap_user_same')}" checked=checked
+								   class="reading_form form-check-input"
+								   name="imap_user_same"
+								   id="imap_user_same"
+								   type="checkbox"
+							>
+							<input th:unless="'on'==${settings_map.get('imap_user_same')}"
+								   class="reading_form form-check-input"
+								   name="imap_user_same"
+								   id="imap_user_same"
+								   type="checkbox"
+							>
+							<p>IMAP user same as SMTP user</p>
+						</div>
+
+						<div class="form-group row">
+							<label class="col-sm-2 col-form-label" th:for="serveruname">User name:</label>
 							<div class="col-sm-10">
 								<input	type="text"
+										  class="reading_form"
+										  id="imap_uname"
+										  name="imap_uname"
+										  placeholder="my_user_name"
+										  th:value="${settings_map.get('imap_uname')}"
+								/>
+							</div>
+						</div>
+
+						<div class="form-group row">
+							<label class="col-sm-2 col-form-label" th:for="imap_password">Password:</label>
+							<div class="col-sm-10">
+								<input	type="password"
 										  required
-										  class="form-control"
-										  id="imapserver"
-										  name="imapserver"
-										  placeholder="imap.provider.com"
-										  th:value="${settings_map.get('imapserver')}"
+										  class="reading_form"
+										  id="imap_password"
+										  name="imap_password"
+										  placeholder="super_secret_password"
+										  th:value="${settings_map.get('imap_password')}"
+								/>
+							</div>
+						</div>
+
+						<div class="form-group row">
+							<label class="col-sm-2 col-form-label" th:for="imap_password2">Confirm password:</label>
+							<div class="col-sm-10">
+								<input	type="password"
+										  required
+										  class="reading_form"
+										  id="imap_password2"
+										  name="imap_password2"
+										  placeholder="confirm password"
+										  th:value="${settings_map.get('imap_password')}"
 								/>
 							</div>
 						</div>
 
 
-						<div class="form-group row">
-							<label class="col-sm-2 col-form-label" th:for="IMAPserverPort">IMAP Server port:</label>
-							<div class="col-sm-10">
-								<input	type="text"
-										  required
-										  class="form-control"
-										  id="IMAPserverPort"
-										  name="IMAPserverPort"
-										  placeholder="587"
-										  th:value="${settings_map.get('IMAPserverPort')}"
-								/>
-							</div>
-						</div>
-					</div>
+						<a hx-post="/settings/readingRules"
+						   hx-target="#readingRulesResults"
+						   hx-include=".reading_form"
+						   hx-swap="innerHTML"
+						   class="btn btn-primary"
+						>Save changes</a><span id="readingRulesResults"></span>
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+					</div>  <!--IMAP tab-->
 
 					<div class="tab-pane" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
 						<h3>General Rules</h3>
@@ -199,7 +242,7 @@
 							<div class="col-sm-10">
 								<input	type="numeric"
 										  required
-										  class="sending-form"
+										  class="form_read"
 										  id="sendingRandomDelay"
 										  name="sendingRandomDelay"
 										  placeholder="500 (ms)"
@@ -213,7 +256,7 @@
 							<div class="col-sm-10">
 								<input	type="numeric"
 										  required
-										  class="sending-form"
+										  class="form_read"
 										  id="batchSize"
 										  name="batchSize"
 										  placeholder="50"
@@ -227,7 +270,7 @@
 							<div class="col-sm-10">
 								<input	type="numeric"
 										  required
-										  class="sending-form"
+										  class="form_read"
 										  id="minPauseBatch"
 										  name="minPauseBatch"
 										  placeholder="5000 (ms)"
@@ -241,7 +284,7 @@
 							<div class="col-sm-10">
 								<input	type="numeric"
 										  required
-										  class="sending-form"
+										  class="form_read"
 										  id="maxMessagesInADay"
 										  name="maxMessagesInADay"
 										  placeholder="500"
@@ -249,15 +292,15 @@
 								/>
 							</div>
 						</div>
-
+#
 						<div class="form-check form-switch">
 							<input th:if="'on'==${settings_map.get('message_send_randomize')}" checked=checked
-								   class="sending-form form-check-input"
+								   class="form_read form-check-input"
 								   name="message_send_randomize"
 								   type="checkbox"
 							>
 							<input th:unless="'on'==${settings_map.get('message_send_randomize')}"
-								   class="sending-form form-check-input"
+								   class="form_read form-check-input"
 								   name="message_send_randomize"
 								   type="checkbox"
 							>
@@ -266,17 +309,17 @@
 
 						<a hx-post="/settings/sendingRules"
 						   hx-target="#sendingRulesResults"
-						   hx-include=".sending-form"
+						   hx-include=".form_read"
 						   hx-swap="innerHTML"
 						   class="btn btn-primary"
 						>Save changes</a><span id="sendingRulesResults"></span>
 
 
-					</div>
+					</div>  <!--RULES tab-->
+
 					<div class="tab-pane" id="tab4" role="tabpanel" aria-labelledby="tab4-tab">
-						<h3>Mailer daemon status</h3>
-						<p>Note: the effect of these controls is immediate.</p>
-						<p>No save button.</p>
+						<h3>Send mail daemon status</h3>
+						<p><strong>N.B.</strong>: the effect of the controls below is immediate: there is no save button.</p>
 						<div class="mb-3">
 							<div class="form-check form-switch">
 								<input th:if="'1'==${settings_map.get('send_mail_daemon_running')}" checked=checked
@@ -299,16 +342,67 @@
 									   name="send_mail_daemon_running"
 									   type="checkbox"
 								>
-								Mailer daemon status <span id="send_mail_daemon_running" name="send_mail_daemon_running"></span>
+								Send mail daemon status <span id="send_mail_daemon_running" name="send_mail_daemon_running"></span>
 							</div>
 						</div>
-					</div>
+
+						<div class="mb-3">
+							<div class="form-check form-switch">
+								<input th:if="'1'==${settings_map.get('read_mail_daemon_running')}" checked=checked
+									   class="form-check-input"
+									   hx-post="/settings/toggle/read_mail_daemon_running"
+									   hx-target="#read_mail_daemon_running"
+									   hx-swap="innerHTML"
+									   hx-trigger="click"
+									   hx-vals='{"checkbox": "read_mail_daemon_running"}'
+									   name="read_mail_daemon_running"
+									   type="checkbox"
+								>
+								<input th:unless="'1'==${settings_map.get('read_mail_daemon_running')}"
+									   class="form-check-input"
+									   hx-post="/settings/toggle/read_mail_daemon_running"
+									   hx-target="#read_mail_daemon_running"
+									   hx-swap="innerHTML"
+									   hx-trigger="click"
+									   hx-vals='{"checkbox": "read_mail_daemon_running"}'
+									   name="read_mail_daemon_running"
+									   type="checkbox"
+								>
+								Read mail daemon status <span id="read_mail_daemon_running" name="read_mail_daemon_running"></span>
+							</div>
+						</div>
+					</div>  <!--STATUS tab-->
+
 				</div>
 			</div>
+	</div>
+
+
+
+	<script>
+		$(document).ready(
+			function() {
+				$('#imap_user_same').on('change', function() {
+					if ($(this).is(':checked'))
+						sameu_disabled(true);
+					 else
+						sameu_disabled(false);
+				});
+
+				var sameu=$('#imap_user_same').val();
+				if("on"==sameu)
+					sameu_disabled(true);
+			}
+		);
+
+		function sameu_disabled(value){
+			$('#imap_uname').prop('disabled', value);
+			$('#imap_password').prop('disabled', value);
+			$('#imap_password2').prop('disabled', value);
+		}
+
+
+	</script>
 </section>
-</div>
-
-
 </body>
 </html>
-

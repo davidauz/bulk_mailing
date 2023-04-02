@@ -50,14 +50,14 @@ public class blkm_read_mail_daemon extends SpringBootServletInitializer  {
     }
 
     @Bean
-    public Runnable get_md_background_task() {
+    public Runnable get_rm_background_task() {
         return new blkm_read_task();
     }
 
     @Bean
     public ScheduledFuture<?> scheduleMyBackgroundTask(TaskScheduler taskScheduler) {
         Duration dur= Duration.ofSeconds(5);
-        return taskScheduler.scheduleAtFixedRate(get_md_background_task(), dur);
+        return taskScheduler.scheduleAtFixedRate(get_rm_background_task(), dur);
     }
 
     @Override

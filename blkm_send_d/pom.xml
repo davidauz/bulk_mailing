@@ -10,9 +10,6 @@
     <modelVersion>4.0.0</modelVersion>
 
     <packaging>war</packaging>
-<!-- packaging=pom when working from IDEA -->
-<!-- packaging=jar for 'java -jar' -->
-<!-- packaging=war for tomcat -->
 
     <artifactId>blkm_send_d</artifactId>
     <name>blkm_send_d</name>
