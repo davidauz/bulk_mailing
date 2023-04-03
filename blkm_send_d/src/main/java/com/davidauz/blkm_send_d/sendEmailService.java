@@ -9,14 +9,17 @@ import jakarta.mail.internet.MimeMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class sendEmailService {
@@ -32,6 +35,8 @@ public class sendEmailService {
 
     @Autowired
     private MailMessageRepository mailMessageRepo;
+
+    private DateFormat m_dateFormat = new SimpleDateFormat("yyyyMMddHHmmssSS");
 
     void sendOneEmail(long mail_id) throws Exception {
         Optional<blk_MailMessage> o_blkm = Optional.ofNullable(mailMessageRepo.findById(mail_id).orElseThrow(() -> new Exception("mail ID '" + mail_id + "' not found")));
@@ -55,6 +60,12 @@ public class sendEmailService {
             helper.setTo(blkm.getRecipient());
             helper.setSubject(blkm.getSubject());
             helper.setText(text_body, true);
+
+            Date date = new Date();
+            String messageId = "bm_"+ m_dateFormat.format(date)+"_"+ UUID.randomUUID();
+            mimeMessage.setHeader("Message-ID", "<" + messageId + ">");
+            blkm.setMessageId(messageId);
+
             JMailSender.send(mimeMessage);
             now_timestamp = new Timestamp(Calendar.getInstance().getTime().getTime());
             blkm.setTimeSent(now_timestamp);

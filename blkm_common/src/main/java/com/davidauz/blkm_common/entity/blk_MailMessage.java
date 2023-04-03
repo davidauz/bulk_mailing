@@ -38,6 +38,9 @@ public class blk_MailMessage {
     private String recipient;
 
     @Column(nullable=false)
+    private String messageId;
+
+    @Column(nullable=false)
     private Timestamp timeEnqueued;
 
     @Column
