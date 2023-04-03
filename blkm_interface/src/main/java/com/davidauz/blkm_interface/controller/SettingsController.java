@@ -40,16 +40,17 @@ public class SettingsController {
     public String save_reading_rules_settings
     (   Model model
     ,   @RequestParam("imap_server") String imap_server
-    ,   @RequestParam("IMAPserverPort") String IMAPserverPort
+    ,   @RequestParam("imap_server_port") String imap_server_port
+    ,   @RequestParam(name="imap_ssl", required=false) String imap_ssl
     ,   @RequestParam(name="imap_user_same", required=false) String imap_user_same
     ,   @RequestParam(name="imap_uname", required=false) String imap_uname
     ,   @RequestParam(name="imap_password", required=false) String imap_password
     ,   @RequestParam(name="imap_password2", required=false) String imap_password2
     ) {
         try {
-            try { Integer.parseInt(IMAPserverPort); }
+            try { Integer.parseInt(imap_server_port); }
             catch (NumberFormatException e){
-                throw new Exception("`"+IMAPserverPort+"` is not a number");
+                throw new Exception("`"+imap_server_port+"` is not a number");
             }
             if(null!=imap_user_same && imap_user_same.equals("on") ){
                 imap_uname=cfgRepo.findByName("serveruname").orElseThrow(() ->new Exception("IMAP user same as SMTP user but SMTP user name not found")).getValue();
@@ -58,8 +59,9 @@ public class SettingsController {
 
             String[][] configs = new String[][]
             {	{"imap_server", imap_server}
-            ,	{"IMAPserverPort", IMAPserverPort}
+            ,	{"imap_server_port", imap_server_port}
             ,	{"imap_user_same", imap_user_same}
+            ,	{"imap_ssl", imap_ssl}
             ,	{"imap_uname", imap_uname}
             ,	{"imap_password", imap_password}
             ,	{"imap_password2", imap_password2}

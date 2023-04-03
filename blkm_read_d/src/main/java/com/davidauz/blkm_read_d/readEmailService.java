@@ -36,19 +36,24 @@ public class readEmailService {
             ,   imap_username=cfgRepo.findByName("imap_uname").orElseThrow(()->new Exception("imap_uname cfg not found")).getValue()
             ,   imap_password=cfgRepo.findByName("imap_password").orElseThrow(()->new Exception("imap_password cfg not found")).getValue()
             ,   imap_server_port=cfgRepo.findByName("imap_server_port").orElseThrow(()->new Exception("imap_server_port cfg not found")).getValue()
+            ,   imap_ssl=""
             ;
 
+            if(cfgRepo.findByName("imap_ssl").isPresent())
+                imap_ssl=cfgRepo.findByName("imap_ssl").get().getValue();
+
             Properties props = new Properties();
-            props.setProperty("mail.store.protocol", "imaps");
-            props.setProperty("mail.imaps.host", imap_host);
-            props.setProperty("mail.imaps.user", imap_username);
-            props.setProperty("mail.imaps.password", imap_password);
-            props.setProperty("mail.imaps.port", imap_server_port);
-            props.setProperty("mail.imaps.auth", "true");
-            props.setProperty("mail.imaps.ssl.enable", "true");
+            props.setProperty("mail.store.protocol", "imap");
+            props.setProperty("mail.imap.host", imap_host);
+            props.setProperty("mail.imap.user", imap_username);
+            props.setProperty("mail.imap.password", imap_password);
+            props.setProperty("mail.imap.port", imap_server_port);
+            props.setProperty("mail.imap.auth", "true");
+            if(null!=imap_ssl && imap_ssl.equals("on"))
+                props.setProperty("mail.imap.ssl.enable", "true");
 
             Session session = Session.getInstance(props);
-            Store store = session.getStore("imaps");
+            Store store = session.getStore("imap");
             store.connect(imap_host, imap_username, imap_password);
 
             // Open the inbox folder in read-only mode
@@ -67,7 +72,7 @@ public class readEmailService {
             inbox.close(false);
             store.close();
         }catch(Exception e){
-
+            logger.info("Exception: "+e.getMessage());
         }
     }
 }

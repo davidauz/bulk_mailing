@@ -24,7 +24,7 @@ public class blkm_read_task implements Runnable {
 
     @Override
     public void run(){
-        Optional<ConfigurationPair> o_mda = configurationRepository.findByName("send_mail_daemon_running");
+        Optional<ConfigurationPair> o_mda = configurationRepository.findByName("read_mail_daemon_running");
         if(o_mda.isPresent()){
             ConfigurationPair mda=o_mda.get();
             if("0".equals(mda.getValue()))
