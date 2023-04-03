@@ -40,7 +40,7 @@ public class sendEmailService {
 
     void sendOneEmail(long mail_id) throws Exception {
         Optional<blk_MailMessage> o_blkm = Optional.ofNullable(mailMessageRepo.findById(mail_id).orElseThrow(() -> new Exception("mail ID '" + mail_id + "' not found")));
-        Optional<ConfigurationPair> o_mda= cfgRepo.findByName("last_send_timestamp"); // TODO: this is called at every email, optimize
+        Optional<ConfigurationPair> o_mda= cfgRepo.findByName("last_send_timestamp"); // TODO: this is called at every email, must optimize
         ConfigurationPair mda;
         if(o_mda.isPresent())
             mda=o_mda.get();
@@ -62,7 +62,11 @@ public class sendEmailService {
             helper.setText(text_body, true);
 
             Date date = new Date();
-            String messageId = "bm_"+ m_dateFormat.format(date)+"_"+ UUID.randomUUID();
+            String messageId = "bm."+ m_dateFormat.format(date)+"."+ UUID.randomUUID().toString().substring(0,10)+"@rightwayasia.com"
+//            "<" + UUID.randomUUID().toString() + "." + m_dateFormat.format(date) + "@" + InetAddress.getLocalHost().getHostName() + ">"
+//            UUID.randomUUID().toString() + "." + m_dateFormat.format(date) + "@" + InetAddress.getLocalHost().getHostName()
+            ;
+
             mimeMessage.setHeader("Message-ID", "<" + messageId + ">");
             blkm.setMessageId(messageId);
 

@@ -1,18 +1,15 @@
 package com.davidauz.blkm_read_d;
 
-import com.davidauz.blkm_common.entity.ConfigurationPair;
 import com.davidauz.blkm_common.repo.ConfigurationRepository;
 import com.davidauz.blkm_common.repo.MailMessageRepository;
+import jakarta.mail.*;
+import jakarta.mail.search.FlagTerm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.Properties;
-import jakarta.mail.*;
-import jakarta.mail.search.FlagTerm;
 
 @Service
 public class readEmailService {
@@ -57,10 +54,13 @@ public class readEmailService {
             inbox.open(Folder.READ_ONLY);
 
             // Get all the messages in the inbox folder
-            Message[] messages = inbox.search(new FlagTerm(new Flags(Flags.Flag.SEEN), false));
+            Message[] messages = inbox.search(
+                    new FlagTerm(new Flags(Flags.Flag.SEEN), false));
+//            new FlagTerm(new Flags(Flags.Flag.RECENT), false)); // DEBUG
 
             // Print the subject of each unread message
             for (Message message : messages) {
+                String[] messageID = message.getHeader("In-Reply-To");
                 System.out.println(message.getSubject());
             }
 

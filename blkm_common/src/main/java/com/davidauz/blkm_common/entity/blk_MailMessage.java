@@ -37,7 +37,7 @@ public class blk_MailMessage {
     @Column(nullable=false)
     private String recipient;
 
-    @Column(nullable=false)
+    @Column
     private String messageId;
 
     @Column(nullable=false)
