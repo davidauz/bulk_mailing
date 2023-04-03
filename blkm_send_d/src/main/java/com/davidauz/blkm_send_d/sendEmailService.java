@@ -33,9 +33,6 @@ public class sendEmailService {
     @Autowired
     private MailMessageRepository mailMessageRepo;
 
-    @Value("${mail.test:false}")
-    private Boolean mailTest = false;
-
     void sendOneEmail(long mail_id) throws Exception {
         Optional<blk_MailMessage> o_blkm = Optional.ofNullable(mailMessageRepo.findById(mail_id).orElseThrow(() -> new Exception("mail ID '" + mail_id + "' not found")));
         Optional<ConfigurationPair> o_mda= cfgRepo.findByName("last_send_timestamp"); // TODO: this is called at every email, optimize

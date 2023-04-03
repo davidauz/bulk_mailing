@@ -26,10 +26,6 @@ public class readEmailService {
     @Autowired
     private MailMessageRepository mailMessageRepo;
 
-    @Value("${mail.test:false}")
-    private Boolean mailTest = false;
-
-
     public void read_messages_in_inbox() {
         try {
             String imap_host=cfgRepo.findByName("imap_server").orElseThrow(()->new Exception("imap_server cfg not found")).getValue()
