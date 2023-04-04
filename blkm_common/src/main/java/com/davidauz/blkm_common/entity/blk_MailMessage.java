@@ -38,6 +38,9 @@ public class blk_MailMessage {
     private String recipient;
 
     @Column
+    private String Result;
+
+    @Column
     private String messageId;
 
     @Column(nullable=false)

@@ -1,6 +1,7 @@
-package com.davidauz.blkm_common.repo;
+package com.davidauz.blkm_send_d.test;
 
 import com.davidauz.blkm_common.entity.blk_MailMessage;
+import com.davidauz.blkm_common.repo.MailMessageRepository;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

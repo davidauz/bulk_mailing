@@ -13,7 +13,11 @@ import java.util.Optional;
 
 @Repository
 public interface MailMessageRepository extends JpaRepository<blk_MailMessage, Long> {
+
     Optional<blk_MailMessage> findById(String name);
+
+    Optional<blk_MailMessage> findByMessageId(String name);
+
     Long countBySentStatus(blk_MailMessage.SENT_STATUS param_status);
 
     @Transactional // needs to be executed inside a transaction
@@ -29,5 +33,6 @@ public interface MailMessageRepository extends JpaRepository<blk_MailMessage, Lo
     @Query (value="SELECT coalesce(min(id), 0) FROM mail_message WHERE sent_status=:#{#paramstatus.name()}", nativeQuery = true)
     long getMinId(@Param("paramstatus") blk_MailMessage.SENT_STATUS paramstatus);
 }
+
 
 

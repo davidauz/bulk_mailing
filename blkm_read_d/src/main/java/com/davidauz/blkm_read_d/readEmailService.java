@@ -1,15 +1,27 @@
 package com.davidauz.blkm_read_d;
 
+import com.davidauz.blkm_common.entity.blk_MailMessage;
 import com.davidauz.blkm_common.repo.ConfigurationRepository;
 import com.davidauz.blkm_common.repo.MailMessageRepository;
+import com.davidauz.blkm_read_d.entity.blkMessageInfo;
+import com.sun.mail.imap.IMAPNestedMessage;
+import jakarta.activation.DataHandler;
 import jakarta.mail.*;
+import jakarta.mail.internet.MimeBodyPart;
+import jakarta.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMultipart;
 import jakarta.mail.search.FlagTerm;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 import java.util.Properties;
+import java.util.Scanner;
 
 @Service
 public class readEmailService {
@@ -22,6 +34,8 @@ public class readEmailService {
 
     @Autowired
     private MailMessageRepository mailMessageRepo;
+
+    private blkMessageInfo msg_i;
 
     public void read_messages_in_inbox() {
         try {
@@ -53,22 +67,64 @@ public class readEmailService {
             Folder inbox = store.getFolder("INBOX");
             inbox.open(Folder.READ_ONLY);
 
-            // Get all the messages in the inbox folder
+// Get messages in the inbox folder
             Message[] messages = inbox.search(
-                    new FlagTerm(new Flags(Flags.Flag.SEEN), false));
-//            new FlagTerm(new Flags(Flags.Flag.RECENT), false)); // DEBUG
 
-            // Print the subject of each unread message
-            for (Message message : messages) {
-                String[] messageID = message.getHeader("In-Reply-To");
-                System.out.println(message.getSubject());
+//              new FlagTerm( new Flags(Flags.Flag.SEEN), false)
+                new FlagTerm(new Flags(Flags.Flag.RECENT), false)
+
+            );
+            logger.info("Got `"+messages.length+"` messages");
+            for (Message message : messages){
+//                msg_i=new blkMessageInfo();
+//                String pappe=getTextFromMessage(message); // , msg_i);
+
+
+                InputStream is = message.getInputStream();
+
+                // read message content and write to file
+                BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+                BufferedWriter writer = new BufferedWriter(new FileWriter("/tmp/poppe"));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    writer.write(line);
+                    writer.newLine();
+                }
+                reader.close();
+                writer.close();
             }
-
-            // Close the folder and the store
             inbox.close(false);
             store.close();
         }catch(Exception e){
             logger.info("Exception: "+e.getMessage());
         }
     }
+
+    private void update_status(blkMessageInfo msg_i) {
+        Optional<blk_MailMessage> oblkm = mailMessageRepo.findByMessageId(msg_i.getStrMessageId());
+        if(!oblkm.isPresent()){
+            logger.info("`"+msg_i+"` not found");
+            return;
+        }
+        blk_MailMessage blkm=oblkm.get();
+        blkm.setResult(msg_i.getStrContent());
+    }
+
+
+
+
+
+    private void parseLine
+    (   String line
+    ,   blkMessageInfo bmi
+    )
+    {
+        logger.info(line);
+        if (line.contains("Message-ID"))
+            bmi.setStrMessageId(line);
+        if (line.contains("550"))
+            bmi.setStrContent(line);
+    }
+
+
 }
