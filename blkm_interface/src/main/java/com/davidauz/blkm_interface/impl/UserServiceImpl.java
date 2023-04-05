@@ -1,19 +1,15 @@
 package com.davidauz.blkm_interface.impl;
 
+import com.davidauz.blkm_common.entity.blk_MailMessage;
+import com.davidauz.blkm_common.entity.blk_MailQueue;
 import com.davidauz.blkm_interface.entity.Role;
 import com.davidauz.blkm_interface.entity.User;
 import com.davidauz.blkm_interface.entity.UserValidation;
-import com.davidauz.blkm_interface.service.IdentityServiceException;
-import com.davidauz.blkm_interface.service.UserService;
-import com.davidauz.blkm_interface.entity.Role;
-import com.davidauz.blkm_interface.entity.UserValidation;
-import com.davidauz.blkm_interface.service.IdentityServiceException;
-import com.davidauz.blkm_interface.service.UserService;
-import com.davidauz.blkm_common.entity.blk_MailMessage;
-import com.davidauz.blkm_common.entity.blk_MailQueue;
 import com.davidauz.blkm_interface.repository.RoleRepository;
 import com.davidauz.blkm_interface.repository.UserRepository;
 import com.davidauz.blkm_interface.repository.UserValidationRepository;
+import com.davidauz.blkm_interface.service.IdentityServiceException;
+import com.davidauz.blkm_interface.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;

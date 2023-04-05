@@ -25,6 +25,7 @@ public class blk_MailMessage {
     ,   SENT_ERROR
     ,   ENQUEUED
     ,   SYSTEM_ERROR
+    ,   ERR_RECIPIENT_NOT_FOUND
     }
     // COLUMNS
     @Id

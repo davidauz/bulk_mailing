@@ -4,6 +4,7 @@ import com.davidauz.blkm_common.entity.ConfigurationPair;
 import com.davidauz.blkm_common.entity.blk_MailQueue;
 import com.davidauz.blkm_common.repo.ConfigurationRepository;
 import com.davidauz.blkm_common.repo.MailMessageRepository;
+import com.davidauz.blkm_read_d.service.readEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Optional;

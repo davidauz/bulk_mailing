@@ -1,6 +1,7 @@
 package com.davidauz.blkm_read_d.entity;
 
 
+import com.davidauz.blkm_common.entity.blk_MailMessage;
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,6 +17,8 @@ public class blkMessageInfo {
 	private String strContent;
 
 	private String strMessageId;
+
+	private blk_MailMessage.SENT_STATUS sntStatus;
 
 	public void init() {
 		strMessageId = "";
