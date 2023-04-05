@@ -1,0 +1,18 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="readEmailServiceTest.read_messages_in_inbox" type="JUnit" factoryName="JUnit" nameIsGenerated="true">
+    <module name="blkm_read_d" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="com.davidauz.blkm_read_d.test.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <option name="PACKAGE_NAME" value="com.davidauz.blkm_read_d.test" />
+    <option name="MAIN_CLASS_NAME" value="com.davidauz.blkm_read_d.test.readEmailServiceTest" />
+    <option name="METHOD_NAME" value="read_messages_in_inbox" />
+    <option name="TEST_OBJECT" value="method" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

@@ -76,22 +76,15 @@ public class readEmailService {
             );
             logger.info("Got `"+messages.length+"` messages");
             for (Message message : messages){
-//                msg_i=new blkMessageInfo();
-//                String pappe=getTextFromMessage(message); // , msg_i);
-
-
+                msg_i=new blkMessageInfo();
                 InputStream is = message.getInputStream();
-
                 // read message content and write to file
                 BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-                BufferedWriter writer = new BufferedWriter(new FileWriter("/tmp/poppe"));
                 String line;
-                while ((line = reader.readLine()) != null) {
-                    writer.write(line);
-                    writer.newLine();
-                }
+                while ((line = reader.readLine()) != null)
+                    parseLine(line, msg_i);
                 reader.close();
-                writer.close();
+                update_status(msg_i);
             }
             inbox.close(false);
             store.close();
@@ -108,6 +101,7 @@ public class readEmailService {
         }
         blk_MailMessage blkm=oblkm.get();
         blkm.setResult(msg_i.getStrContent());
+        mailMessageRepo.save(blkm);
     }
 
 
@@ -120,8 +114,10 @@ public class readEmailService {
     )
     {
         logger.info(line);
-        if (line.contains("Message-ID"))
+        if (line.contains("Message-ID")&&line.contains("bm.")) {
+            line = line.substring(line.indexOf("<") + 1, line.indexOf(">"));
             bmi.setStrMessageId(line);
+        }
         if (line.contains("550"))
             bmi.setStrContent(line);
     }
