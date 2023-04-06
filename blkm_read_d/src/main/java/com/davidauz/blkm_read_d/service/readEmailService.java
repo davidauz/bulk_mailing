@@ -46,8 +46,8 @@ public class readEmailService {
 
 // Get messages in the inbox folder
             Message[] arr_messages = inbox.search(
-//              new FlagTerm( new Flags(Flags.Flag.SEEN), false)
-                new FlagTerm(new Flags(Flags.Flag.RECENT), false)
+              new FlagTerm( new Flags(Flags.Flag.SEEN), false)
+//                new FlagTerm(new Flags(Flags.Flag.RECENT), false)
             );
             logger.info("Got `"+arr_messages.length+"` messages");
             ArrayList<Message> mList=new ArrayList<>();
@@ -61,7 +61,6 @@ public class readEmailService {
             for(Message one_message: moved)
                 one_message.setFlag(Flags.Flag.DELETED, true);
             inbox.close(true);
-            store.close();
         }catch(Exception e){
             logger.info("Exception: "+e.getMessage());
         }

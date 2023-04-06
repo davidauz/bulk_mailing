@@ -56,7 +56,7 @@ public class blkm_read_mail_daemon extends SpringBootServletInitializer  {
 
     @Bean
     public ScheduledFuture<?> scheduleMyBackgroundTask(TaskScheduler taskScheduler) {
-        Duration dur= Duration.ofSeconds(5);
+        Duration dur= Duration.ofSeconds(10); // TODO: add interval to configuration
         return taskScheduler.scheduleAtFixedRate(get_rm_background_task(), dur);
     }
 
