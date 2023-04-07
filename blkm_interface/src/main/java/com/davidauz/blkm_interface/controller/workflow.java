@@ -1,5 +1,6 @@
 package com.davidauz.blkm_interface.controller;
 
+import com.davidauz.blkm_common.repo.MailMessageRepository;
 import com.davidauz.blkm_interface.repository.CompanyRepository;
 import com.davidauz.blkm_interface.repository.PersonRepository;
 import com.davidauz.blkm_interface.service.UserService;
@@ -26,6 +27,9 @@ public class workflow {
     @Autowired
     private PersonRepository personRepository;
 
+    @Autowired
+    private MailMessageRepository mmrepo;
+
 
     @GetMapping("/")
     public String home
@@ -40,6 +44,7 @@ public class workflow {
         }else
             name ="AUTH is NULL";
         model.addAttribute("s_auth_message", name );
+        model.addAttribute("num_messages", mmrepo.count());
         model.addAttribute("num_companies", companyRepository.count());
         model.addAttribute("num_people", personRepository.count());
 
