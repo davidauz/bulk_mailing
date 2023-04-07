@@ -29,7 +29,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Link</a>
@@ -132,9 +132,22 @@
 
 
                         <li>
-                            <a href="/projects" class="nav-link px-0 align-middle">
+                            <a href="#submenu4"  data-bs-toggle="collapse" class="nav-link px-0 align-middle ">
                                 <i class="fas fa-toolbox"></i> <span class="ms-1 d-none d-sm-inline">Projects</span></a>
+                            <ul class="collapse nav flex-column ms-1" id="submenu4" data-bs-parent="#menu">
+                                <li class="w-100">
+                                    <a href="/projects" class="nav-link align-middle px-0">
+                                        <i class="fas fa-wrench"></i><span class="ms-1 d-none d-sm-inline">Operations</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/reports" class="nav-link px-0 align-middle">
+                                        <i class="fas fa-font"></i> <span class="ms-1 d-none d-sm-inline">Reports</span>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
+
                         <li>
                             <a href="logout" class="nav-link px-0 align-middle">
                                 <i class="fas fa-unlock"></i><span class="ms-1 d-none d-sm-inline">Logout</span></a>
