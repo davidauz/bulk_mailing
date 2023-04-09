@@ -61,6 +61,15 @@
             <version>1.5.0</version>
         </dependency>
 
+        <dependency><!-- https://mvnrepository.com/artifact/org.webjars/jquery -->
+            <groupId>org.webjars</groupId>
+            <artifactId>jquery</artifactId>
+            <version>3.6.1</version>
+        </dependency>
+
+
+
+
         <!--        <dependency> TODO: investigate wether this is need for tests -->
         <!--            <groupId>org.springframework.boot</groupId>-->
         <!--            <artifactId>spring-boot-starter-test</artifactId>-->
