@@ -16,6 +16,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -46,6 +48,14 @@ public class projectsController {
     ,   @RequestParam(defaultValue = "30") int pageSize
     ) {
         try {
+            String name ="UNKNOWN";
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            if(auth != null) {
+                name = auth.getName();
+            }else
+                name ="AUTH is NULL";
+            model.addAttribute("s_auth_message", name );
+
             List<Project> projects_list = new ArrayList<Project>();
             Pageable paging = PageRequest.of(page - 1, pageSize);
 
