@@ -42,6 +42,15 @@
             <version>3.1.0</version>
         </dependency>
 
+
+        <!-- htmx -->
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>htmx.org</artifactId>
+            <version>1.5.0</version>
+        </dependency>
+
+
         <!--        <dependency> TODO: investigate wether this is need for tests -->
         <!--            <groupId>org.springframework.boot</groupId>-->
         <!--            <artifactId>spring-boot-starter-test</artifactId>-->
