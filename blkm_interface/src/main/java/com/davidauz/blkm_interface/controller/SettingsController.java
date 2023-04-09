@@ -193,7 +193,7 @@ public class SettingsController {
             cfg=new ConfigurationPair();
             cfg.setName(control_ID);
         }
-        if (null==control_value || control_value.equals("on")) {
+        if (null!=control_value && control_value.equals("on")) {
                 cfg.setValue("1");
                 cfgRepo.save(cfg);
                 return "active";
