@@ -30,6 +30,18 @@
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
+
+        <!-- thymeleaf -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>nz.net.ultraq.thymeleaf</groupId>
+            <artifactId>thymeleaf-layout-dialect</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+
         <!--        <dependency> TODO: investigate wether this is need for tests -->
         <!--            <groupId>org.springframework.boot</groupId>-->
         <!--            <artifactId>spring-boot-starter-test</artifactId>-->
