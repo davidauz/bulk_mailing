@@ -32,7 +32,6 @@ public class workflow {
     (
             Model model
     ){
-
         String name ="UNKNOWN";
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if(auth != null) {
@@ -42,7 +41,6 @@ public class workflow {
         model.addAttribute("s_auth_message", name );
         model.addAttribute("num_companies", companyRepository.count());
         model.addAttribute("num_people", personRepository.count());
-
 
         return "dashboard";
     }
