@@ -10,13 +10,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
-    <script type="text/javascript" th:src="@{/webjars/jquery/3.5.1/jquery.min.js}"></script>
-    <script type="text/javascript" th:src="@{/webjars/popper.js/1.16.1-lts/umd/popper.js}"></script>
-    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
     <link th:rel="stylesheet" th:href="@{/css/all.min.css}">
-    <script type="text/javascript" th:src="@{/webjars/hyperscript.org/dist/_hyperscript.js}"></script>
-
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
 </head>
 
 <body>
@@ -32,24 +28,22 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-
-
                 <li class="nav-item dropdown">
+                    <a  class="nav-link dropdown-toggle"
+                        href="#"
+                        id="navbarDropdown"
+                        role="button"
+                        data-bs-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                        th:text="${s_auth_message}"
+                    >
+                    </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Logout</a>
-                        <a class="dropdown-item" href="#">Profile</a>
+                        <a class="dropdown-item" href="/projects">Projects</a>
+                        <a class="dropdown-item" href="/people">People</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                    </div>
-                </li>
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Quick links</a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">Reports</a>
-                        <a class="dropdown-item" href="#">Projects</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Settings</a>
+                        <a class="dropdown-item" href="logout">Logout</a>
                     </div>
                 </li>
             </ul>
@@ -147,7 +141,6 @@
             </section>
         </div>
     </div>
-
 
 
     <!-- page-body-wrapper ends -->
