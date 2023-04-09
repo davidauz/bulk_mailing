@@ -10,9 +10,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+
     <link th:rel="stylesheet" th:href="@{/css/all.min.css}">
-    <script type="text/javascript" th:src="@{/webjars/hyperscript.org/dist/_hyperscript.js}"></script>
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
 </head>
 
 <body>
@@ -21,7 +23,7 @@
 
 <!--Navigation bar-->
     <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #ffffff;" >
-        <a class="navbar-brand" href="#"><img src="/images/company.logo.small.png"></a>
+        <a class="navbar-brand" href="/"><img src="/images/company.logo.small.png"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -40,7 +42,7 @@
                             href="#"
                             id="navbarDropdown"
                             role="button"
-                            data-toggle="dropdown"
+                            data-bs-toggle="dropdown"
                             aria-haspopup="true"
                             aria-expanded="false"
                             th:text="${s_auth_message}"
@@ -163,7 +165,6 @@
             </section>
         </div>
     </div>
-
 
 
     <!-- page-body-wrapper ends -->
