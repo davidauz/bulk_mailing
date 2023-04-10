@@ -361,14 +361,6 @@ public class projectsController {
         return ResponseEntity.ok("success");
     }
 
-//    @PostMapping("/projects/schedule/{projectId}")
-//    public ResponseEntity<String>  proj_scheduling
-//    (   //@RequestBody Map<String, Object> requestData
-//    ) {
-////        do_scheduling(projectId);
-//        return ResponseEntity.ok("merda");
-//    }
-
 //    cannot use @Async, not from the same class...
     public void do_scheduling(Project pro) throws Exception {
         Post post = postRepository.findById(pro.getPostId()).orElseThrow(()->new Exception("Project text is undefined/non existent"));
@@ -377,6 +369,7 @@ public class projectsController {
             blkmm.setSubject(pro.getMailSubject());
             blkmm.setBody(post.getContent());
             blkmm.setRecipient(per.getEmail());
+            blkmm.setIdCampaign(pro.getId());
             mailQ.enqueue(blkmm);
         }
     }
