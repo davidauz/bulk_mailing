@@ -5,14 +5,10 @@
     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
     layout:decorate="~{workflow_layout.html}">
 
-    <head>
+<head>
     <title>Bulk mailing: dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-
-    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
-    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
-    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
-    </head>
+</head>
 
 <body>
 <section layout:fragment="content">
@@ -28,7 +24,7 @@
                         <div class="float-right">
                             <p class="mb-0 text-right">Total messages sent</p>
                             <div class="fluid-container">
-                                <h3 class="font-weight-medium text-right mb-0">65,650</h3>
+                                <h3 class="font-weight-medium text-right mb-0">[[${num_messages}]]</h3>
                             </div>
                         </div>
                     </div>
@@ -48,7 +44,7 @@
                         <div class="float-right">
                             <p class="mb-0 text-right">Total Companies</p>
                             <div class="fluid-container">
-                                <h3 class="font-weight-medium text-right mb-0"><span th:text="${num_companies}"></span></h3>
+                                <h3 class="font-weight-medium text-right mb-0"><a href='/companies' th:text="${num_companies}"></a></h3>
                             </div>
                         </div>
                     </div>
@@ -68,7 +64,7 @@
                         <div class="float-right">
                             <p class="mb-0 text-right">Total people</p>
                             <div class="fluid-container">
-                                <h3 class="font-weight-medium text-right mb-0"><span th:text="${num_people}"></span></h3>
+                                <h3 class="font-weight-medium text-right mb-0"><a href='/people' th:text="${num_people}"></a></h3>
                             </div>
                         </div>
                     </div>
