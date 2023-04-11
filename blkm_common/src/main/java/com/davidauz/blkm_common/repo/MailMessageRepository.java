@@ -39,28 +39,28 @@ public interface MailMessageRepository extends JpaRepository<blk_MailMessage, Lo
     @Query (value="SELECT coalesce(min(id), 0) FROM mail_message WHERE sent_status=:#{#paramstatus.name()}", nativeQuery = true)
     long getMinId(@Param("paramstatus") blk_MailMessage.SENT_STATUS paramstatus);
 
-//    @Query(value=
-//    " SELECT mm.id mailId " +
-//    ", p.id projectId " +
-//    ", p.description " +
-//    ", mm.Result " +
-//    ", mm.recipient " +
-//    ", mm.sentStatus " +
-//    ", mm.subject " +
-//    " FROM blk_MailMessage mm " +
-//    ", Project p " +
-//    " WHERE p.id=mm.idCampaign " +
-//    " AND (:project_desc IS NULL OR p.description=:project_desc) " +
-//    " AND (:subject IS NULL OR mm.subject=:subject) " +
-//    " AND (:Addresse IS NULL OR mm.recipient=:Addresse) " +
-//    " AND (:Status IS NULL OR mm.sentStatus=:Status) "
-//    )
-//    List<Object> findByParameters
-//    (	@Param("project_desc") String project_desc
-//    ,	@Param("subject") String subject
-//    ,	@Param("Addresse") String Addresse
-//    ,	@Param("Status") String Status
-//    );
+    @Query(value=
+    " SELECT mm.id mailId " +
+    ", p.id projectId " +
+    ", p.description " +
+    ", mm.Result " +
+    ", mm.recipient " +
+    ", mm.sentStatus " +
+    ", mm.subject " +
+    " FROM blk_MailMessage mm " +
+    ", Project p " +
+    " WHERE p.id=mm.idCampaign " +
+    " AND (:project_desc IS NULL OR p.description=:project_desc) " +
+    " AND (:subject IS NULL OR mm.subject=:subject) " +
+    " AND (:Addresse IS NULL OR mm.recipient=:Addresse) " +
+    " AND (:Status IS NULL OR mm.sentStatus=:Status) "
+    )
+    List<Object> findByParameters
+    (	@Param("project_desc") String project_desc
+    ,	@Param("subject") String subject
+    ,	@Param("Addresse") String Addresse
+    ,	@Param("Status") String Status
+    );
 
 }
 

@@ -50,19 +50,19 @@ public class reportsController {
 
             List<reportsDTO> msg_list = new ArrayList<>();
             List<Object> msg_page;
-//            msg_page = msgRepo.findByParameters(Project, Subject, Addresse, Status);
-//            for(Object objx: msg_page) {
-//                Object[] obja = (Object[]) objx;
-//                msg_list.add(new reportsDTO
-//                ((Long)obja[0]
-//                ,(Long)obja[1]
-//                ,(String)obja[2]
-//                ,(String)obja[3]
-//                ,(String)obja[4]
-//                ,(String)obja[5]
-//                ,(String)obja[6]
-//                ));
-//            }
+            msg_page = msgRepo.findByParameters(Project, Subject, Addresse, Status);
+            for(Object objx: msg_page) {
+                Object[] obja = (Object[]) objx;
+                msg_list.add(new reportsDTO
+                ((Long)obja[0]
+                ,(Long)obja[1]
+                ,(String)obja[2]
+                ,(String)obja[3]
+                ,(String)obja[4]
+                ,(blk_MailMessage.SENT_STATUS)obja[5]
+                ,(String)obja[6]
+                ));
+            }
 			model.addAttribute("Project", Project);
             model.addAttribute("Subject", Subject);
             model.addAttribute("Addresse", Addresse);
