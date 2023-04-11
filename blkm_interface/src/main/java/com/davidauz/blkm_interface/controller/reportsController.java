@@ -30,16 +30,16 @@ public class reportsController {
     @Autowired
     private MailMessageRepository msgRepo;
 
-    @GetMapping("/reports")
+    @RequestMapping("/reports")
     public String getAll
-    (	Model model
-    ,	@RequestParam(defaultValue = "1") int page
-    ,	@RequestParam(defaultValue = "30") int pageSize
-    ,	@RequestParam(required=false) String Project
-    ,	@RequestParam(required=false) String Subject
-    ,	@RequestParam(required=false) String Addresse
-    ,	@RequestParam(required=false) String Status
-    ) {
+            (	Model model
+                    ,	@RequestParam(defaultValue = "1") int page
+                    ,	@RequestParam(defaultValue = "30") int pageSize
+                    ,	@RequestParam(required=false) String Project
+                    ,	@RequestParam(required=false) String Subject
+                    ,	@RequestParam(required=false) String Addresse
+                    ,	@RequestParam(required=false) String Status
+            ) {
         try {
             String name ="UNKNOWN";
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -50,27 +50,32 @@ public class reportsController {
 
             List<reportsDTO> msg_list = new ArrayList<>();
             List<Object> msg_page;
-            msg_page = msgRepo.findByParameters(Project, Subject, Addresse, Status);
+            msg_page = msgRepo.findByParameters
+                ( (Project!=null && Project.equals("")?null:Project)
+                , (Subject!=null && Subject.equals("")?null:Subject)
+                , (Addresse!=null && Addresse.equals("")?null:Addresse)
+                , (Status!=null && Status.equals("")?null:Status)
+                );
             for(Object objx: msg_page) {
                 Object[] obja = (Object[]) objx;
                 msg_list.add(new reportsDTO
-                ((Long)obja[0]
-                ,(Long)obja[1]
-                ,(String)obja[2]
-                ,(String)obja[3]
-                ,(String)obja[4]
-                ,(blk_MailMessage.SENT_STATUS)obja[5]
-                ,(String)obja[6]
-                ));
+                        ((Long)obja[0]
+                                ,(Long)obja[1]
+                                ,(String)obja[2]
+                                ,(String)obja[3]
+                                ,(String)obja[4]
+                                ,(blk_MailMessage.SENT_STATUS)obja[5]
+                                ,(String)obja[6]
+                        ));
             }
-			model.addAttribute("Project", Project);
+            model.addAttribute("Project", Project);
             model.addAttribute("Subject", Subject);
             model.addAttribute("Addresse", Addresse);
             model.addAttribute("Status", Status);
             model.addAttribute("reports_object", msg_list);
-			model.addAttribute("currentPage", page);
-			model.addAttribute("totalItems", 5);
-			model.addAttribute("totalPages", 5);
+            model.addAttribute("currentPage", page);
+            model.addAttribute("totalItems", 5);
+            model.addAttribute("totalPages", 5);
             model.addAttribute("pageSize", pageSize);
             model.addAttribute("s_auth_message", name );
         } catch (Exception e) {
@@ -81,6 +86,10 @@ public class reportsController {
     }
 
 
+
+
 }
+
+
 
 

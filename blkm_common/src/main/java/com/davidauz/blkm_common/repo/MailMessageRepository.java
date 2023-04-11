@@ -50,10 +50,10 @@ public interface MailMessageRepository extends JpaRepository<blk_MailMessage, Lo
     " FROM blk_MailMessage mm " +
     ", Project p " +
     " WHERE p.id=mm.idCampaign " +
-    " AND (:project_desc IS NULL OR p.description=:project_desc) " +
-    " AND (:subject IS NULL OR mm.subject=:subject) " +
-    " AND (:Addresse IS NULL OR mm.recipient=:Addresse) " +
-    " AND (:Status IS NULL OR mm.sentStatus=:Status) "
+    " AND (:project_desc IS NULL OR p.description LIKE %:project_desc%) " +
+    " AND (:subject IS NULL OR mm.subject LIKE %:subject%) " +
+    " AND (:Addresse IS NULL OR mm.recipient LIKE %:Addresse%) " +
+    " AND (:Status IS NULL OR mm.sentStatus LIKE %:Status%) "
     )
     List<Object> findByParameters
     (	@Param("project_desc") String project_desc
