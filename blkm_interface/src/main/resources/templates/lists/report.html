@@ -47,10 +47,17 @@
                     </tr>
                     </thead>
                     <tbody>
+                    <tr th:each="aRepo : ${reports_object}">
+                        <th scope="row">[[${aRepo.description}]]</th>
+                        <td>[[${aRepo.subject}]]</td>
+                        <td>[[${aRepo.recipient}]]</td>
+                        <td>[[${aRepo.sentStatus}]]</td>
+                        <td>CIPI</td>
+                    </tr>
                     </tbody>
                 </table>
-
             </div>
+
             </form>
 
             <div th:unless="${reports_object.size() > 0}">
