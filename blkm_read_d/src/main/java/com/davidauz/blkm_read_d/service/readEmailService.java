@@ -43,9 +43,14 @@ public class readEmailService {
             inbox.open(Folder.READ_WRITE);
             processed.open(Folder.READ_WRITE);
 
+//            Flags flags = new Flags();
+//            flags.add(Flags.Flag.SEEN);
+//            flags.add(Flags.Flag.RECENT);
+
 // Get messages in the inbox folder
             Message[] arr_messages = inbox.search(
-              new FlagTerm( new Flags(Flags.Flag.SEEN), false)
+//              new FlagTerm( flags, true) // TODO: decide if it is SEEN or RECENT
+            new FlagTerm( new Flags(Flags.Flag.SEEN), false)
 //                new FlagTerm(new Flags(Flags.Flag.RECENT), false)
             );
             logger.info("Got `"+arr_messages.length+"` messages");
@@ -114,6 +119,10 @@ public class readEmailService {
         }
         if (line.contains("554")) {
             bmi.setSntStatus(EmailStatusConstants.ERR_RECIPIENT_MAILBOX_FULL);
+            bmi.setStrContent(line);
+        }
+        if (line.contains("552")) {
+            bmi.setSntStatus(EmailStatusConstants.ERR_MAILBOX_NOT_FOUND);
             bmi.setStrContent(line);
         }
     }
