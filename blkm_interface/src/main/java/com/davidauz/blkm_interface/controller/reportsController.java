@@ -49,18 +49,28 @@ public class reportsController {
                 name ="AUTH is NULL";
 
             List<reportsDTO> msg_list = new ArrayList<>();
-            Pageable paging = PageRequest.of(page - 1, pageSize);
             List<Object> msg_page;
-            msg_page = msgRepo.findByParameters(Project, Subject, Addresse, Status);
+//            msg_page = msgRepo.findByParameters(Project, Subject, Addresse, Status);
+//            for(Object objx: msg_page) {
+//                Object[] obja = (Object[]) objx;
+//                msg_list.add(new reportsDTO
+//                ((Long)obja[0]
+//                ,(Long)obja[1]
+//                ,(String)obja[2]
+//                ,(String)obja[3]
+//                ,(String)obja[4]
+//                ,(String)obja[5]
+//                ,(String)obja[6]
+//                ));
+//            }
 			model.addAttribute("Project", Project);
             model.addAttribute("Subject", Subject);
             model.addAttribute("Addresse", Addresse);
             model.addAttribute("Status", Status);
-//			msg_list = msg_page.getContent();
             model.addAttribute("reports_object", msg_list);
-//			model.addAttribute("currentPage", msg_page.getNumber() + 1);
-//			model.addAttribute("totalItems", msg_page.getTotalElements());
-//			model.addAttribute("totalPages", msg_page.getTotalPages());
+			model.addAttribute("currentPage", page);
+			model.addAttribute("totalItems", 5);
+			model.addAttribute("totalPages", 5);
             model.addAttribute("pageSize", pageSize);
             model.addAttribute("s_auth_message", name );
         } catch (Exception e) {
