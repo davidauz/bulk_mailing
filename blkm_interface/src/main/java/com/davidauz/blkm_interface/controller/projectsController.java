@@ -1,11 +1,12 @@
 package com.davidauz.blkm_interface.controller;
 
+import com.davidauz.blkm_common.entity.*;
+import com.davidauz.blkm_common.repo.CompanyRepository;
+import com.davidauz.blkm_common.repo.GroupRepository;
+import com.davidauz.blkm_common.repo.PersonRepository;
+import com.davidauz.blkm_common.repo.ProjectsRepository;
 import com.davidauz.blkm_interface.entity.*;
 import com.davidauz.blkm_interface.repository.*;
-import com.davidauz.blkm_interface.entity.*;
-import com.davidauz.blkm_interface.repository.*;
-import com.davidauz.blkm_common.entity.blk_MailMessage;
-import com.davidauz.blkm_common.entity.blk_MailQueue;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -361,14 +362,6 @@ public class projectsController {
         return ResponseEntity.ok("success");
     }
 
-//    @PostMapping("/projects/schedule/{projectId}")
-//    public ResponseEntity<String>  proj_scheduling
-//    (   //@RequestBody Map<String, Object> requestData
-//    ) {
-////        do_scheduling(projectId);
-//        return ResponseEntity.ok("merda");
-//    }
-
 //    cannot use @Async, not from the same class...
     public void do_scheduling(Project pro) throws Exception {
         Post post = postRepository.findById(pro.getPostId()).orElseThrow(()->new Exception("Project text is undefined/non existent"));
@@ -377,6 +370,7 @@ public class projectsController {
             blkmm.setSubject(pro.getMailSubject());
             blkmm.setBody(post.getContent());
             blkmm.setRecipient(per.getEmail());
+            blkmm.setIdCampaign(pro.getId());
             mailQ.enqueue(blkmm);
         }
     }

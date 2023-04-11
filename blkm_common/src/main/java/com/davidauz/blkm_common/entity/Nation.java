@@ -1,4 +1,4 @@
-package com.davidauz.blkm_interface.entity;
+package com.davidauz.blkm_common.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

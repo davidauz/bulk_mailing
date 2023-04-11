@@ -1,12 +1,9 @@
 package com.davidauz.blkm_interface.controller;
 
-import com.davidauz.blkm_interface.entity.Group;
-import com.davidauz.blkm_interface.entity.Person;
-import com.davidauz.blkm_interface.repository.GroupRepository;
-import com.davidauz.blkm_interface.repository.PersonRepository;
-import com.davidauz.blkm_interface.entity.Person;
-import com.davidauz.blkm_interface.repository.GroupRepository;
-import com.davidauz.blkm_interface.repository.PersonRepository;
+import com.davidauz.blkm_common.entity.Group;
+import com.davidauz.blkm_common.entity.Person;
+import com.davidauz.blkm_common.repo.GroupRepository;
+import com.davidauz.blkm_common.repo.PersonRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

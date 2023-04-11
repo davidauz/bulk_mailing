@@ -1,11 +1,8 @@
 package com.davidauz.blkm_interface.controller;
 
 import com.davidauz.blkm_common.repo.MailMessageRepository;
-import com.davidauz.blkm_interface.repository.CompanyRepository;
-import com.davidauz.blkm_interface.repository.PersonRepository;
-import com.davidauz.blkm_interface.service.UserService;
-import com.davidauz.blkm_interface.repository.CompanyRepository;
-import com.davidauz.blkm_interface.repository.PersonRepository;
+import com.davidauz.blkm_common.repo.CompanyRepository;
+import com.davidauz.blkm_common.repo.PersonRepository;
 import com.davidauz.blkm_interface.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;

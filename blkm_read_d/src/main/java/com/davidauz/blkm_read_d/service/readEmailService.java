@@ -1,5 +1,6 @@
 package com.davidauz.blkm_read_d.service;
 
+import com.davidauz.blkm_common.entity.EmailStatusConstants;
 import com.davidauz.blkm_common.entity.blk_MailMessage;
 import com.davidauz.blkm_common.repo.ConfigurationRepository;
 import com.davidauz.blkm_common.repo.MailMessageRepository;
@@ -14,8 +15,6 @@ import org.springframework.stereotype.Service;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Optional;
-
-import static com.davidauz.blkm_common.entity.blk_MailMessage.SENT_STATUS.ERR_RECIPIENT_NOT_FOUND;
 
 @Service
 public class readEmailService {
@@ -44,9 +43,14 @@ public class readEmailService {
             inbox.open(Folder.READ_WRITE);
             processed.open(Folder.READ_WRITE);
 
+//            Flags flags = new Flags();
+//            flags.add(Flags.Flag.SEEN);
+//            flags.add(Flags.Flag.RECENT);
+
 // Get messages in the inbox folder
             Message[] arr_messages = inbox.search(
-              new FlagTerm( new Flags(Flags.Flag.SEEN), false)
+//              new FlagTerm( flags, true) // TODO: decide if it is SEEN or RECENT
+            new FlagTerm( new Flags(Flags.Flag.SEEN), false)
 //                new FlagTerm(new Flags(Flags.Flag.RECENT), false)
             );
             logger.info("Got `"+arr_messages.length+"` messages");
@@ -110,7 +114,15 @@ public class readEmailService {
             bmi.setStrMessageId(line);
         }
         if (line.contains("550")) {
-            bmi.setSntStatus(ERR_RECIPIENT_NOT_FOUND);
+            bmi.setSntStatus(EmailStatusConstants.ERR_RECIPIENT_NOT_FOUND);
+            bmi.setStrContent(line);
+        }
+        if (line.contains("554")) {
+            bmi.setSntStatus(EmailStatusConstants.ERR_RECIPIENT_MAILBOX_FULL);
+            bmi.setStrContent(line);
+        }
+        if (line.contains("552")) {
+            bmi.setSntStatus(EmailStatusConstants.ERR_MAILBOX_NOT_FOUND);
             bmi.setStrContent(line);
         }
     }

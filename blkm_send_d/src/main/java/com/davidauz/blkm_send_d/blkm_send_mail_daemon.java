@@ -17,12 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.time.Duration;
 import java.util.concurrent.ScheduledFuture;
 
-@SpringBootApplication(scanBasePackages = "com.davidauz.blkm_common") //  this annotation is a composition of the
-// @Configuration,
-// @ComponentScan,
-// and @EnableAutoConfiguration annotations.
-// With this default setting, Spring Boot will auto scan for components in the current package
-// (containing the @SpringBoot main class) and its sub packages.
+@SpringBootApplication(scanBasePackages = "com.davidauz.blkm_common")
 @EntityScan(basePackages={"com.davidauz.blkm_common"})
 @ComponentScan(basePackages={"com.davidauz.bulk_mailing", "com.davidauz.blkm_common", "com.davidauz.blkm_send_d"})
 @EnableJpaRepositories(basePackages = "com.davidauz.blkm_common")

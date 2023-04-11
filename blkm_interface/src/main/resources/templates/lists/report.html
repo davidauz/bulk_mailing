@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:th="https://www.thymeleaf.org"
+    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{workflow_layout.html}"
+>
+    <head>
+    <title>Bulk mailing: report</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    </head>
+<body>
+<section layout:fragment="content">
+
+
+
+    <div class="container-fluid" style="col-auto ; col-md-4, col-xl-4">
+        <h2 class="text-center">Report</h2>
+
+        <div th:if="${error_message != null}" class="alert alert-success alert-dismissible fade show text-center message"
+             role="alert">
+            [[${error_message}]]
+            <button type="button" class="close btn-sm" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div>
+            <form th:action="@{/reports}" method="post" id="searchForm" >
+            <div th:if="${reports_object.size() > 0}">
+
+                <table class="table-responsive">
+                    <thead class="thead-light">
+                    <tr>
+                        <th scope="col">Project</th>
+                        <th scope="col">Mail subject</th>
+                        <th scope="col">Addressee</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                    <tr>
+                        <th scope="col"><input type="text" name="Project" id="Project"></th>
+                        <th scope="col"><input type="text" name="Subject" id="Subject"></th>
+                        <th scope="col"><input type="text" name="Addressee" id="Addressee"></th>
+                        <th scope="col"><input type="text" name="Status" id="Status"></th>
+                        <th scope="col">&nbsp;</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="aRepo : ${reports_object}">
+                        <th scope="row">[[${aRepo.description}]]</th>
+                        <td>[[${aRepo.subject}]]</td>
+                        <td>[[${aRepo.recipient}]]</td>
+                        <td>[[${aRepo.sentStatus}]]</td>
+                        <td></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <input type="submit" value="Search" class="btn btn-primary" />
+
+            </form>
+
+            <div th:unless="${reports_object.size() > 0}">
+                <span>No data found!</span>
+            </div>
+
+        </div>
+    </div>
+
+
+
+</section>
+</body>
+</html>

@@ -18,7 +18,7 @@ public class blkMessageInfo {
 
 	private String strMessageId;
 
-	private blk_MailMessage.SENT_STATUS sntStatus;
+	private String sntStatus;
 
 	public void init() {
 		strMessageId = "";
