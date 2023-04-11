@@ -19,14 +19,6 @@ import java.sql.Timestamp;
 public class blk_MailMessage {
     private static final long serialVersionUID = 1L;
 
-
-    public enum SENT_STATUS
-    {   SENT_SUCCESS
-    ,   SENT_ERROR
-    ,   ENQUEUED
-    ,   SYSTEM_ERROR
-    ,   ERR_RECIPIENT_NOT_FOUND
-    }
     // COLUMNS
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,9 +42,8 @@ public class blk_MailMessage {
     @Column
     private Timestamp timeSent;
 
-    @Column
-    @Enumerated(EnumType.STRING)
-    private SENT_STATUS sentStatus;
+    @Column(nullable=false)
+    private String sentStatus;
 
     @Column
     private Long idCampaign;

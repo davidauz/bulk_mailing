@@ -1,11 +1,12 @@
 package com.davidauz.blkm_interface.controller;
 
+import com.davidauz.blkm_common.entity.*;
+import com.davidauz.blkm_common.repo.CompanyRepository;
+import com.davidauz.blkm_common.repo.GroupRepository;
+import com.davidauz.blkm_common.repo.PersonRepository;
+import com.davidauz.blkm_common.repo.ProjectsRepository;
 import com.davidauz.blkm_interface.entity.*;
 import com.davidauz.blkm_interface.repository.*;
-import com.davidauz.blkm_interface.entity.*;
-import com.davidauz.blkm_interface.repository.*;
-import com.davidauz.blkm_common.entity.blk_MailMessage;
-import com.davidauz.blkm_common.entity.blk_MailQueue;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;

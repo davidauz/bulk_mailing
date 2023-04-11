@@ -22,6 +22,6 @@ public class reportsDTO {
 	private String description;
 	private String Result;
 	private String recipient;
-	private blk_MailMessage.SENT_STATUS sentStatus;
+	private String sentStatus;
 	private String subject;
 }

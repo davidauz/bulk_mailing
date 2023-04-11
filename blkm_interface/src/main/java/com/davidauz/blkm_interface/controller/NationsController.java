@@ -1,7 +1,7 @@
 package com.davidauz.blkm_interface.controller;
 
-import com.davidauz.blkm_interface.entity.Nation;
-import com.davidauz.blkm_interface.repository.NationRepository;
+import com.davidauz.blkm_common.entity.Nation;
+import com.davidauz.blkm_common.repo.NationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;

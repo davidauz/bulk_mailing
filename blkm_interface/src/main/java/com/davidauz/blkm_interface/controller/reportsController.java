@@ -64,7 +64,7 @@ public class reportsController {
                                 ,(String)obja[2]
                                 ,(String)obja[3]
                                 ,(String)obja[4]
-                                ,(blk_MailMessage.SENT_STATUS)obja[5]
+                                ,(String)obja[5]
                                 ,(String)obja[6]
                         ));
             }

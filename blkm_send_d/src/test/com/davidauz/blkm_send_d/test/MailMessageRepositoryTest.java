@@ -31,7 +31,7 @@ class MailMessageRepositoryTest {
 
     @Test
     public void test_min_id() {
-        long smallest_id = mailMessageRepo.getMinId(blk_MailMessage.SENT_STATUS.ENQUEUED);
+        long smallest_id = mailMessageRepo.getMinId(EmailStatusConstants.ENQUEUED);
         logger.info("Smallest enqueued ID : " + smallest_id);
     }
 

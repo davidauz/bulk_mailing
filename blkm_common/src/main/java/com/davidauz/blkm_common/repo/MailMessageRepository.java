@@ -1,5 +1,6 @@
 package com.davidauz.blkm_common.repo;
 
+import com.davidauz.blkm_common.entity.EmailStatusConstants;
 import com.davidauz.blkm_common.entity.blk_MailMessage;
 import com.davidauz.blkm_common.entity.reportsDTO;
 import org.springframework.data.domain.Page;
@@ -24,7 +25,7 @@ public interface MailMessageRepository extends JpaRepository<blk_MailMessage, Lo
 
     Page<blk_MailMessage> findBySubjectContaining(String keyword, Pageable paging);
 
-    Long countBySentStatus(blk_MailMessage.SENT_STATUS param_status);
+    Long countBySentStatus(String param_status);
 
     @Transactional // needs to be executed inside a transaction
     @Modifying
@@ -36,8 +37,8 @@ public interface MailMessageRepository extends JpaRepository<blk_MailMessage, Lo
     @Query(value = "update config set value=1+value where name='heartbeat_r';", nativeQuery = true)
     void update_heart_beat_r(); // TODO: pass update field name as parameter
 
-    @Query (value="SELECT coalesce(min(id), 0) FROM mail_message WHERE sent_status=:#{#paramstatus.name()}", nativeQuery = true)
-    long getMinId(@Param("paramstatus") blk_MailMessage.SENT_STATUS paramstatus);
+    @Query (value="SELECT coalesce(min(id), 0) FROM mail_message WHERE sent_status=:paramstatus", nativeQuery = true)
+    long getMinId(@Param("paramstatus") String paramstatus);
 
     @Query(value=
     " SELECT mm.id mailId " +

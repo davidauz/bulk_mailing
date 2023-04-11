@@ -1,5 +1,6 @@
 package com.davidauz.blkm_common.impl;
 
+import com.davidauz.blkm_common.entity.EmailStatusConstants;
 import com.davidauz.blkm_common.entity.blk_MailMessage;
 import com.davidauz.blkm_common.entity.blk_MailQueue;
 import com.davidauz.blkm_common.repo.ConfigurationRepository;
@@ -23,7 +24,7 @@ public class MailQueueImpl implements blk_MailQueue {
 
     @Override
     public void enqueue(blk_MailMessage mmessage) {
-        mmessage.setSentStatus(blk_MailMessage.SENT_STATUS.ENQUEUED);
+        mmessage.setSentStatus(EmailStatusConstants.ENQUEUED);
         mmessage.setTimeEnqueued(new Timestamp(Calendar.getInstance().getTime().getTime()));
         mailMessageRepo.save(mmessage);
     }

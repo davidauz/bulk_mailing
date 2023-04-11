@@ -1,6 +1,7 @@
 package com.davidauz.blkm_send_d;
 
 import com.davidauz.blkm_common.entity.ConfigurationPair;
+import com.davidauz.blkm_common.entity.EmailStatusConstants;
 import com.davidauz.blkm_common.entity.blk_MailMessage;
 import com.davidauz.blkm_common.repo.ConfigurationRepository;
 import com.davidauz.blkm_common.repo.MailMessageRepository;
@@ -73,13 +74,13 @@ public class sendEmailService {
             JMailSender.send(mimeMessage);
             now_timestamp = new Timestamp(Calendar.getInstance().getTime().getTime());
             blkm.setTimeSent(now_timestamp);
-            blkm.setSentStatus(blk_MailMessage.SENT_STATUS.SENT_SUCCESS);
+            blkm.setSentStatus(EmailStatusConstants.SENT_SUCCESS);
             mailMessageRepo.save(blkm);
             mda.setValue(String.valueOf( now_timestamp ));
             cfgRepo.save(mda);
         } catch (MessagingException e) {
             logger.error("Error in message id=`"+mail_id+"`");
-            blkm.setSentStatus(blk_MailMessage.SENT_STATUS.SYSTEM_ERROR);
+            blkm.setSentStatus(EmailStatusConstants.SYSTEM_ERROR);
             mailMessageRepo.save(blkm);
         }
 
@@ -107,7 +108,7 @@ public class sendEmailService {
         ,   smallest_id=0
         ;
 
-        if(0==mailMessageRepo.countBySentStatus(blk_MailMessage.SENT_STATUS.ENQUEUED))
+        if(0==mailMessageRepo.countBySentStatus(EmailStatusConstants.ENQUEUED))
             return;
         try{
         o_mda= cfgRepo.findByName("last_send_timestamp");
@@ -127,7 +128,7 @@ public class sendEmailService {
             if(present_time_diff<minimum_time_diff)
                 Thread.sleep(minimum_time_diff);
         }
-            smallest_id=mailMessageRepo.getMinId(blk_MailMessage.SENT_STATUS.ENQUEUED);
+            smallest_id=mailMessageRepo.getMinId(EmailStatusConstants.ENQUEUED);
             sendOneEmail(smallest_id);
         } catch (Exception e) {
             logger.error("Error in message id=`"+smallest_id+"`");
