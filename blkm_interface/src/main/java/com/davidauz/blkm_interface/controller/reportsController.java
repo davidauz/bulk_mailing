@@ -90,7 +90,19 @@ public class reportsController {
 		return "lists/report";
 	}
 
-
+	@GetMapping("/reports/delete")
+	public String deleteMessage
+	(	Model model
+	,	@RequestParam(value="pg",defaultValue = "1") int page
+	,	@RequestParam(value="ps",defaultValue = "30") int pageSize
+	,	@RequestParam(value="pr",required=false) String Project
+	,	@RequestParam(value="su",required=false) String Subject
+	,	@RequestParam(value="ad",required=false) String Addressee
+	,	@RequestParam(value="st",required=false) String Status
+	,	@RequestParam(value="de",required=false) long delId
+	){
+		return getAll(model, page, pageSize, Project, Subject, Addressee, Status );
+	}
 
 
 }

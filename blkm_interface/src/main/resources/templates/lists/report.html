@@ -52,13 +52,21 @@
                         <td>[[${aRepo.subject}]]</td>
                         <td><a th:href="@{/people/edit/{id}(id=${aRepo.idRecipient})}">[[${aRepo.recipient}]]</a></td>
                         <td>[[${aRepo.sentStatus}]]</td>
-                        <td></td>
+                        <td>
+                            <a
+                                    th:href="@{/reports/delete(pg=${currentPage}, ps=${pageSize}, pr=${Project}, su=${Subject}, ad=${Addressee}, st=${Status}, de=${aRepo.mailId})}"
+                                    id="btnDelete"
+                            title="Delete this message"
+                            onclick="return confirm('Are you sure you wish to delete this message?')"
+                            ><i class="fas fa-trash"></i></a>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
             </div>
 
             <input type="submit" value="Search" class="btn btn-primary" />
+            <a th:href="@{/reports}">Refresh</a>
 
             </form>
 
