@@ -48,9 +48,9 @@
                     </thead>
                     <tbody>
                     <tr th:each="aRepo : ${reports_object}">
-                        <th scope="row">[[${aRepo.description}]]</th>
+                        <th scope="row"><a th:href="@{/projects/edit/{id}(id=${aRepo.projectId})}">[[${aRepo.description}]]</a></th>
                         <td>[[${aRepo.subject}]]</td>
-                        <td>[[${aRepo.recipient}]]</td>
+                        <td><a th:href="@{/people/edit/{id}(id=${aRepo.idRecipient})}">[[${aRepo.recipient}]]</a></td>
                         <td>[[${aRepo.sentStatus}]]</td>
                         <td></td>
                     </tr>
