@@ -27,6 +27,9 @@ public class blk_MailMessage {
     @Column(nullable=false)
     private String subject;
 
+    @Column
+    private Long idRecipient;
+
     @Column(nullable=false)
     private String recipient;
 

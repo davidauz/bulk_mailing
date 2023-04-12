@@ -22,6 +22,7 @@ public class reportsDTO {
 	private String description;
 	private String Result;
 	private String recipient;
+	private Long idRecipient;
 	private String sentStatus;
 	private String subject;
 }

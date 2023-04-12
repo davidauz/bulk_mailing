@@ -125,6 +125,11 @@ public class readEmailService {
             bmi.setSntStatus(EmailStatusConstants.ERR_MAILBOX_NOT_FOUND);
             bmi.setStrContent(line);
         }
+        if (line.contains("server unavailable")) {
+            bmi.setSntStatus(EmailStatusConstants.ERR_SERVER_UNAVAILABLE);
+            bmi.setStrContent(line);
+        }
+
     }
 
 

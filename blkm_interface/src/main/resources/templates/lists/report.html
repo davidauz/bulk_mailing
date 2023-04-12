@@ -17,7 +17,7 @@
     <div class="container-fluid" style="col-auto ; col-md-4, col-xl-4">
         <h2 class="text-center">Report</h2>
 
-        <div th:if="${error_message != null}" class="alert alert-success alert-dismissible fade show text-center message"
+        <div th:if="${error_message != null}" class="alert alert-success alert-dismissible fade show text-center message col-md-6"
              role="alert">
             [[${error_message}]]
             <button type="button" class="close btn-sm" data-dismiss="alert" aria-label="Close">
@@ -39,10 +39,10 @@
                         <th scope="col">Actions</th>
                     </tr>
                     <tr>
-                        <th scope="col"><input type="text" name="Project" id="Project"></th>
-                        <th scope="col"><input type="text" name="Subject" id="Subject"></th>
-                        <th scope="col"><input type="text" name="Addressee" id="Addressee"></th>
-                        <th scope="col"><input type="text" name="Status" id="Status"></th>
+                        <th scope="col"><input type="text" name="Project" id="Project"  th:value="${Project}"></th>
+                        <th scope="col"><input type="text" name="Subject" id="Subject"  th:value="${Subject}"></th>
+                        <th scope="col"><input type="text" name="Addressee" id="Addressee" th:value="${Addressee}"></th>
+                        <th scope="col"><input type="text" name="Status" id="Status"  th:value="${Status}"></th>
                         <th scope="col">&nbsp;</th>
                     </tr>
                     </thead>

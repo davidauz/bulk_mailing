@@ -46,6 +46,7 @@ public interface MailMessageRepository extends JpaRepository<blk_MailMessage, Lo
     ", p.description " +
     ", mm.Result " +
     ", mm.recipient " +
+    ", mm.idRecipient " +
     ", mm.sentStatus " +
     ", mm.subject " +
     " FROM blk_MailMessage mm " +

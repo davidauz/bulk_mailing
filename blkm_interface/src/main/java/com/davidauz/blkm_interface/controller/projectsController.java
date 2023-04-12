@@ -370,6 +370,7 @@ public class projectsController {
             blkmm.setSubject(pro.getMailSubject());
             blkmm.setBody(post.getContent());
             blkmm.setRecipient(per.getEmail());
+            blkmm.setIdRecipient(per.getPersonId());
             blkmm.setIdCampaign(pro.getId());
             mailQ.enqueue(blkmm);
         }

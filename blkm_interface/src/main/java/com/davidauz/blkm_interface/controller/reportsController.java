@@ -27,68 +27,74 @@ import java.util.*;
 @Controller
 public class reportsController {
 
-    @Autowired
-    private MailMessageRepository msgRepo;
+	@Autowired
+	private MailMessageRepository msgRepo;
 
-    @RequestMapping("/reports")
-    public String getAll
-            (	Model model
-                    ,	@RequestParam(defaultValue = "1") int page
-                    ,	@RequestParam(defaultValue = "30") int pageSize
-                    ,	@RequestParam(required=false) String Project
-                    ,	@RequestParam(required=false) String Subject
-                    ,	@RequestParam(required=false) String Addresse
-                    ,	@RequestParam(required=false) String Status
-            ) {
-        try {
-            String name ="UNKNOWN";
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            if(auth != null) {
-                name = auth.getName();
-            }else
-                name ="AUTH is NULL";
+	@RequestMapping("/reports")
+	public String getAll
+	(	Model model
+	,	@RequestParam(defaultValue = "1") int page
+	,	@RequestParam(defaultValue = "30") int pageSize
+	,	@RequestParam(required=false) String Project
+	,	@RequestParam(required=false) String Subject
+	,	@RequestParam(required=false) String Addressee
+	,	@RequestParam(required=false) String Status
+	) {
+		List<reportsDTO> msg_list = new ArrayList<>();
+		String name ="UNKNOWN";
+		try {
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			if(auth != null) {
+				name = auth.getName();
+			}else
+				name ="AUTH is NULL";
 
-            List<reportsDTO> msg_list = new ArrayList<>();
-            List<Object> msg_page;
-            msg_page = msgRepo.findByParameters
-                ( (Project!=null && Project.equals("")?null:Project)
-                , (Subject!=null && Subject.equals("")?null:Subject)
-                , (Addresse!=null && Addresse.equals("")?null:Addresse)
-                , (Status!=null && Status.equals("")?null:Status)
-                );
-            for(Object objx: msg_page) {
-                Object[] obja = (Object[]) objx;
-                msg_list.add(new reportsDTO
-                        ((Long)obja[0]
-                                ,(Long)obja[1]
-                                ,(String)obja[2]
-                                ,(String)obja[3]
-                                ,(String)obja[4]
-                                ,(String)obja[5]
-                                ,(String)obja[6]
-                        ));
-            }
-            model.addAttribute("Project", Project);
-            model.addAttribute("Subject", Subject);
-            model.addAttribute("Addresse", Addresse);
-            model.addAttribute("Status", Status);
-            model.addAttribute("reports_object", msg_list);
-            model.addAttribute("currentPage", page);
-            model.addAttribute("totalItems", 5);
-            model.addAttribute("totalPages", 5);
-            model.addAttribute("pageSize", pageSize);
-            model.addAttribute("s_auth_message", name );
-        } catch (Exception e) {
-            model.addAttribute("error_message", e.getMessage());
-        }
+			List<Object> msg_page;
 
-        return "lists/report";
-    }
+			msg_page = msgRepo.findByParameters
+			( (Project==null || 0== Project.length() ?null:Project)
+			, (Subject == null || 0== Subject.length() ?null:Subject)
+			, (Addressee ==null || 0== Addressee.length() ?null:Addressee)
+			, (Status ==null || 0== Status.length() ?null:Status)
+			);
+			for(Object objx: msg_page) {
+				Object[] obja = (Object[]) objx;
+
+				msg_list.add(new reportsDTO
+				((Long)obja[0]		// dto ID (useless)
+				,(Long)obja[1]		// projectId
+				,(String)obja[2]    // description
+				,(String)obja[3]    // Result
+				,(String)obja[4]   // recipient
+				,(Long)obja[5]      // idRecipient
+				,(String)obja[6]    // sentStatus
+				,(String)obja[7]    // subject
+				));
+			}
+
+		} catch (Exception e) {
+			model.addAttribute("error_message", e.getMessage());
+		}
+
+		model.addAttribute("Project", Project);
+		model.addAttribute("Subject", Subject);
+		model.addAttribute("Addressee", Addressee);
+		model.addAttribute("Status", Status);
+		model.addAttribute("reports_object", msg_list);
+		model.addAttribute("currentPage", page);
+		model.addAttribute("totalItems", 5);
+		model.addAttribute("totalPages", 5);
+		model.addAttribute("pageSize", pageSize);
+		model.addAttribute("s_auth_message", name );
+
+		return "lists/report";
+	}
 
 
 
 
 }
+
 
 
 
