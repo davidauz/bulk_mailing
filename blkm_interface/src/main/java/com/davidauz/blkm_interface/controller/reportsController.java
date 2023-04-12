@@ -101,6 +101,7 @@ public class reportsController {
 	,	@RequestParam(value="st",required=false) String Status
 	,	@RequestParam(value="de",required=false) long delId
 	){
+		msgRepo.deleteById(delId);
 		return getAll(model, page, pageSize, Project, Subject, Addressee, Status );
 	}
 
