@@ -48,11 +48,12 @@ public class readEmailService {
 //            flags.add(Flags.Flag.RECENT);
 
 // Get messages in the inbox folder
-            Message[] arr_messages = inbox.search(
+            Message[] arr_messages = inbox.getMessages();
+//            search(
 //              new FlagTerm( flags, true) // TODO: decide if it is SEEN or RECENT
-            new FlagTerm( new Flags(Flags.Flag.SEEN), false)
+//            new FlagTerm( new Flags(Flags.Flag.SEEN), false)
 //                new FlagTerm(new Flags(Flags.Flag.RECENT), false)
-            );
+//            );
             logger.info("Got `"+arr_messages.length+"` messages");
             ArrayList<Message> mList=new ArrayList<>();
             for (Message one_message : arr_messages) {
@@ -90,12 +91,14 @@ public class readEmailService {
     private void update_status(blkMessageInfo msg_i) {
         Optional<blk_MailMessage> oblkm = mailMessageRepo.findByMessageId(msg_i.getStrMessageId());
         if(!oblkm.isPresent()){
-            logger.info("`"+msg_i+"` not found");
+            logger.info("`"+msg_i.getStrMessageId()+"` not found");
             return;
         }
         blk_MailMessage blkm=oblkm.get();
         blkm.setResult(msg_i.getStrContent());
         blkm.setSentStatus(msg_i.getSntStatus());
+        if(null==blkm.getSentStatus())
+            blkm.setSentStatus(EmailStatusConstants.ERR_UNDEFINED);
         mailMessageRepo.save(blkm);
     }
 
@@ -108,28 +111,16 @@ public class readEmailService {
     ,   blkMessageInfo bmi
     )
     {
-        logger.info(line);
         if (line.contains("Message-ID")&&line.contains("bm.")) {
             line = line.substring(line.indexOf("<") + 1, line.indexOf(">"));
             bmi.setStrMessageId(line);
         }
-        if (line.contains("550")) {
-            bmi.setSntStatus(EmailStatusConstants.ERR_RECIPIENT_NOT_FOUND);
-            bmi.setStrContent(line);
+        for(String[] str : EmailStatusConstants.error_codes_table) {
+            if (line.contains(str[0])) {
+                bmi.setSntStatus(str[1]);
+                bmi.setStrContent(line);
+            }
         }
-        if (line.contains("554")) {
-            bmi.setSntStatus(EmailStatusConstants.ERR_RECIPIENT_MAILBOX_FULL);
-            bmi.setStrContent(line);
-        }
-        if (line.contains("552")) {
-            bmi.setSntStatus(EmailStatusConstants.ERR_MAILBOX_NOT_FOUND);
-            bmi.setStrContent(line);
-        }
-        if (line.contains("server unavailable")) {
-            bmi.setSntStatus(EmailStatusConstants.ERR_SERVER_UNAVAILABLE);
-            bmi.setStrContent(line);
-        }
-
     }
 
 

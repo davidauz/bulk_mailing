@@ -275,7 +275,7 @@
 										  name="sendingRandomDelay"
 										  placeholder="500 (ms)"
 										  th:value="${settings_map.get('sendingRandomDelay')}"
-								/>
+								/> ms
 							</div>
 						</div>
 
@@ -303,7 +303,7 @@
 										  name="minPauseBatch"
 										  placeholder="5000 (ms)"
 										  th:value="${settings_map.get('minPauseBatch')}"
-								/>
+								/> ms
 							</div>
 						</div>
 
@@ -320,7 +320,7 @@
 								/>
 							</div>
 						</div>
-#
+
 						<div class="form-check form-switch">
 							<input th:if="'on'==${settings_map.get('message_send_randomize')}" checked=checked
 								   class="form_read form-check-input"

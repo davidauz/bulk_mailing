@@ -17,10 +17,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class sendEmailService {
@@ -99,7 +96,9 @@ public class sendEmailService {
 
     public void send_messages_in_queue() {
         ConfigurationPair mda;
-        Optional<ConfigurationPair> o_mda;
+        Optional<ConfigurationPair> o_lst
+        ,   o_rnd
+        ;
         Timestamp now_timestamp
         ,        last_sent_timestamp
         ;
@@ -107,19 +106,23 @@ public class sendEmailService {
         ,   present_time_diff
         ,   smallest_id=0
         ;
+        Random random = new Random();
+        int randomNumber;
+
 
         if(0==mailMessageRepo.countBySentStatus(EmailStatusConstants.ENQUEUED))
             return;
         try{
-        o_mda= cfgRepo.findByName("last_send_timestamp");
-        if(o_mda.isPresent()){
+        o_lst= cfgRepo.findByName("last_send_timestamp");
+        o_rnd= cfgRepo.findByName("message_send_randomize");
+        if(o_lst.isPresent()){
             now_timestamp = new Timestamp(Calendar.getInstance().getTime().getTime());
-            mda=o_mda.get();
+            mda=o_lst.get();
             last_sent_timestamp=Timestamp.valueOf(mda.getValue());
             logger.info("last_send_timestamp="+last_sent_timestamp);
-            o_mda= cfgRepo.findByName("sendingRandomDelay");
-            if(o_mda.isPresent())
-                minimum_time_diff=Long.valueOf(o_mda.get().getValue());
+            o_lst= cfgRepo.findByName("sendingRandomDelay");
+            if(o_lst.isPresent())
+                minimum_time_diff=Long.valueOf(o_lst.get().getValue());
             logger.info("minimum_time_diff="+minimum_time_diff);
             long nano1=now_timestamp.getTime();
             long nano2=last_sent_timestamp.getTime();
@@ -128,8 +131,13 @@ public class sendEmailService {
             if(present_time_diff<minimum_time_diff)
                 Thread.sleep(minimum_time_diff);
         }
-            smallest_id=mailMessageRepo.getMinId(EmailStatusConstants.ENQUEUED);
-            sendOneEmail(smallest_id);
+        if(o_rnd.isPresent()) {
+            randomNumber = random.nextInt(1000);
+            Thread.sleep(randomNumber);
+        }
+
+        smallest_id=mailMessageRepo.getMinId(EmailStatusConstants.ENQUEUED);
+        sendOneEmail(smallest_id);
         } catch (Exception e) {
             logger.error("Error in message id=`"+smallest_id+"`");
             throw new RuntimeException(e);
