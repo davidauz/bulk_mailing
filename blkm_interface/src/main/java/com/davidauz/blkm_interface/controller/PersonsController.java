@@ -12,6 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,6 +33,16 @@ public class PersonsController {
     @Autowired
     private GroupRepository groupRepo;
 
+    private void addUserName(Model model)
+    {
+        String name ="UNKNOWN";
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if(auth != null) {
+            name = auth.getName();
+        }else
+            name ="AUTH is NULL";
+        model.addAttribute("s_auth_message", name );
+    }
 
     @PostMapping("/people/page/{pageNum}")
     public String companies_page
@@ -46,13 +58,13 @@ public class PersonsController {
 
     @PostMapping("/people/navigate/{direction}")
     public String companies_search_direction
-            (   Model model
-                    ,   @RequestParam(required = false) String keyword
-                    ,   @RequestParam(defaultValue = "1") int currentPage
-                    ,   @RequestParam(defaultValue = "30") int pageSize
-                    ,   @RequestParam(defaultValue = "0") int totalPages
-                    ,   @PathVariable String direction
-            ){
+    (   Model model
+            ,   @RequestParam(required = false) String keyword
+            ,   @RequestParam(defaultValue = "1") int currentPage
+            ,   @RequestParam(defaultValue = "30") int pageSize
+            ,   @RequestParam(defaultValue = "0") int totalPages
+            ,   @PathVariable String direction
+    ){
         if(direction.equals("next"))
             currentPage+=1;
         else if(direction.equals("prev"))
@@ -83,6 +95,7 @@ public class PersonsController {
     ,   @RequestParam(defaultValue = "30") int pageSize
     ) {
         try {
+            addUserName(model);
             List<Person> people;
             Pageable paging = PageRequest.of(page - 1, pageSize);
 
