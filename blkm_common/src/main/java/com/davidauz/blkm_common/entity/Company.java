@@ -38,7 +38,7 @@ public class Company
     @Nullable
     private String city;
 
-    @ManyToOne (cascade=CascadeType.ALL)
+    @ManyToOne // (cascade=CascadeType.ALL) this would cause deletion of the associated nation too
     @JoinColumn(name="nation_id")
     private Nation nation;
 

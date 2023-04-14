@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,7 +27,18 @@ public class CompaniesController {
     @Autowired
     private NationRepository nationRepo;
 
-    @PostMapping("/companies/search")
+    private void addUserName(Model model)
+    {
+        String name ="UNKNOWN";
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if(auth != null) {
+            name = auth.getName();
+        }else
+            name ="AUTH is NULL";
+        model.addAttribute("s_auth_message", name );
+    }
+
+    @PostMapping("companies/search")
     public String companies_search
     (   Model model
     ,   @RequestParam(required = false) String keyword
@@ -36,7 +49,7 @@ public class CompaniesController {
     }
 
 
-    @PostMapping("/companies/page/{pageNum}")
+    @PostMapping("companies/page/{pageNum}")
     public String companies_page
     (   Model model
             ,   @RequestParam(required = false) String keyword
@@ -48,7 +61,7 @@ public class CompaniesController {
         return companies_search(model, keyword,Integer.valueOf(pageNum),pageSize);
     }
 
-    @PostMapping("/companies/navigate/{direction}")
+    @PostMapping("companies/navigate/{direction}")
     public String companies_search_direction
     (   Model model
     ,   @RequestParam(required = false) String keyword
@@ -77,6 +90,8 @@ public class CompaniesController {
     ,   @RequestParam(defaultValue = "30") int pageSize
     ) {
         try {
+            addUserName(model);
+
             List<Company> companies = new ArrayList<Company>();
             Pageable paging = PageRequest.of(currentPage - 1, pageSize);
 
@@ -106,13 +121,14 @@ public class CompaniesController {
 
 
 
-    @PostMapping("/company_insert")
+    @PostMapping("companies/insert")
     public String insert_company
     (   Model model
     ,   @Valid @ModelAttribute Company company
     ,   BindingResult bindingResult
     ) {
         String message="";
+        addUserName(model);
         if (bindingResult.hasErrors()) {
             model.addAttribute("nations", nationRepo.findAll());
             return "forms/company_form";
@@ -121,11 +137,12 @@ public class CompaniesController {
         return "redirect:/companies";
     }
 
-    @GetMapping("/companies/edit/{companyId}")
+    @GetMapping("companies/edit/{companyId}")
     public String company_edit
     (   Model model
     ,   @PathVariable Long companyId
     ){
+        addUserName(model);
         Company comp = companyRepository.findById(companyId).get();
         model.addAttribute("nations", nationRepo.findAll());
         model.addAttribute("company", comp);
@@ -133,18 +150,18 @@ public class CompaniesController {
     }
 
 
-    @GetMapping("/companies/delete/{companyId}")
+    @GetMapping("companies/delete/{companyId}")
     public String company_delete
     (   Model model
-            ,   @PathVariable Long companyId
+    ,   @PathVariable Long companyId
     ){
         companyRepository.deleteById(companyId);
-        return "companies";
+        return getAll(model, "", 1, 30);
     }
 
 
 
-    @GetMapping("/companies/{companyId}/published/{status}")
+    @GetMapping("companies/published/{companyId}/{status}")
     public String company_enable_disable
     (   Model model
     ,   @PathVariable Long companyId
@@ -165,10 +182,11 @@ public class CompaniesController {
 
 
 
-    @GetMapping(value = "/company_new")
+    @GetMapping(value = "company_new")
     public String company_new
     (   Model model
     ){
+        addUserName(model);
         model.addAttribute("nations", nationRepo.findAll());
         model.addAttribute("company", new Company());
         return "forms/company_form";

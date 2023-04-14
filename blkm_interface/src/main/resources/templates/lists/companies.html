@@ -70,7 +70,7 @@
                     </div>
                     <div class="col">
                         <button name="btnClear" class="btn btn-info">Clear</button>
-                        <a href="/company_new" class="btn btn-info">New</a>
+                        <a href="/blkm_interface/company_new" class="btn btn-info">New</a>
                     </div>
                 </div>
 
@@ -96,8 +96,8 @@
                     <td>[[${company.city}]]</td>
                     <td><span th:if="${company.nation}">[[${company.nation.nation}]]</span></td>
                     <td>
-                        <a th:if="${company.active}" th:href="@{'/companies/' + ${company.id} + '/published/false'}" title="Disable this company"><i class="fas fa-check"></i></a>
-                        <a th:if="! ${company.active}"  th:href="@{'/companies/' + ${company.id} + '/published/true'}" title="Enable this company"><i class="fas fa-circle"></i></a>
+                        <a th:if="${company.active}" th:href="@{'/companies/published/' + ${company.id} + '/false'}" title="Disable this company"><i class="fas fa-check"></i></a>
+                        <a th:if="! ${company.active}"  th:href="@{'/companies/published/' + ${company.id} + '/true'}" title="Enable this company"><i class="fas fa-circle"></i></a>
                     </td>
                     <td>
                         <a th:href="@{'/companies/edit/' + ${company.id}}" title="Edit this company"><i class="fas fa-marker"></i></a>
