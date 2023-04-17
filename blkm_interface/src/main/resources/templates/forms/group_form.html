@@ -142,7 +142,6 @@ function group_del() {
 	});
 }
 function group_add() {
-alert(1);
 	$('#available_persons option:selected').each(function(idx, opt){
 		$('#member_of').append(opt);
 		$('#available_persons').find('option[value="'+opt.value+'"]').remove();

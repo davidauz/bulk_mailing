@@ -9,10 +9,7 @@
     <title>Bulk mailing: Groups</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <link rel="stylesheet" type="text/css" th:href="@{/css/pagination_style.css}" />
-    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
-    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
         <script type="text/javascript" th:src="@{/webjars/htmx.org/dist/htmx.min.js}"></script>
-    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
     <style>
         .paging-form{
     }
@@ -68,7 +65,7 @@
                     </div>
                     <div class="col">
                         <button name="btnClear" class="btn btn-info">Clear</button>
-                        <a href="/groups/new" class="btn btn-info">New</a>
+                        <a th:href="@{/groups/new}" class="btn btn-info">New</a>
                     </div>
                 </div>
 

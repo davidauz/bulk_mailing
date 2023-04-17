@@ -145,9 +145,6 @@ public class GroupsController {
     ){
         Group group = groupRepository.findById(groupId).get();
 
-
-
-
         List<Person> l_available_persons= personRepository.findAll();
         for(Person pers: group.getPeople())
             if(l_available_persons.contains(pers))
@@ -166,7 +163,7 @@ public class GroupsController {
     ,   @PathVariable Long groupId
     ){
         groupRepository.deleteById(groupId);
-        return "groups";
+        return "redirect:/groups";
     }
 
 

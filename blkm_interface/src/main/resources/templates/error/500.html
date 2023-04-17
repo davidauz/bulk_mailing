@@ -8,10 +8,6 @@
     <head>
     <title>Bulk mailing: Error 500 - Internal server error</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-
-    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
-    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
-    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
     </head>
 
 <body>
@@ -22,7 +18,7 @@
     <p>Message: <span th:text="${excmgs}"></span></p>
     <pre>Message: <span th:text="${stacktrace}"></span></pre>
 
-    <p>Go to <a th:href="@{dashboard}">Dashboard</a></p>
+    <p>Go to <a th:href="@{/dashboard}">Dashboard</a></p>
 
 
 </section>
