@@ -21,7 +21,8 @@
 
 <!--Navigation bar -->
     <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #ffffff;" >
-        <a class="navbar-brand" href="/blkm_interface"><img src="/blkm_interface/images/company.logo.small.png"></a>
+        <a class="navbar-brand" th:href="@{/dashboard}">
+            <img th:src="@{/images/company.logo.small.png}"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -40,11 +41,11 @@
                     >
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="/blkm_interface/projects">Projects</a>
-                        <a class="dropdown-item" href="/blkm_interface/people">People</a>
+                        <a class="dropdown-item" th:href="@{/projects}">Projects</a>
+                        <a class="dropdown-item" th:href="@{/people}">People</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="/blkm_interface/register/new_password">Change Password</a>
-                        <a class="dropdown-item" href="/blkm_interface/logout">Logout</a>
+                        <a class="dropdown-item" th:href="@{/register/new_password}">Change Password</a>
+                        <a class="dropdown-item" th:href="@{/logout}">Logout</a>
                     </div>
                 </li>
             </ul>
@@ -68,17 +69,17 @@
                                 <i class="fas fa-address-book"></i> <span class="ms-1 d-none d-sm-inline">Contacts</span></a>
                             <ul class="collapse nav flex-column ms-1" id="submenu2" data-bs-parent="#menu">
                                 <li class="w-100">
-                                    <a href="/blkm_interface/companies" class="nav-link align-middle px-0">
+                                    <a th:href="@{/companies}" class="nav-link align-middle px-0">
                                         <i class="fas fa-building"></i><span class="ms-1 d-none d-sm-inline">Companies</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/blkm_interface/people" class="nav-link px-0 align-middle">
+                                    <a th:href="@{/people}" class="nav-link px-0 align-middle">
                                         <i class="fas fa-users"></i> <span class="ms-1 d-none d-sm-inline">People</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/groups" class="nav-link px-0 align-middle">
+                                    <a th:href="@{/groups}" class="nav-link px-0 align-middle">
                                         <i class="fas fa-object-group"></i> <span class="ms-1 d-none d-sm-inline">Groups</span>
                                     </a>
                                 </li>
@@ -94,12 +95,12 @@
                                 <i class="fas fa-bars"></i> <span class="ms-1 d-none d-sm-inline">Settings</span></a>
                             <ul class="collapse nav flex-column ms-1" id="submenu3" data-bs-parent="#menu">
                                 <li class="w-100">
-                                    <a href="/settings" class="nav-link align-middle px-0">
+                                    <a th:href="@{/settings}" class="nav-link align-middle px-0">
                                         <i class="fas fa-wrench"></i><span class="ms-1 d-none d-sm-inline">Configuration</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/texts" class="nav-link px-0 align-middle">
+                                    <a th:href="@{/texts}" class="nav-link px-0 align-middle">
                                         <i class="fas fa-font"></i> <span class="ms-1 d-none d-sm-inline">Texts</span>
                                     </a>
                                 </li>
@@ -115,12 +116,12 @@
                                 <i class="fas fa-toolbox"></i> <span class="ms-1 d-none d-sm-inline">Projects</span></a>
                             <ul class="collapse nav flex-column ms-1" id="submenu4" data-bs-parent="#menu">
                                 <li class="w-100">
-                                    <a href="/projects" class="nav-link align-middle px-0">
+                                    <a th:href="@{/projects}" class="nav-link align-middle px-0">
                                         <i class="fas fa-wrench"></i><span class="ms-1 d-none d-sm-inline">Operations</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/reports" class="nav-link px-0 align-middle">
+                                    <a th:href="@{/reports}" class="nav-link px-0 align-middle">
                                         <i class="fas fa-font"></i> <span class="ms-1 d-none d-sm-inline">Reports</span>
                                     </a>
                                 </li>

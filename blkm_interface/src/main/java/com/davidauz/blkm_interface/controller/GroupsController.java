@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,6 +30,16 @@ public class GroupsController {
     @Autowired
     private GroupRepository groupRepository;
 
+    private void addUserName(Model model)
+    {
+        String name ="UNKNOWN";
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if(auth != null) {
+            name = auth.getName();
+        }else
+            name ="AUTH is NULL";
+        model.addAttribute("s_auth_message", name );
+    }
 
     @PostMapping("/groups/search")
     public String groups_search
@@ -80,6 +92,7 @@ public class GroupsController {
     ,   @RequestParam(defaultValue = "30") int pageSize
     ) {
         try {
+            addUserName(model);
             List<Group> groups;
             Pageable paging = PageRequest.of(page - 1, pageSize);
 

@@ -4,6 +4,8 @@ import com.davidauz.blkm_common.entity.ConfigurationPair;
 import com.davidauz.blkm_common.repo.ConfigurationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,10 +21,22 @@ public class SettingsController {
     @Autowired
     ConfigurationRepository cfgRepo;
 
+    private void addUserName(Model model)
+    {
+        String name ="UNKNOWN";
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if(auth != null) {
+            name = auth.getName();
+        }else
+            name ="AUTH is NULL";
+        model.addAttribute("s_auth_message", name );
+    }
+
     @GetMapping("/settings")
     public String groups_search
     (Model model
     ) {
+        addUserName(model);
         Map<String, String> settings_map = new HashMap<>();
         List<ConfigurationPair> all_settings = cfgRepo.findAll();
         for (ConfigurationPair keyvalue : all_settings)

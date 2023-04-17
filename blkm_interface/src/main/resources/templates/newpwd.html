@@ -25,7 +25,14 @@
                 <p><input type="password" name="password1" class="form-control" placeholder="New Password" required autofocus/></p>
                 <p><input type="password" name="password2" class="form-control" placeholder="Confirm Password" required /></p>
             <p>
-                <button hx-post="/register/newpwd" hx-params="token,password1,password2" hx-target="#registered_message" hx-include=".form-control" hx-swap="innerHTML" class="btn btn-primary">Set new password</button>
+                <button
+                    hx-post="@{/register/newpwd}"
+                    hx-params="token,password1,password2"
+                    hx-target="#registered_message"
+                    hx-include=".form-control"
+                    hx-swap="innerHTML"
+                    class="btn btn-primary">Set new password
+                </button>
             </p>
             <div>
                 <p>

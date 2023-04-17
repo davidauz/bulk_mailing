@@ -66,7 +66,7 @@
                     </div>
                     <div class="col">
                         <button name="btnClear" class="btn btn-info">Clear</button>
-                        <a href="/blkm_interface/company_new" class="btn btn-info">New</a>
+                        <a th:href="@{/company_new}" class="btn btn-info">New</a>
                     </div>
                 </div>
 
@@ -109,6 +109,8 @@
                 </tbody>
             </table>
         </div>
+
+        <a th:href="@{/companies}">Refresh</a>
 
         <div th:unless="${companies.size() > 0}">
             <span>No companies found!</span>

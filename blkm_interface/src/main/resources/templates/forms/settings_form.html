@@ -136,7 +136,7 @@
 
 
 
-						<a hx-post="/settings/mailServer"
+						<a hx-post="@{/settings/mailServer}"
 						   hx-target="#mailServerResults"
 						   hx-include=".form-control"
 						   hx-swap="innerHTML"
@@ -251,7 +251,7 @@
 						</div>
 
 
-						<a hx-post="/settings/readingRules"
+						<a hx-post="@{/settings/readingRules}"
 						   hx-target="#readingRulesResults"
 						   hx-include=".reading_form"
 						   hx-swap="innerHTML"
@@ -335,7 +335,7 @@
 							<span id="time_randomize" name="time_randomize">Randomize send times</span>
 						</div>
 
-						<a hx-post="/settings/sendingRules"
+						<a hx-post="@{/settings/sendingRules}"
 						   hx-target="#sendingRulesResults"
 						   hx-include=".form_read"
 						   hx-swap="innerHTML"
@@ -352,7 +352,7 @@
 							<div class="form-check form-switch">
 								<input th:if="'1'==${settings_map.get('send_mail_daemon_running')}" checked=checked
 									   class="form-check-input"
-									   hx-post="/settings/toggle/send_mail_daemon_running"
+									   th:attr="hx-post='@{/settings/toggle/send_mail_daemon_running'}"
 									   hx-target="#send_mail_daemon_running"
 									   hx-swap="innerHTML"
 									   hx-trigger="click"
@@ -362,7 +362,7 @@
 								>
 								<input th:unless="'1'==${settings_map.get('send_mail_daemon_running')}"
 									   class="form-check-input"
-									   hx-post="/settings/toggle/send_mail_daemon_running"
+									   th:attr="hx-post='@{/settings/toggle/send_mail_daemon_running'}"
 									   hx-target="#send_mail_daemon_running"
 									   hx-swap="innerHTML"
 									   hx-trigger="click"
@@ -378,7 +378,7 @@
 							<div class="form-check form-switch">
 								<input th:if="'1'==${settings_map.get('read_mail_daemon_running')}" checked=checked
 									   class="form-check-input"
-									   hx-post="/settings/toggle/read_mail_daemon_running"
+									   hx-post="@{/settings/toggle/read_mail_daemon_running}"
 									   hx-target="#read_mail_daemon_running"
 									   hx-swap="innerHTML"
 									   hx-trigger="click"
@@ -388,7 +388,7 @@
 								>
 								<input th:unless="'1'==${settings_map.get('read_mail_daemon_running')}"
 									   class="form-check-input"
-									   hx-post="/settings/toggle/read_mail_daemon_running"
+									   hx-post="@{/settings/toggle/read_mail_daemon_running}"
 									   hx-target="#read_mail_daemon_running"
 									   hx-swap="innerHTML"
 									   hx-trigger="click"

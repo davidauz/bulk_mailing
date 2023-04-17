@@ -102,16 +102,16 @@
                         name="new_nation"
                         placeholder="New nation"
                     />
-                    <a hx-post="/nation/add"
-                            hx-target="#nation"
-                            hx-params="new_nation"
-                            hx-swap="innerHTML"
-                            class="btn btn-primary"
+                    <a hx-post="@{/nation/add}"
+                        hx-target="#nation"
+                        hx-params="new_nation"
+                        hx-swap="innerHTML"
+                        class="btn btn-primary"
                     >Add</a>
                     <div
-                            class="invalid-feedback"
-                            th:if="${#fields.hasErrors('nation')}"
-                            th:errors="*{nation}">Nation
+                        class="invalid-feedback"
+                        th:if="${#fields.hasErrors('nation')}"
+                        th:errors="*{nation}">Nation
                     </div>
                 </div>
             </div>
@@ -168,7 +168,7 @@
             </div>
 
             <p></p><button type="submit">Submit</button></p>
-            <p><a href="/blkm_interface/companies">List companies</a></p>
+            <p><a th:href="@{/companies}">List companies</a></p>
         </form>
     </div>
 

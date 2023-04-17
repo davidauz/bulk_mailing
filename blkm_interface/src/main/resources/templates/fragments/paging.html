@@ -1,6 +1,6 @@
 <a th:fragment="paging(pageNum, label, tooltip, target)"
   class="page-link"
-  th:attr="hx-target=body,hx-include=paging-form,hx-trigger=click,hx-post='/' + ${target} + '/page/' + ${pageNum}"
+  th:attr="hx-target=body,hx-include=paging-form,hx-trigger=click,hx-post= ${target} + '/../page/' + ${pageNum}"
   th:title="${tooltip}" rel="tooltip">
   [[${label}]]
 </a>
