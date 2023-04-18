@@ -42,8 +42,9 @@ public class EmailStatusConstants {
 		,{ "553", EmailStatusConstants.ERR_DOMAIN_NOT_FOUND }
 		,{ "554 5.2.2", EmailStatusConstants.ERR_RECIPIENT_MAILBOX_FULL }
 		,{ "555", EmailStatusConstants.ERR_SYNTAX_ERROR }
-		,{	"server unavailable", EmailStatusConstants.ERR_DOMAIN_NOT_FOUND }
-		,{	"Host or domain name not found", EmailStatusConstants.ERR_DOMAIN_NOT_FOUND }
+		,{ "server unavailable", EmailStatusConstants.ERR_DOMAIN_NOT_FOUND }
+		,{ "Host or domain name not found", EmailStatusConstants.ERR_DOMAIN_NOT_FOUND }
+		,{ "server unavailable or unable to receive mail", EmailStatusConstants.ERR_DOMAIN_NOT_FOUND }
 		};
 
 

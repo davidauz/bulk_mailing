@@ -6,6 +6,7 @@ import com.davidauz.blkm_common.repo.ConfigurationRepository;
 import com.davidauz.blkm_common.repo.MailMessageRepository;
 import com.davidauz.blkm_read_d.entity.blkMessageInfo;
 import jakarta.mail.*;
+import jakarta.mail.internet.MimeMessage;
 import jakarta.mail.search.FlagTerm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,56 +35,64 @@ public class readEmailService {
     private blkMessageInfo msg_i;
 
     public void read_messages_in_inbox() {
+        ArrayList<Message> mList=new ArrayList<>();
+        Folder inbox = null
+        ,   processed=null
+        ;
         try {
             Store store =imapservices.get_imap_store();
-
-            Folder inbox = store.getFolder("INBOX")
-            ,   processed=store.getFolder("bm_processed")
-            ;
+            inbox = store.getFolder("INBOX");
+            processed=store.getFolder("bm_processed");
             inbox.open(Folder.READ_WRITE);
             processed.open(Folder.READ_WRITE);
-
-//            Flags flags = new Flags();
-//            flags.add(Flags.Flag.SEEN);
-//            flags.add(Flags.Flag.RECENT);
-
-// Get messages in the inbox folder
             Message[] arr_messages = inbox.getMessages();
-//            search(
-//              new FlagTerm( flags, true) // TODO: decide if it is SEEN or RECENT
-//            new FlagTerm( new Flags(Flags.Flag.SEEN), false)
-//                new FlagTerm(new Flags(Flags.Flag.RECENT), false)
-//            );
             logger.info("Got `"+arr_messages.length+"` messages");
-            ArrayList<Message> mList=new ArrayList<>();
-            for (Message one_message : arr_messages) {
-                processMessage(one_message);
-                mList.add(one_message);
+            for (Message msg : arr_messages) {
+                try {
+                    processMessage(msg);
+                }catch(MessagingException messEx){
+                    if (messEx.getMessage() != null && messEx.getMessage().toLowerCase().contains("unable to load " +"bodystructure")) {
+                        MimeMessage msgDownloaded = new MimeMessage((MimeMessage) msg);
+                        processMessage(msgDownloaded);
+                    }else{
+                        logger.error("Unrecoverable error: "+messEx.getMessage());
+                    }
+                }
+                mList.add(msg);
             }
-            Message[] moved = mList.toArray(new Message[mList.size()]);
-            inbox.copyMessages(moved, processed);
-            processed.close(true);
-            for(Message one_message: moved)
-                one_message.setFlag(Flags.Flag.DELETED, true);
-            inbox.close(true);
         }catch(Exception e){
             logger.info("Exception: "+e.getMessage());
+        } finally{
+            Message[] moved = mList.toArray(new Message[mList.size()]);
+            try {
+                inbox.copyMessages(moved, processed);
+                processed.close(true);
+                for(Message one_message: moved)
+                    one_message.setFlag(Flags.Flag.DELETED, true);
+                inbox.close(true);
+            } catch (MessagingException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
-    private void processMessage(Message message) {
+    private void processMessage(Message message) throws MessagingException, IOException {
         msg_i=new blkMessageInfo();
         InputStream istr = null;
+        BufferedReader reader=null;
         String line;
         try {
             istr = message.getInputStream();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(istr));
+            reader = new BufferedReader(new InputStreamReader(istr));
             while ((line = reader.readLine()) != null)
                 parseLine(line, msg_i);
-            reader.close();
-            update_status(msg_i);
         } catch (Exception e) {
             logger.error(e.getMessage());
+            throw(e);
+        }
+        finally {
+            reader.close();
+            update_status(msg_i);
         }
     }
 
@@ -111,12 +120,18 @@ public class readEmailService {
     ,   blkMessageInfo bmi
     )
     {
+        logger.info(line);
         if (line.contains("Message-ID")&&line.contains("bm.")) {
-            line = line.substring(line.indexOf("<") + 1, line.indexOf(">"));
+            line = line.substring(line.indexOf("bm.") , 4+line.indexOf(".com"));
             bmi.setStrMessageId(line);
         }
+        if(null!=bmi.getSntStatus() && 0!=bmi.getSntStatus().length())
+                return;
+        if(line.contains("Part_"))
+            return;
         for(String[] str : EmailStatusConstants.error_codes_table) {
             if (line.contains(str[0])) {
+                System.out.println("---------------------------"+line+"-------------------------"+str[0]+"-----------------");
                 bmi.setSntStatus(str[1]);
                 bmi.setStrContent(line);
             }
