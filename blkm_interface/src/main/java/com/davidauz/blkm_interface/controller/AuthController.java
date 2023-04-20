@@ -174,6 +174,8 @@ public class AuthController {
     ,   Model model
     ) {
         try {
+            if(0==password1.length() || 0==password2.length())
+                return "<p>Invalid password</p>";
             if (!password1.equals(password2))
                 return "<p>The password you supplied do not match...</p><p>Please try again</p>";
             userService.register_new_user(email, password1);
