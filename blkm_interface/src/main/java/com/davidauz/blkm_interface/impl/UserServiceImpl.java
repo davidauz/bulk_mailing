@@ -182,7 +182,7 @@ public class UserServiceImpl implements UserService {
             lmmp.setRecipient(user.getEmail());
             lmmp.setSubject("Bulk Mailing: Finish Setting Up Your Account");
             lmmp.setBody("<p>Thank you for registering!</p>\n" +
-                    "<p>Please click on the below link to activate your account.</p>\n" +
+                    "<p>Please click on the link below to activate your account.</p>\n" +
                     "<p><a href='" + hLink + "'>" + hLink + "</a></p>" +
                     "<p><img src='cid:logo'></p>");
             lmmp.addInline("logo", new ClassPathResource("static/images/company.logo.png"));
