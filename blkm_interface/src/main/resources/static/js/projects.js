@@ -12,7 +12,7 @@ function scheduleSend(nproj) {
 		};
 
 		$.ajax(
-		{	url: '/project/ajx_dispatcher'
+		{	url: '../ajx_dispatcher'
 		,	method: "POST"
 		,	contentType: 'application/json'
 		,	data: JSON.stringify(params)

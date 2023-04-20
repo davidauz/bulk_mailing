@@ -39,7 +39,7 @@ function addGroup() {
 		};
 
 		$.ajax(
-		{	url: '/project/ajx_dispatcher'
+		{	url: '../ajx_dispatcher'
 		,	method: "POST"
 		,	contentType: 'application/json'
 		,	data: JSON.stringify(params)
@@ -74,7 +74,7 @@ function removeGroup(){
 		};
 
 		$.ajax(
-		{	url: '/project/ajx_dispatcher'
+		{	url: '../ajx_dispatcher'
 		,	method: "POST"
 		,	contentType: 'application/json'
 		,	data: JSON.stringify(params)
@@ -108,7 +108,7 @@ function addCompany() {
     };
 
     $.ajax(
-    {	url: '/project/ajx_dispatcher'
+    {	url: '../ajx_dispatcher'
     ,	method: "POST"
     ,	contentType: 'application/json'
     ,	data: JSON.stringify(params)
@@ -141,7 +141,7 @@ function removeCompany() {
     ,	'ajx_data':companies_array
     };
     $.ajax(
-    {	url: '/project/ajx_dispatcher'
+    {	url: '../ajx_dispatcher'
     ,	method: "POST"
     ,	contentType: 'application/json'
     ,	data: JSON.stringify(params)

@@ -340,7 +340,7 @@ public class projectsController {
 
 
 
-    @PostMapping("/project/ajx_dispatcher")
+    @PostMapping("/projects/ajx_dispatcher")
     public ResponseEntity<String> handleAjxRequest
     (   @RequestBody Map<String, Object> requestData
     ) {

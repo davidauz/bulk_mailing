@@ -1,6 +1,5 @@
 package com.davidauz.blkm_send_d;
 
-import com.davidauz.blkm_common.repo.ConfigurationRepository;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -12,7 +11,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.Duration;
 import java.util.concurrent.ScheduledFuture;
@@ -24,9 +22,6 @@ import java.util.concurrent.ScheduledFuture;
 @EnableScheduling
 public class blkm_send_mail_daemon extends SpringBootServletInitializer  {
 // SpringBootServletInitializer is for running in Tomcat
-
-//    @Autowired TODO: remove if not necessary
-//    private ConfigurationRepository cfgRepo;
 
     public static void main(String[] args) {
         new SpringApplicationBuilder(blkm_send_mail_daemon.class)
