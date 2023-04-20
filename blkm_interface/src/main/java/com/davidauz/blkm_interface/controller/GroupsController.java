@@ -143,8 +143,8 @@ public class GroupsController {
     (   Model model
     ,   @PathVariable Long groupId
     ){
+        addUserName(model);
         Group group = groupRepository.findById(groupId).get();
-
         List<Person> l_available_persons= personRepository.findAll();
         for(Person pers: group.getPeople())
             if(l_available_persons.contains(pers))

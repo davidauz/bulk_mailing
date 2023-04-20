@@ -41,6 +41,17 @@ public class projectsController {
     @Autowired
     private blk_MailQueue mailQ;
 
+    private void addUserName(Model model)
+    {
+        String name ="UNKNOWN";
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if(auth != null) {
+            name = auth.getName();
+        }else
+            name ="AUTH is NULL";
+        model.addAttribute("s_auth_message", name );
+    }
+
     @GetMapping("/projects")
     public String getAll
     (   Model model
@@ -49,13 +60,7 @@ public class projectsController {
     ,   @RequestParam(defaultValue = "30") int pageSize
     ) {
         try {
-            String name ="UNKNOWN";
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            if(auth != null) {
-                name = auth.getName();
-            }else
-                name ="AUTH is NULL";
-            model.addAttribute("s_auth_message", name );
+            addUserName(model);
 
             List<Project> projects_list = new ArrayList<Project>();
             Pageable paging = PageRequest.of(page - 1, pageSize);
@@ -256,6 +261,7 @@ public class projectsController {
     (   Model model
     ,   @PathVariable Long projectId
     ){
+        addUserName(model);
         Project comp = projectsRepository.findById(projectId).get();
         Map<Long, String> txt_id_titles = new HashMap<>();
         List<Person> lp = personRepository.findAll();

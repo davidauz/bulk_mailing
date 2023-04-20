@@ -7,6 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +22,18 @@ public class TextsController {
     @Autowired
     private PostRepository postrepository;
 
+
+    private void addUserName(Model model)
+    {
+        String name ="UNKNOWN";
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if(auth != null) {
+            name = auth.getName();
+        }else
+            name ="AUTH is NULL";
+        model.addAttribute("s_auth_message", name );
+    }
+
     @GetMapping("/texts")
     public String get_texts
     (   Model model
@@ -27,6 +41,7 @@ public class TextsController {
     ,   @RequestParam(defaultValue = "1") int page
     ,   @RequestParam(defaultValue = "30") int pageSize
     ){
+        addUserName(model);
         List<Post> list_of_posts;
         Pageable paging = PageRequest.of(page - 1, pageSize);
         Page<Post> posts_page;
@@ -123,6 +138,7 @@ public class TextsController {
     (   Model model
     ,   @PathVariable Long textId
     ){
+        addUserName(model);
         Post post = postrepository.findById(textId).get();
         model.addAttribute("post", post);
         return "forms/text_form";

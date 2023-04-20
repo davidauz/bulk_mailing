@@ -160,6 +160,7 @@ public class PersonsController {
     (   Model model
     ,   @PathVariable Long personId
     ){
+        addUserName(model);
         Person pers = personRepository.findById(personId).get();
         if(null==pers.getCompany()){
             pers.setCompany(new Company());
