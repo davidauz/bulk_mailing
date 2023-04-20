@@ -177,7 +177,7 @@ public class UserServiceImpl implements UserService {
     (   User user
     ) throws Exception {
             blk_MailMessage lmmp = new blk_MailMessage();
-            String hLink = web_address + "/register/confirm?token=" + validation(user).getToken();
+            String hLink = web_address + "/blkm_interface/register/confirm?token=" + validation(user).getToken();
 
             lmmp.setRecipient(user.getEmail());
             lmmp.setSubject("Bulk Mailing: Finish Setting Up Your Account");
@@ -205,7 +205,7 @@ public class UserServiceImpl implements UserService {
 
         uv.newPasswordResetToken();
         uv = userValidationRepository.save(uv);
-        String hLink = web_address + "/register/new_password?token="+ uv.getPasswordResetToken();
+        String hLink = web_address + "/blkm_interface/register/new_password?token="+ uv.getPasswordResetToken();
 
         blk_MailMessage lmmp = new blk_MailMessage();
         lmmp.setRecipient(user.getEmail());

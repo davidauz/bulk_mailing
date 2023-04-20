@@ -14,7 +14,7 @@
 <section layout:fragment="content">
 <div class="container-fluid text-center">
     <div>
-        <a href="/dashboard"><img class="img-fluid" width=40% th:src="@{/images/company.logo.png}" /></a>
+        <a th:href="@{/dashboard}"><img class="img-fluid" width=40% th:src="@{/images/company.logo.png}" /></a>
     </div>
     <p>
         <span th:text="${now}" />
@@ -48,9 +48,9 @@
             <input type="submit" value="Login" class="btn btn-primary" />
             <input type="reset" value="Reset" class="btn btn-primary" />
         </p><p>
-            <a href="/register">Register new user</a>
+            <a th:href="@{/register}">Register new user</a>
         </p><p>
-            <a href="/login/forgot">Forgot password</a>
+            <a th:href="@{/login/forgot}">Forgot password</a>
         </p>
         </div>
     </form>
