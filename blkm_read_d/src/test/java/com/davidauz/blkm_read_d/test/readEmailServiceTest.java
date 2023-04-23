@@ -17,7 +17,6 @@ import org.springframework.test.context.ContextConfiguration;
 @ComponentScan(basePackages={"com.davidauz.blkm_common","package com.davidauz.blkm_read_d"})
 @EntityScan(basePackages={"com.davidauz.blkm_common.*"})
 @DependsOn("mailMessageRepository")
-//@EnableJpaRepositories(basePackages = "com.davidauz.blkm_common.*")
 class readEmailServiceTest {
 	@Autowired  private readEmailService res;
 

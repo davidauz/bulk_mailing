@@ -5,6 +5,7 @@ import com.davidauz.blkm_common.repo.CompanyRepository;
 import com.davidauz.blkm_common.repo.GroupRepository;
 import com.davidauz.blkm_common.repo.PersonRepository;
 import com.davidauz.blkm_common.repo.ProjectsRepository;
+import com.davidauz.blkm_common.service.AppLog;
 import com.davidauz.blkm_interface.entity.*;
 import com.davidauz.blkm_interface.repository.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -19,6 +20,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +43,9 @@ public class projectsController {
     @Autowired
     private blk_MailQueue mailQ;
 
-    private void addUserName(Model model)
+    @Autowired private AppLog applog;
+
+    private String addUserName(Model model)
     {
         String name ="UNKNOWN";
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -50,6 +54,7 @@ public class projectsController {
         }else
             name ="AUTH is NULL";
         model.addAttribute("s_auth_message", name );
+        return name;
     }
 
     @GetMapping("/projects")
@@ -285,6 +290,7 @@ public class projectsController {
     ,   Model model
     ) {
         projectsRepository.save(pro);
+        applog.log(addUserName(model)+" `"+pro.getDescription()+"`");
         return project_edit(model, pro.getId());
     }
 
@@ -298,6 +304,7 @@ public class projectsController {
     ,   @RequestParam(defaultValue = "30") int pageSize
     ){
         projectsRepository.deleteById(projId);
+        applog.log(addUserName(model)+" `"+projId+"`");
         return getAll(model, keyword, page, pageSize);
     }
 
@@ -315,6 +322,7 @@ public class projectsController {
         try {
             proj = projectsRepository.findById(projId).orElseThrow(() -> new Exception("`" + projId + "`: no such Group ID"));
             proj.setActive(published);
+            applog.log(addUserName(model)+" `"+proj.getDescription()+"`");
             projectsRepository.save(proj);
         } catch (Exception e) {
             model.addAttribute("message", e.getMessage());
@@ -389,8 +397,11 @@ public class projectsController {
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonString = null;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         try {
             Project pro=projectsRepository.findById(nproj).orElseThrow(()->new Exception("Project not found"));
+            applog.log(userDetails.getUsername()+" `"+pro.getDescription()+"`");
             do_scheduling(pro);
             pro.setActive(false);
             projectsRepository.save(pro);

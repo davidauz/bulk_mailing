@@ -1,11 +1,8 @@
 package com.davidauz.blkm_interface.controller;
 
+import com.davidauz.blkm_common.service.AppLog;
 import com.davidauz.blkm_interface.entity.User;
-import com.davidauz.blkm_interface.impl.UserDetailsServiceImpl;
-import com.davidauz.blkm_interface.repository.UserValidationRepository;
-import com.davidauz.blkm_interface.service.IdentityServiceException;
-import com.davidauz.blkm_interface.service.UserService;
-import com.davidauz.blkm_interface.entity.User;
+import com.davidauz.blkm_interface.entity.UserValidation;
 import com.davidauz.blkm_interface.impl.UserDetailsServiceImpl;
 import com.davidauz.blkm_interface.repository.UserValidationRepository;
 import com.davidauz.blkm_interface.service.IdentityServiceException;
@@ -39,6 +36,7 @@ public class AuthController {
     @Autowired
     private UserValidationRepository userValidationRepository;
 
+    @Autowired private AppLog applog;
 
     @GetMapping("index")
     public String home(){
@@ -61,14 +59,15 @@ public class AuthController {
                     "Thank you for your time and patience." +
                     "You can now proceed to login with your email and password."
                     );
-            return "login";
         }catch(Exception e){
             logger.error(e.getMessage());
             model.addAttribute("s_error", "There's something wrong with your data,\n" +
                     "Sorry!"
             );
-            return "login";
         }
+        UserValidation userValidation = userValidationRepository.findByToken(token).get();
+        applog.log("User `"+userValidation.getUser()+"` validated");
+        return "login";
     }
 
 
@@ -96,21 +95,23 @@ public class AuthController {
             return "auth/register";
         }
         userService.saveUser(user);
+        applog.log("User `"+user.getEmail()+"` registered");
         return "redirect:auth/register?success";
     }
 
 
-    @PostMapping(path="/login/do_forgot") // answers to POST
+    @PostMapping(path="/login/do_forgot")
     public String handle_forgot_pwd_form
     (   @RequestParam(name = "email") String email
-            ,   Model model
-            ,   HttpServletResponse response
+    ,   Model model
+    ,   HttpServletResponse response
     ) { //  the model can supply attributes used for rendering views
         try {
             userService.send_forgot_password(email);
         }catch(Exception e){
 // not giving clues to the user if the email entered was real or not
         }
+        applog.log("User `"+email+"` sent forgot pwd email");
         return show_forgot_page("An email has been sent to your address (if found in our DB).  Follow the instructions to set a new password.", model);
     }
 
@@ -125,7 +126,7 @@ public class AuthController {
             model.addAttribute("message", true);
             model.addAttribute("messageString", smessage);
         }
-        return "auth/forgot"; // -> forgot.html
+        return "auth/forgot";
     }
 
 
@@ -179,6 +180,7 @@ public class AuthController {
             if (!password1.equals(password2))
                 return "<p>The password you supplied do not match...</p><p>Please try again</p>";
             userService.register_new_user(email, password1);
+            applog.log("New user `"+email+"`");
             return "<p>Thank you!  Please follow the instructions in the email we just sent you.</p>" +
                     "<p>(P.S. it's just a link you have to click)</p>"; // returning literal string because of @ResponseBody
         }catch(Exception e){
@@ -187,6 +189,4 @@ public class AuthController {
                     "<p>The error message is: "+e.getMessage()+"</p>";
         }
     }
-
-
 }

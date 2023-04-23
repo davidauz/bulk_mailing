@@ -3,6 +3,7 @@ package com.davidauz.blkm_interface.controller;
 import com.davidauz.blkm_common.entity.Company;
 import com.davidauz.blkm_common.repo.NationRepository;
 import com.davidauz.blkm_common.repo.CompanyRepository;
+import com.davidauz.blkm_common.service.AppLog;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,15 +28,16 @@ public class CompaniesController {
     @Autowired
     private NationRepository nationRepo;
 
-    private void addUserName(Model model)
+    @Autowired private AppLog applog;
+
+    private String addUserName(Model model)
     {
         String name ="UNKNOWN";
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if(auth != null) {
+        if(auth != null)
             name = auth.getName();
-        }else
-            name ="AUTH is NULL";
         model.addAttribute("s_auth_message", name );
+        return name;
     }
 
     @PostMapping("companies/search")
@@ -127,12 +129,11 @@ public class CompaniesController {
     ,   @Valid @ModelAttribute Company company
     ,   BindingResult bindingResult
     ) {
-        String message="";
-        addUserName(model);
         if (bindingResult.hasErrors()) {
             model.addAttribute("nations", nationRepo.findAll());
             return "forms/company_form";
         }
+        applog.log(addUserName(model)+" `"+company.getName()+"`");
         companyRepository.save(company);
         return "redirect:/companies";
     }
@@ -142,8 +143,8 @@ public class CompaniesController {
     (   Model model
     ,   @PathVariable Long companyId
     ){
-        addUserName(model);
         Company comp = companyRepository.findById(companyId).get();
+        applog.log(addUserName(model)+" `"+comp.getName()+"`");
         model.addAttribute("nations", nationRepo.findAll());
         model.addAttribute("company", comp);
         return "forms/company_form";
@@ -156,6 +157,7 @@ public class CompaniesController {
     ,   @PathVariable Long companyId
     ){
         companyRepository.deleteById(companyId);
+        applog.log(addUserName(model)+" `"+companyId+"`");
         return getAll(model, "", 1, 30);
     }
 
@@ -174,6 +176,7 @@ public class CompaniesController {
             Company com = companyRepository.findById(companyId).orElseThrow(() -> new Exception("`" + companyId + "`: no such company ID"));
             com.setActive(published);
             companyRepository.save(com);
+            applog.log(addUserName(model)+" `"+com.getName()+"`="+published);
         } catch(Exception e){
             model.addAttribute("message", e.getMessage());
         }
@@ -186,7 +189,7 @@ public class CompaniesController {
     public String company_new
     (   Model model
     ){
-        addUserName(model);
+        applog.log(addUserName(model));
         model.addAttribute("nations", nationRepo.findAll());
         model.addAttribute("company", new Company());
         return "forms/company_form";

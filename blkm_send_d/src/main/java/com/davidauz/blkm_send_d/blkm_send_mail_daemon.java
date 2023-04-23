@@ -25,8 +25,8 @@ public class blkm_send_mail_daemon extends SpringBootServletInitializer  {
 
     public static void main(String[] args) {
         new SpringApplicationBuilder(blkm_send_mail_daemon.class)
-                .web(WebApplicationType.NONE)
-                .sources(blkm_send_mail_daemon.class)
+//                .web(WebApplicationType.NONE)
+//                .sources(blkm_send_mail_daemon.class)
                 .run(args);
     }
 

@@ -249,8 +249,9 @@
 				<div th:if="${#fields.hasErrors('active')}" th:errors="*{active}">active Error</div>
 			</div>
 
-			<button type="submit">Submit</button>
-			<button type="submit" th:formaction="@{/projects/save_new}" >Save as New</button>
+			<p><button type="submit">Submit</button>&nbsp;&nbsp;&nbsp;&nbsp;
+			<button type="submit" th:formaction="@{/projects/save_new}" >Save as New</button>&nbsp;&nbsp;&nbsp;&nbsp;
+			<a th:href="@{/projects}">List</a></p>
 		</form>
 	</div>
 
