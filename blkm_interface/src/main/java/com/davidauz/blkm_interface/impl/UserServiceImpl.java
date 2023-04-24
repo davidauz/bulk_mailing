@@ -1,5 +1,6 @@
 package com.davidauz.blkm_interface.impl;
 
+import com.davidauz.blkm_common.common_configuration;
 import com.davidauz.blkm_common.entity.blk_MailMessage;
 import com.davidauz.blkm_common.entity.blk_MailQueue;
 import com.davidauz.blkm_interface.entity.Role;
@@ -10,6 +11,8 @@ import com.davidauz.blkm_interface.repository.UserRepository;
 import com.davidauz.blkm_interface.repository.UserValidationRepository;
 import com.davidauz.blkm_interface.service.IdentityServiceException;
 import com.davidauz.blkm_interface.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
@@ -21,6 +24,9 @@ import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
+
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+
 // Values
     @Value("${bulk_mailing.server.web.address}")
     private String web_address;
@@ -31,11 +37,6 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     private RoleRepository roleRepository;
     private PasswordEncoder passwordEncoder;
-
-
-    public User findByEmail(String email) {
-        return null;
-    }
 
 
     @Autowired
@@ -80,19 +81,19 @@ public class UserServiceImpl implements UserService {
     }
 
 
-
-    public Optional<User> userPasswordToBeReset(String passREsetToken) throws IdentityServiceException {
-        UserValidation uv = userValidationRepository.findByPasswordResetToken(passREsetToken).orElseThrow(() ->
-                new IdentityServiceException("Invalid Token (20)"));
-
-        User user = userRepository.findById(uv.getUser()).orElseThrow(() ->
-                new IdentityServiceException("Invalid Token (22)"));
-
-        user.markTokenAsValid();
-        User savedUser = userRepository.save(user);
-
-        return Optional.of(savedUser);
-    }
+//TODO: check reset password
+//    public Optional<User> userPasswordToBeReset(String passREsetToken) throws IdentityServiceException {
+//        UserValidation uv = userValidationRepository.findByPasswordResetToken(passREsetToken).orElseThrow(() ->
+//                new IdentityServiceException("Invalid Token (20)"));
+//
+//        User user = userRepository.findById(uv.getUser()).orElseThrow(() ->
+//                new IdentityServiceException("Invalid Token (22)"));
+//
+//        user.markTokenAsValid();
+//        User savedUser = userRepository.save(user);
+//
+//        return Optional.of(savedUser);
+//    }
 
 
     public Optional<User> confirmUser
@@ -251,4 +252,19 @@ public class UserServiceImpl implements UserService {
         return newUser;
     }
 
+
+    public boolean user_pwd_matches
+    (   String email
+    ,   String paswd
+    ){
+        try {
+            User foundUser = userRepository.findByEmail(email).orElseThrow(()-> new IdentityServiceException("Wrong user."));
+            if (!passwordEncoder.matches(paswd, foundUser.getPassword()))
+                throw new IllegalArgumentException("Wrong password");
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return false;
+        }
+        return true;
+    }
 }

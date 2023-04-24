@@ -1,9 +1,8 @@
 package com.davidauz.blkm_interface.controller;
 
-import com.davidauz.blkm_common.repo.MailMessageRepository;
 import com.davidauz.blkm_common.repo.CompanyRepository;
+import com.davidauz.blkm_common.repo.MailMessageRepository;
 import com.davidauz.blkm_common.repo.PersonRepository;
-import com.davidauz.blkm_interface.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,9 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class workflow {
-
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private CompanyRepository companyRepository;

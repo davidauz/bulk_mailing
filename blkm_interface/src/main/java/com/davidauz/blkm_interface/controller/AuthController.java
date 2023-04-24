@@ -4,6 +4,7 @@ import com.davidauz.blkm_common.service.AppLog;
 import com.davidauz.blkm_interface.entity.User;
 import com.davidauz.blkm_interface.entity.UserValidation;
 import com.davidauz.blkm_interface.impl.UserDetailsServiceImpl;
+import com.davidauz.blkm_interface.repository.UserRepository;
 import com.davidauz.blkm_interface.repository.UserValidationRepository;
 import com.davidauz.blkm_interface.service.IdentityServiceException;
 import com.davidauz.blkm_interface.service.UserService;
@@ -13,6 +14,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +27,9 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final Logger logger = LoggerFactory.getLogger(AuthController.class);
+
+    @Autowired
+    private UserRepository userRepo;
 
     @Autowired
     private UserService userService;
@@ -86,7 +93,7 @@ public class AuthController {
     ,   BindingResult result
     ,   Model model
     ){
-        User existing = userService.findByEmail(user.getEmail());
+        User existing = userRepo.findByEmail(user.getEmail()).orElseThrow(()->new IllegalArgumentException("Unknown user `"+user.getEmail()+"`"));
         if (existing != null) {
             result.rejectValue("email", null, "There is already an account registered with that email");
         }
@@ -94,7 +101,7 @@ public class AuthController {
             model.addAttribute("user", user);
             return "auth/register";
         }
-        userService.saveUser(user);
+        userRepo.save(user);
         applog.log("User `"+user.getEmail()+"` registered");
         return "redirect:auth/register?success";
     }
@@ -130,41 +137,7 @@ public class AuthController {
     }
 
 
-    @GetMapping("/register/new_password")
-    public String showNewPwdForm
-    (   @RequestParam("token") String token
-    ,   Model model
-    ){
-        try {
-            User user=userService.userPasswordToBeReset(token).orElseThrow(() -> new IdentityServiceException("Bad token"));
-            model.addAttribute("token", token);
-        } catch (IdentityServiceException e) {
-            model.addAttribute("s_error", "There's something wrong with your data, Sorry!");
-        }
-        return "newpwd";
-    }
 
-
-
-    @PostMapping(path = "/register/newpwd", produces = MediaType.TEXT_HTML_VALUE)
-    @ResponseBody // returning raw content and not a template name
-    public String manageNewPwdForm
-    (   @RequestParam("token") String token
-    ,   @RequestParam("password1") String password1
-    ,   @RequestParam("password2") String password2
-    ,   Model model
-    ){
-        try {
-            User user=userService.confirmUserNewPwd(token).orElseThrow(() -> new IdentityServiceException("Bad token"));
-            if (!password1.equals(password2))
-                return "<p>The password you supplied do not match...</p><p>Please try again</p>";
-            user.setPassword(password1);
-            userService.updateUser(user);
-            return "<p>Thank you!  You may now proceed to the login page.</p>";
-        } catch (IdentityServiceException e) {
-            return ("There's something wrong with your data, Sorry!");
-        }
-    }
 
     @PostMapping(path = "/register/data", produces = MediaType.TEXT_HTML_VALUE)
     @ResponseBody // returning raw content and not a template name
@@ -189,4 +162,39 @@ public class AuthController {
                     "<p>The error message is: "+e.getMessage()+"</p>";
         }
     }
+
+
+//------------------------  NEW PASSWORD    ------------------------
+    @GetMapping("/register/req_npwd")
+    public String showNewPwdForm
+    (   Model model
+    ){
+        return "newpwd";
+    }
+
+    @PostMapping(path = "/register/newpwd", produces = MediaType.TEXT_HTML_VALUE)
+    @ResponseBody // returning raw content and not a template name
+    public String manageNewPwdForm
+    (   @RequestParam("orig_pwd") String orig_pwd
+    ,   @RequestParam("password1") String password1
+    ,   @RequestParam("password2") String password2
+    ,   Model model
+    ){
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            if ( ! userService.user_pwd_matches(userDetails.getUsername(),orig_pwd) )
+                throw new IdentityServiceException("Invalid password");
+            if (!password1.equals(password2))
+                throw new IdentityServiceException("The passwords you supplied do not match...</p><p>Please try again");
+            String userName=userDetails.getUsername();
+            User user = userRepo.findByEmail(userName).orElseThrow(()->new IllegalArgumentException("User not found"));
+            user.setPassword(passwordEncoder.encode(password1)); // TODO: this should be in UserService
+            userRepo.save(user);
+            return "<p>Thank you!  You may now proceed to the login page.</p>";
+        } catch (Exception e) {
+            return ("<p>There's something wrong with your data, Sorry!</p><p>"+e.getMessage()+"</p>");
+        }
+    }
+
 }

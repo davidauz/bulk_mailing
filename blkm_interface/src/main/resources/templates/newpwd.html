@@ -7,8 +7,8 @@
       xmlns:th="http://www.thymeleaf.org"
 >
 <head>
-    <title>Bulk mailing: new user registration</title>
-    <link rel="stylesheet" href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}"  />
+    <title>Bulk mailing: change password</title>
+    <script type="text/javascript" th:src="@{/webjars/htmx.org/dist/htmx.min.js}"></script>
 </head>
 <body>
 <section layout:fragment="content">
@@ -20,19 +20,20 @@
             <p class="text-danger">[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</p>
         </div>
         <div class="border border-secondary p-3 rounded" style="max-width: 350px; margin: 0 auto;">
-                <input type="hidden" name="token"  class="form-control"  th:value="${token}" />
-                <p>Please type your new password.</p>
+            <p>Old password:</p>
+            <p><input type="password" name="orig_pwd" class="form-control" placeholder="Old Password" required autofocus/></p>
+            <p>Please type your new password.</p>
                 <p><input type="password" name="password1" class="form-control" placeholder="New Password" required autofocus/></p>
                 <p><input type="password" name="password2" class="form-control" placeholder="Confirm Password" required /></p>
             <p>
-                <button
-                    hx-post="@{/register/newpwd}"
-                    hx-params="token,password1,password2"
-                    hx-target="#registered_message"
-                    hx-include=".form-control"
-                    hx-swap="innerHTML"
-                    class="btn btn-primary">Set new password
-                </button>
+            <button
+                hx-post="newpwd"
+                hx-params="orig_pwd,password1,password2"
+                hx-target="#registered_message"
+                hx-include=".form-control"
+                hx-swap="innerHTML"
+                class="btn btn-primary">Set new password
+            </button>
             </p>
             <div>
                 <p>
