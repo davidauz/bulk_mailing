@@ -27,8 +27,6 @@ public class blkm_read_mail_daemon extends SpringBootServletInitializer  {
 
     public static void main(String[] args) {
         new SpringApplicationBuilder(blkm_read_mail_daemon.class)
-//                .web(WebApplicationType.NONE)
-//                .sources(blkm_read_mail_daemon.class)
                 .run(args);
     }
 
