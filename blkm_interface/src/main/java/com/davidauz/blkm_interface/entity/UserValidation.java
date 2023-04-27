@@ -24,16 +24,19 @@ public class UserValidation //implements Serializable: questo provoca eccezione
 
     private static final long serialVersionUID = 1L;
 
-    @Column(nullable=false, unique=true)
-    private String token;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    @Column(unique=true)
+    private String token;
 
     private Timestamp tokenIssue;
 
     @Column(name = "pass_reset_token")
     private String passwordResetToken;
 
-    @Column(name = "pass_reset_issue")
+    @Column(name = "pass_reset_issue") // TODO: one field for issue type, one field for token
     private Timestamp passwordResetIssue;
 
     @Column(name = "creation")
@@ -44,7 +47,6 @@ public class UserValidation //implements Serializable: questo provoca eccezione
     @Column(name = "entity_version", nullable = false)
     private Long version;
 
-    @Id
     @Column(name = "user_id", nullable = false)
     private Long user;
 
@@ -68,7 +70,7 @@ public class UserValidation //implements Serializable: questo provoca eccezione
 
     public boolean PwdResettokenIsCurrent() {
         TimeUtil time = new TimeUtil();
-        long a=Math.abs(getTokenIssue().getTime());
+        long a=Math.abs(getPasswordResetIssue().getTime());
         long b = time.now().getTime();
         return Math.abs(getPasswordResetIssue().getTime() - time.now().getTime()) < 1000 * 60 * 60 * 24;
     }

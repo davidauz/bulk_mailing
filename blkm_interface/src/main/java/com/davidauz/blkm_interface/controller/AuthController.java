@@ -107,35 +107,6 @@ public class AuthController {
     }
 
 
-    @PostMapping(path="/login/do_forgot")
-    public String handle_forgot_pwd_form
-    (   @RequestParam(name = "email") String email
-    ,   Model model
-    ,   HttpServletResponse response
-    ) { //  the model can supply attributes used for rendering views
-        try {
-            userService.send_forgot_password(email);
-        }catch(Exception e){
-// not giving clues to the user if the email entered was real or not
-        }
-        applog.log("User `"+email+"` sent forgot pwd email");
-        return show_forgot_page("An email has been sent to your address (if found in our DB).  Follow the instructions to set a new password.", model);
-    }
-
-
-
-    @GetMapping(path="/login/forgot")
-    public String show_forgot_page
-    (   @RequestParam(name = "smessage", defaultValue = "") String smessage
-    ,   Model model
-    ) { //  the model can supply attributes used for rendering views
-        if(0<smessage.length()){
-            model.addAttribute("message", true);
-            model.addAttribute("messageString", smessage);
-        }
-        return "auth/forgot";
-    }
-
 
 
 
@@ -196,5 +167,60 @@ public class AuthController {
             return ("<p>There's something wrong with your data, Sorry!</p><p>"+e.getMessage()+"</p>");
         }
     }
+
+// ------------------------ forgot password ------------------------
+@PostMapping(path="/login/do_forgot")
+public String handle_forgot_pwd_form
+(   @RequestParam(name = "email") String email
+,   Model model
+,   HttpServletResponse response
+) { //  the model can supply attributes used for rendering views
+    try {
+        userService.send_forgot_password(email);
+    }catch(Exception e){
+// not giving clues to the user if the email entered was real or not
+        logger.info(email+":"+e.getMessage());
+    }
+    applog.log("User `"+email+"` sent forgot pwd email");
+    return show_forgot_page("An email has been sent to your address." +
+            "Click the link to set a new password (within 24 hours).", model);
+}
+
+
+
+    @GetMapping(path="/login/forgot")
+    public String show_forgot_page
+    (   @RequestParam(name = "smessage", defaultValue = "") String smessage
+    ,   Model model
+    ) { //  the model can supply attributes used for rendering views
+        if(0<smessage.length()){
+            model.addAttribute("message", true);
+            model.addAttribute("messageString", smessage);
+        }
+        return "auth/forgot"; // -> /login/do_forgot
+    }
+
+
+    @GetMapping("register/new_password")
+    public String new_password
+    (   @RequestParam("token") String token
+    ,   Model model
+    ) {
+        try {
+            userService.confirmPwd(token).orElseThrow(() -> new IdentityServiceException("Bad token"));
+            model.addAttribute("s_message", "Password has been reset." +
+                    "You can now proceed to login."
+            );
+        }catch(Exception e){
+            logger.error(e.getMessage());
+            model.addAttribute("s_error", "There's something wrong with your data,\n" +
+                    "Sorry!"
+            );
+        }
+        UserValidation userValidation = userValidationRepository.findByPasswordResetToken(token).get();
+        applog.log("User `"+userValidation.getUser()+"` confirmed password");
+        return "login";
+    }
+
 
 }

@@ -115,6 +115,25 @@ public class UserServiceImpl implements UserService {
         return Optional.of(savedUser);
     }
 
+    public Optional<User> confirmPwd
+    (   String confirmationToken
+    ) throws IdentityServiceException
+    {
+        UserValidation userValidation = userValidationRepository.findByPasswordResetToken(confirmationToken).orElseThrow(() ->
+                new IdentityServiceException("Invalid Token (23)"));
+
+        User user = userRepository.findById(userValidation.getUser()).orElseThrow(() ->
+                new IdentityServiceException("Invalid Token (24)"));
+
+        if (!validation(user).PwdResettokenIsCurrent())
+            throw new IdentityServiceException("Token not current");
+
+        user.markTokenAsValid();
+        User savedUser = userRepository.save(user);
+
+        return Optional.of(savedUser);
+    }
+
 
 
     public Optional<User> confirmUserNewPwd(String confirmationToken) throws IdentityServiceException {
@@ -177,17 +196,17 @@ public class UserServiceImpl implements UserService {
     private void sendConfirmationMail
     (   User user
     ) throws Exception {
-            blk_MailMessage lmmp = new blk_MailMessage();
-            String hLink = web_address + "/blkm_interface/register/confirm?token=" + validation(user).getToken();
+        blk_MailMessage lmmp = new blk_MailMessage();
+        String hLink = web_address + "/blkm_interface/register/confirm?token=" + validation(user).getToken();
 
-            lmmp.setRecipient(user.getEmail());
-            lmmp.setSubject("Bulk Mailing: Finish Setting Up Your Account");
-            lmmp.setBody("<p>Thank you for registering!</p>\n" +
-                    "<p>Please click on the link below to activate your account.</p>\n" +
-                    "<p><a href='" + hLink + "'>" + hLink + "</a></p>" +
-                    "<p><img src='cid:logo'></p>");
-            lmmp.addInline("logo", new ClassPathResource("static/images/company.logo.png"));
-            mailQueue.enqueue(lmmp); // no saving to DB
+        lmmp.setRecipient(user.getEmail());
+        lmmp.setSubject("Bulk Mailing: Finish Setting Up Your Account");
+        lmmp.setBody("<p>Thank you for registering!</p>\n" +
+                "<p>Please click on the link below to activate your account.</p>\n" +
+                "<p><a href='" + hLink + "'>" + hLink + "</a></p>" +
+                "<p><img src='cid:logo'></p>");
+        lmmp.addInline("logo", new ClassPathResource("static/images/company.logo.png"));
+        mailQueue.enqueue(lmmp); // no saving to DB
     }
 
 
@@ -201,9 +220,7 @@ public class UserServiceImpl implements UserService {
         if (!user.validated())
             throw new IdentityServiceException("User never activated (should resend activation email)");
 
-        UserValidation uv = userValidationRepository.findById(user.getId()).orElseThrow(()
-                -> new IdentityServiceException("No validation token found. (b)"));
-
+        UserValidation uv = new UserValidation(user);
         uv.newPasswordResetToken();
         uv = userValidationRepository.save(uv);
         String hLink = web_address + "/blkm_interface/register/new_password?token="+ uv.getPasswordResetToken();
@@ -214,7 +231,7 @@ public class UserServiceImpl implements UserService {
         lmmp.setBody("<p>To reset your password click on the following link:</p>\n" +
                 "<p><a href='"+hLink+"'>"+hLink+"</a></p>" +
                 "<p><img width=50% src='cid:logo'></p>");
-        lmmp.addInline("logo", new ClassPathResource("static/images/company.logo.png"));
+        lmmp.addInline("logo", new ClassPathResource("static/images/company.logo.png")); // TODO: addInline
         mailQueue.enqueue(lmmp);
     }
 

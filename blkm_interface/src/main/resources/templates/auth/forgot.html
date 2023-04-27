@@ -7,6 +7,8 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:spring="http://www.w3.org/1999/XSL/Transform">
 <head>
+    <title>Bulk mailing: forgot password</title>
+</head>
     <body>
 <section layout:fragment="content">
     <div class="container-fluid text-center">
@@ -29,9 +31,10 @@
 
 
             <div class="border border-secondary p-3 rounded">
-                <p>Please insert your email address here.
-                </p><p>
-                If we have it in our database, we will send you an email with instructions.
+            <p>
+                Please insert your email address here.
+            </p><p>
+                You'll receive an email with instructions.
             </p><p>
                     <input type="email" name="email" class="form-control" placeholder="E-mail" required autofocus/>
                 </p>

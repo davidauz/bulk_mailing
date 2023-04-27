@@ -9,6 +9,8 @@ public interface UserService {
 
     public Optional<User> confirmUser(String confirmationToken) throws IdentityServiceException;
 
+    public Optional<User> confirmPwd(String confirmationToken) throws IdentityServiceException;
+
     public Optional<User> confirmUserNewPwd(String confirmationToken) throws IdentityServiceException;
 
     public void send_forgot_password(String email) throws Exception;
