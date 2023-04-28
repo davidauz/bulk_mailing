@@ -2,21 +2,23 @@ package com.davidauz.blkm_interface.controller;
 
 import com.davidauz.blkm_common.entity.ConfigurationPair;
 import com.davidauz.blkm_common.repo.ConfigurationRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
-public class SettingsController {
+public class SettingsController {//TODO: move unrelated messages to a configurable folder
 
     @Autowired
     ConfigurationRepository cfgRepo;
@@ -33,7 +35,7 @@ public class SettingsController {
     }
 
     @GetMapping("/settings")
-    public String groups_search
+    public String settings_main
     (Model model
     ) {
         addUserName(model);
@@ -218,7 +220,70 @@ public class SettingsController {
     }
 
 
+    @PostMapping("/settings/settings_ajx_svc")
+    public ResponseEntity<String> handleAjxRequest
+    (   @RequestBody Map<String, Object> requestData
+    ) {
+        String str_verb= (String) requestData.get("verb");
+        if (str_verb == null)
+            return ResponseEntity.badRequest().body("VERB parameter is missing");
+        switch(str_verb){
+            case "heartbeats":
+                return heartbeat_data();
+        }
+        return ResponseEntity.ok("success");
+    }
 
+    private ResponseEntity<String> heartbeat_data() {
+        String jsonString = null
+        ,   read_color=""
+        ,   send_color=""
+        ;
+        ObjectMapper objectMapper = new ObjectMapper();
+        HashMap<String,Object> ret_data=new HashMap<>();
+        Optional<ConfigurationPair> rmdr=cfgRepo.findByName("read_mail_daemon_running")
+        ,   smdr=cfgRepo.findByName("send_mail_daemon_running")
+        ,   hbr=cfgRepo.findByName("heartbeat_r")
+        ,   hbs=cfgRepo.findByName("heartbeat_s")
+        ;
+        if(rmdr.isPresent()){
+            if("0".equals((String)(rmdr.get().getValue())))
+                read_color="#000000";
+            else
+                read_color="#FF0000";
+        } else
+            read_color="#a0a0a0";
+
+        if(smdr.isPresent()){
+            if("0".equals((String)(smdr.get().getValue())))
+                send_color="#000000";
+            else
+                send_color="#FF0000";
+        } else
+            send_color="#a0a0a0";
+
+        if(hbr.isPresent())
+            ret_data.put("HBR",hbr.get());
+        else
+            ret_data.put("HBR","0");
+
+        if(hbs.isPresent())
+            ret_data.put("HBS",hbr.get());
+        else
+            ret_data.put("HBS","0");
+
+        ret_data.put("SEND",send_color);
+        ret_data.put("READ",read_color);
+
+        try {
+            jsonString = objectMapper.writeValueAsString(ret_data);
+        } catch (JsonProcessingException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.setContentType(MediaType.APPLICATION_JSON);
+        return new ResponseEntity<String>(jsonString, responseHeaders, HttpStatus.OK);
+    }
 
 }
 

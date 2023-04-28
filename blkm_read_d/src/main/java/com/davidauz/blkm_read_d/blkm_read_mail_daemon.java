@@ -1,5 +1,6 @@
 package com.davidauz.blkm_read_d;
 
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -26,8 +27,9 @@ public class blkm_read_mail_daemon extends SpringBootServletInitializer  {
 // SpringBootServletInitializer is for running in Tomcat
 
     public static void main(String[] args) {
-        new SpringApplicationBuilder(blkm_read_mail_daemon.class)
-                .run(args);
+        SpringApplication application=new SpringApplicationBuilder(blkm_read_mail_daemon.class).build(args);
+        application.setWebApplicationType(WebApplicationType.NONE);
+        application.run(args);
     }
 
     @Bean

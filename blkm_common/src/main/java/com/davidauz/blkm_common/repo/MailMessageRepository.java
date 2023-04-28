@@ -29,13 +29,9 @@ public interface MailMessageRepository extends JpaRepository<blk_MailMessage, Lo
 
     @Transactional // needs to be executed inside a transaction
     @Modifying
-    @Query(value = "update config set value=1+value where name='heartbeat_s';", nativeQuery = true)
-    void update_heart_beat_s(); // TODO: pass update field name as parameter
+    @Query(value = "update config set value=1+value where name=:param_name", nativeQuery = true)
+    void update_heart_beat(@Param("param_name") String param_name);
 
-    @Transactional // needs to be executed inside a transaction
-    @Modifying
-    @Query(value = "update config set value=1+value where name='heartbeat_r';", nativeQuery = true)
-    void update_heart_beat_r(); // TODO: pass update field name as parameter
 
     @Query (value="SELECT coalesce(min(id), 0) FROM mail_message WHERE sent_status=:paramstatus", nativeQuery = true)
     long getMinId(@Param("paramstatus") String paramstatus);

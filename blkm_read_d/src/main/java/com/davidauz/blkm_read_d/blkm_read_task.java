@@ -30,7 +30,7 @@ public class blkm_read_task implements Runnable {
             ConfigurationPair mda=o_mda.get();
             if("0".equals(mda.getValue()))
                 return;
-            mailMessageRepository.update_heart_beat_r();
+            mailMessageRepository.update_heart_beat("heartbeat_r");
 
             readEmailSrvc.read_messages_in_inbox();
         }
