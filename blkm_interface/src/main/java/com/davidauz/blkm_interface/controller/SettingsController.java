@@ -220,7 +220,7 @@ public class SettingsController {//TODO: move unrelated messages to a configurab
     }
 
 
-    @PostMapping("/settings/settings_ajx_svc")
+    @PostMapping("/settings/ajx_dispatcher")
     public ResponseEntity<String> handleAjxRequest
     (   @RequestBody Map<String, Object> requestData
     ) {
