@@ -28,7 +28,7 @@ public class MailReaderConfig {
 
     private static final String[][] DEFAULT_PROPERTIES =
     {	{"heartbeat_r","0"}
-    ,	{"read_mail_daemon_running","0"}
+    ,	{"read_mail_daemon_running","1"}
     };
 
 
