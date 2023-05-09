@@ -46,7 +46,8 @@ public class readEmailService {
             inbox.open(Folder.READ_WRITE);
             processed.open(Folder.READ_WRITE);
             Message[] arr_messages = inbox.getMessages();
-            logger.info("Got `"+arr_messages.length+"` messages");
+            if(0<arr_messages.length)
+                logger.info("Got `"+arr_messages.length+"` messages");
             for (Message msg : arr_messages) {
                 try {
                     processMessage(msg);
