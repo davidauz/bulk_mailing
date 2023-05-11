@@ -135,7 +135,7 @@
 
 
 
-						<a hx-post="@{/settings/mailServer}"
+						<a hx-post="settings/mailServer"
 						   hx-target="#mailServerResults"
 						   hx-include=".form-control"
 						   hx-swap="innerHTML"
@@ -174,6 +174,20 @@
 							</div>
 						</div>
 
+						<div class="form-group row">
+							<label class="col-sm-2 col-form-label" th:for="check_x_minutes">Check every:</label>
+							<div class="col-sm-10" style="width:30%;  white-space: nowrap;">
+								<input	type="text"
+										  required
+										  class="reading_form form-control"
+										  id="check_x_minutes"
+										  name="check_x_minutes"
+										  placeholder="5"
+										  style="display: inline-block;"
+										  th:value="${settings_map.get('check_x_minutes')}"
+								/> minutes (need restart read daemon)
+							</div>
+						</div>
 
 						<div class="form-check form-switch">
 							<input th:if="'on'==${settings_map.get('imap_ssl')}" checked=checked
@@ -250,7 +264,7 @@
 						</div>
 
 
-						<a hx-post="@{/settings/readingRules}"
+						<a hx-post="settings/readingRules"
 						   hx-target="#readingRulesResults"
 						   hx-include=".reading_form"
 						   hx-swap="innerHTML"
@@ -334,7 +348,7 @@
 							<span id="time_randomize" name="time_randomize">Randomize send times</span>
 						</div>
 
-						<a hx-post="@{/settings/sendingRules}"
+						<a hx-post="settings/sendingRules"
 						   hx-target="#sendingRulesResults"
 						   hx-include=".form_read"
 						   hx-swap="innerHTML"

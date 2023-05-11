@@ -62,6 +62,7 @@ public class SettingsController {//TODO: move unrelated messages to a configurab
     ,   @RequestParam(name="imap_uname", required=false) String imap_uname
     ,   @RequestParam(name="imap_password", required=false) String imap_password
     ,   @RequestParam(name="imap_password2", required=false) String imap_password2
+    ,   @RequestParam(name="check_x_minutes", required=false) String check_x_minutes
     ) {
         try {
             try { Integer.parseInt(imap_server_port); }
@@ -81,6 +82,7 @@ public class SettingsController {//TODO: move unrelated messages to a configurab
             ,	{"imap_uname", imap_uname}
             ,	{"imap_password", imap_password}
             ,	{"imap_password2", imap_password2}
+            ,	{"check_x_minutes", check_x_minutes}
             };
 
             for (String[] strp : configs) {
@@ -103,7 +105,7 @@ public class SettingsController {//TODO: move unrelated messages to a configurab
     }
 
 
-    @PostMapping(path = "/settings/sendingRules", produces = MediaType.TEXT_HTML_VALUE)
+    @PostMapping(path = "settings/sendingRules", produces = MediaType.TEXT_HTML_VALUE)
     @ResponseBody // returning raw content and not a template name
     public String save_sending_rules_settings
     (Model model
@@ -142,7 +144,7 @@ public class SettingsController {//TODO: move unrelated messages to a configurab
 
 
 
-    @PostMapping(path = "/settings/mailServer", produces = MediaType.TEXT_HTML_VALUE)
+    @PostMapping(path = "settings/mailServer", produces = MediaType.TEXT_HTML_VALUE)
     @ResponseBody // returning raw content and not a template name
     public String save_mail_server_settings
     (Model model

@@ -1,5 +1,8 @@
 package com.davidauz.blkm_read_d;
 
+import com.davidauz.blkm_common.entity.ConfigurationPair;
+import com.davidauz.blkm_common.repo.ConfigurationRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,6 +18,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 import java.time.Duration;
+import java.util.Optional;
 import java.util.concurrent.ScheduledFuture;
 
 @SpringBootApplication(scanBasePackages = "com.davidauz.blkm_common")
@@ -25,6 +29,9 @@ import java.util.concurrent.ScheduledFuture;
 @Async
 public class blkm_read_mail_daemon extends SpringBootServletInitializer  {
 // SpringBootServletInitializer is for running in Tomcat
+    @Autowired
+    ConfigurationRepository cfgRepo;
+
 
     public static void main(String[] args) {
         SpringApplication application=new SpringApplicationBuilder(blkm_read_mail_daemon.class).build(args);
@@ -48,7 +55,11 @@ public class blkm_read_mail_daemon extends SpringBootServletInitializer  {
 
     @Bean
     public ScheduledFuture<?> scheduleMyBackgroundTask(TaskScheduler taskScheduler) {
-        Duration dur= Duration.ofSeconds(10); // TODO: add interval to configuration
+        int wait_interval_in_seconds=5*60;
+        Optional<ConfigurationPair> cfg = cfgRepo.findByName("check_x_minutes");
+        if(cfg.isPresent())
+            wait_interval_in_seconds=60*Integer.valueOf(cfg.get().getValue());
+        Duration dur= Duration.ofSeconds(wait_interval_in_seconds);
         return taskScheduler.scheduleAtFixedRate(get_rm_background_task(), dur);
     }
 
