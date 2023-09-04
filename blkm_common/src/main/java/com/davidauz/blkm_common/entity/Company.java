@@ -24,17 +24,14 @@ public class Company
     private Long id;
 
     @Column(nullable=false, unique=true)
-//    @Size(min=2, max=30)
     @NotNull
     private String name;
 
     @Column
-//    @Size(min=0, max=30)
     @Nullable
     private String address;
 
     @Column
-//    @Size(min=0, max=30)
     @Nullable
     private String city;
 

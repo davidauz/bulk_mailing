@@ -16,7 +16,6 @@ public class Nation
 {
     private static final long serialVersionUID = 1L;
 
-    // COLUMNS
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long nationId;

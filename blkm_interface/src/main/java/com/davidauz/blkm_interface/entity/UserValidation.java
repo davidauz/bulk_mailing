@@ -19,7 +19,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity
 @Table(name = "user_validation")
-public class UserValidation //implements Serializable: questo provoca eccezione
+public class UserValidation
 {
 
     private static final long serialVersionUID = 1L;

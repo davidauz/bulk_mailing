@@ -16,6 +16,8 @@ import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.time.Duration;
 import java.util.Optional;
@@ -27,15 +29,17 @@ import java.util.concurrent.ScheduledFuture;
 @EnableJpaRepositories(basePackages = "com.davidauz.blkm_common")
 @EnableScheduling
 @Async
+@RestController
 public class blkm_read_mail_daemon extends SpringBootServletInitializer  {
 // SpringBootServletInitializer is for running in Tomcat
     @Autowired
     ConfigurationRepository cfgRepo;
 
+    ScheduledFuture<?> cipi;
 
     public static void main(String[] args) {
         SpringApplication application=new SpringApplicationBuilder(blkm_read_mail_daemon.class).build(args);
-        application.setWebApplicationType(WebApplicationType.NONE);
+//        application.setWebApplicationType(WebApplicationType.NONE);
         application.run(args);
     }
 
@@ -48,10 +52,6 @@ public class blkm_read_mail_daemon extends SpringBootServletInitializer  {
         return scheduler;
     }
 
-    @Bean
-    public Runnable get_rm_background_task() {
-        return new blkm_read_task();
-    }
 
     @Bean
     public ScheduledFuture<?> scheduleMyBackgroundTask(TaskScheduler taskScheduler) {
@@ -60,7 +60,7 @@ public class blkm_read_mail_daemon extends SpringBootServletInitializer  {
         if(cfg.isPresent())
             wait_interval_in_seconds=60*Integer.valueOf(cfg.get().getValue());
         Duration dur= Duration.ofSeconds(wait_interval_in_seconds);
-        return taskScheduler.scheduleAtFixedRate(get_rm_background_task(), dur);
+	return taskScheduler.scheduleAtFixedRate(get_rm_background_task(), dur);
     }
 
     @Override
@@ -68,5 +68,12 @@ public class blkm_read_mail_daemon extends SpringBootServletInitializer  {
 // also for running in Tomcat
         return builder.sources(blkm_read_mail_daemon.class);
     }
+
+    @GetMapping("brd_stop")
+	public String stopTask() {
+		// Stop the scheduled task
+//		myScheduledTask.cancel();
+		return "Task stopped";
+	}
 }
 

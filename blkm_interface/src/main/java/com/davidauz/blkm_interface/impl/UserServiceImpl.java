@@ -1,6 +1,5 @@
 package com.davidauz.blkm_interface.impl;
 
-import com.davidauz.blkm_common.common_configuration;
 import com.davidauz.blkm_common.entity.blk_MailMessage;
 import com.davidauz.blkm_common.entity.blk_MailQueue;
 import com.davidauz.blkm_interface.entity.Role;

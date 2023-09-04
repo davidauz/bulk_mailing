@@ -19,7 +19,6 @@ import java.sql.Timestamp;
 public class blk_MailMessage {
     private static final long serialVersionUID = 1L;
 
-    // COLUMNS
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

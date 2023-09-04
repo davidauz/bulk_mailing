@@ -1,5 +1,6 @@
 package com.davidauz.blkm_send_d.test;
 
+import com.davidauz.blkm_common.entity.EmailStatusConstants;
 import com.davidauz.blkm_common.entity.blk_MailMessage;
 import com.davidauz.blkm_common.repo.MailMessageRepository;
 import org.junit.jupiter.api.Test;
@@ -16,13 +17,13 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.test.context.ContextConfiguration;
 
 
-@SpringBootApplication(scanBasePackages = "com.davidauz.blkm_common.*")
+//@SpringBootApplication(scanBasePackages = "com.davidauz.blkm_common.*")
 @SpringBootTest
-@ContextConfiguration
-@ComponentScan(basePackages={"com.davidauz.blkm_common.*"})
-@EntityScan(basePackages={"com.davidauz.blkm_common.*"})
-@DependsOn("mailMessageRepository")
-@EnableJpaRepositories(basePackages = "com.davidauz.blkm_common.*")
+//@ContextConfiguration
+//@ComponentScan(basePackages={"com.davidauz.blkm_common.*"})
+//@EntityScan(basePackages={"com.davidauz.blkm_common.*"})
+//@DependsOn("mailMessageRepository")
+//@EnableJpaRepositories(basePackages = "com.davidauz.blkm_common.*")
 class MailMessageRepositoryTest {
 
     private static final Logger logger = LoggerFactory.getLogger(MailMessageRepositoryTest.class);
