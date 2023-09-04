@@ -35,6 +35,7 @@ public class workflow {
             name = auth.getName();
         }else
             name ="AUTH is NULL";
+
         model.addAttribute("s_auth_message", name );
         model.addAttribute("num_messages", mmrepo.count());
         model.addAttribute("num_companies", companyRepository.count());

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <title>Bulk mailing: reset password</title>
+    <script type="text/javascript" th:src="@{/webjars/htmx.org/dist/htmx.min.js}"></script>
+    <style>
+		.form_control{
+		}
+	</style>
+</head>
+<body>
+<section layout:fragment="content">
+    <div class="container-fluid text-center">
+        <div>
+            <a th:href="@{/}"><img class="img-fluid" width=40% th:src="@{/images/company.logo.png}" /></a>
+        </div>
+        <div th:if="${param.error}">
+            <p class="text-danger">[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</p>
+        </div>
+        <div class="border border-secondary p-3 rounded" style="max-width: 350px; margin: 0 auto;">
+            <p>Please type your new password.</p>
+                <p><input type="password" name="password1" class="form_control" placeholder="New Password" required autofocus/></p>
+                <p><input type="password" name="password2" class="form_control" placeholder="Confirm Password" required /></p>
+                <input type="hidden" name="datoken"  class="form_control"  th:value="${token}" >
+            <p>
+            <button
+                hx-post="pwd_reset"
+                hx-target="#registered_message"
+                hx-include=".form_control"
+                hx-swap="innerHTML"
+                class="btn btn-primary">Set new password
+            </button>
+            </p>
+            <div>
+                <p>
+                    <span id="registered_message">
+                    </span>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

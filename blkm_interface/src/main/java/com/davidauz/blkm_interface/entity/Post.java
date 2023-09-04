@@ -16,7 +16,6 @@ import lombok.Setter;
 public class Post {
     private static final long serialVersionUID = 1L;
 
-    // COLUMNS
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
