@@ -4,8 +4,6 @@ package com.davidauz.blkm_common.service;
 import com.davidauz.blkm_common.entity.LogItem;
 import com.davidauz.blkm_common.repo.LogMessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Service;
 
 @Service

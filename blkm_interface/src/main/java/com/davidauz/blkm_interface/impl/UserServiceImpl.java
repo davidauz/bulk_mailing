@@ -21,6 +21,9 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 import java.util.Optional;
 
+import static com.davidauz.blkm_interface.controller.AuthController.TOKEN_TYPE_PASSWORD_RESET;
+import static com.davidauz.blkm_interface.controller.AuthController.TOKEN_TYPE_SUBSCRIBE;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -74,38 +77,29 @@ public class UserServiceImpl implements UserService {
         return roleRepository.save(role);
     }
 
-    public UserValidation validation(User user) {
-        return userValidationRepository.findById(user.getId()).orElseThrow(() ->
-                new IllegalArgumentException("Need to save the user before using validation"));
+    public UserValidation validation(String token, int ttype) {
+        return userValidationRepository.findByTokenAndTokenType(token, ttype).orElseThrow(()->new IllegalArgumentException("`"+token+"`: error"));
+
     }
 
-
-//TODO: check reset password
-//    public Optional<User> userPasswordToBeReset(String passREsetToken) throws IdentityServiceException {
-//        UserValidation uv = userValidationRepository.findByPasswordResetToken(passREsetToken).orElseThrow(() ->
-//                new IdentityServiceException("Invalid Token (20)"));
-//
-//        User user = userRepository.findById(uv.getUser()).orElseThrow(() ->
-//                new IdentityServiceException("Invalid Token (22)"));
-//
-//        user.markTokenAsValid();
-//        User savedUser = userRepository.save(user);
-//
-//        return Optional.of(savedUser);
-//    }
+    public UserValidation validation(User user) {
+        if(!userValidationRepository.existsById(user.getId()))
+                new IllegalArgumentException("Need to save the user before using validation");
+        return new UserValidation(user);
+    }
 
 
     public Optional<User> confirmUser
     (   String confirmationToken
     ) throws IdentityServiceException
     {
-        UserValidation userValidation = userValidationRepository.findByToken(confirmationToken).orElseThrow(() ->
+        UserValidation userValidation = userValidationRepository.findByTokenAndTokenType(confirmationToken, TOKEN_TYPE_SUBSCRIBE).orElseThrow(() ->
                 new IdentityServiceException("Invalid Token (21)"));
 
         User user = userRepository.findById(userValidation.getUser()).orElseThrow(() ->
                 new IdentityServiceException("Invalid Token (22)"));
 
-        if (!validation(user).tokenIsCurrent())
+        if (!userValidation.tokenIsCurrent())
             throw new IdentityServiceException("Token not current");
 
         user.markTokenAsValid();
@@ -118,13 +112,13 @@ public class UserServiceImpl implements UserService {
     (   String confirmationToken
     ) throws IdentityServiceException
     {
-        UserValidation userValidation = userValidationRepository.findByPasswordResetToken(confirmationToken).orElseThrow(() ->
+        UserValidation userValidation = userValidationRepository.findByTokenAndTokenType(confirmationToken, TOKEN_TYPE_PASSWORD_RESET).orElseThrow(() ->
                 new IdentityServiceException("Invalid Token (23)"));
 
         User user = userRepository.findById(userValidation.getUser()).orElseThrow(() ->
                 new IdentityServiceException("Invalid Token (24)"));
 
-        if (!validation(user).PwdResettokenIsCurrent())
+        if (!userValidation.PwdResettokenIsCurrent())
             throw new IdentityServiceException("Token not current");
 
         user.markTokenAsValid();
@@ -135,15 +129,17 @@ public class UserServiceImpl implements UserService {
 
 
 
-    public Optional<User> confirmUserNewPwd(String confirmationToken) throws IdentityServiceException {
-
-        UserValidation userValidation = userValidationRepository.findByPasswordResetToken(confirmationToken).orElseThrow(() ->
+    public Optional<User> confirmUserNewPwd
+    (   String confirmationToken
+    )
+    throws IdentityServiceException {
+        UserValidation userValidation = userValidationRepository.findByTokenAndTokenType(confirmationToken, TOKEN_TYPE_PASSWORD_RESET).orElseThrow(() ->
                 new IdentityServiceException("Invalid Token (21)"));
 
         User user = userRepository.findById(userValidation.getUser()).orElseThrow(() ->
                 new IdentityServiceException("Invalid Token (22)"));
 
-        if (!validation(user).PwdResettokenIsCurrent())
+        if (!userValidation.PwdResettokenIsCurrent())
             throw new IdentityServiceException("Token not current");
 
         user.markTokenAsValid();
@@ -174,7 +170,7 @@ public class UserServiceImpl implements UserService {
         if (password == null)
             throw new IdentityServiceException( "No password set.");
 
-        if (password.length() < 12)
+        if (password.length() < 8)
             throw new IdentityServiceException( "Password is too short.");
 
         if (password.length() > 200)
@@ -193,10 +189,11 @@ public class UserServiceImpl implements UserService {
 
 
     private void sendConfirmationMail
-    (   User user
+    (   User user,
+        UserValidation userValidation
     ) throws Exception {
         blk_MailMessage lmmp = new blk_MailMessage();
-        String hLink = web_address + "/blkm_interface/register/confirm?token=" + validation(user).getToken();
+        String hLink = web_address + "/blkm_interface/register/confirm?token=" + userValidation.getToken();
 
         lmmp.setRecipient(user.getEmail());
         lmmp.setSubject("Bulk Mailing: Finish Setting Up Your Account");
@@ -220,9 +217,9 @@ public class UserServiceImpl implements UserService {
             throw new IdentityServiceException("User never activated (should resend activation email)");
 
         UserValidation uv = new UserValidation(user);
-        uv.newPasswordResetToken();
+        uv.newToken(TOKEN_TYPE_PASSWORD_RESET);
         uv = userValidationRepository.save(uv);
-        String hLink = web_address + "/blkm_interface/register/new_password?token="+ uv.getPasswordResetToken();
+        String hLink = web_address + "/blkm_interface/register/new_password?token="+ uv.getToken();
 
         blk_MailMessage lmmp = new blk_MailMessage();
         lmmp.setRecipient(user.getEmail());
@@ -260,10 +257,10 @@ public class UserServiceImpl implements UserService {
         newUser = userRepository.save(newUser);
 
         UserValidation userValidation = new UserValidation(newUser);
-        userValidation.newToken();
+        userValidation.newToken(TOKEN_TYPE_SUBSCRIBE);
         userValidationRepository.save(userValidation);
 
-        sendConfirmationMail(newUser);
+        sendConfirmationMail(newUser, userValidation);
 
         return newUser;
     }

@@ -15,6 +15,17 @@
 	<name>blkm_interface</name>
 	<description>Bulk mailing interface</description>
 
+
+	<properties>
+		<java.version>17</java.version>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<htmx-version>1.5.0</htmx-version>
+		<font-awesome.version>5.11.2</font-awesome.version>
+		<bootstrap-version>5.1.0</bootstrap-version>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -49,19 +60,9 @@
 		<dependency>
 			<groupId>org.webjars.npm</groupId>
 			<artifactId>htmx.org</artifactId>
-			<version>1.5.0</version>
+			<version>${htmx-version}</version>
 		</dependency>
 
-		<dependency>
-			<groupId>org.webjars</groupId>
-			<artifactId>bootstrap</artifactId>
-			<version>5.1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.webjars.npm</groupId>
-			<artifactId>bootstrap-icons</artifactId>
-			<version>1.5.0</version>
-		</dependency>
 
 		<dependency><!-- https://mvnrepository.com/artifact/org.webjars/jquery -->
 			<groupId>org.webjars</groupId>
@@ -86,6 +87,30 @@
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>bootstrap</artifactId>
+			<version>${bootstrap-version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<!-- dependency>
+			<groupId>org.webjars.npm</groupId>
+			<artifactId>bootstrap-icons</artifactId>
+			<version>${bootstrap-version}</version>
+		</dependency -->
+
+		<!-- dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>bootstrap-icons</artifactId>
+            <version>1.5.0</version>
+        </dependency -->
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>font-awesome</artifactId>
+			<version>${font-awesome.version}</version>
+		</dependency>
+
+
 
 		<!--		<dependency> TODO: investigate wether this is need for tests -->
 		<!--			<groupId>org.springframework.boot</groupId>-->
@@ -94,12 +119,6 @@
 		<!--		</dependency>-->
 	</dependencies>
 
-	<properties>
-		<java.version>17</java.version>
-		<maven.compiler.source>17</maven.compiler.source>
-		<maven.compiler.target>17</maven.compiler.target>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
 
 	<build>
 		<finalName>blkm_interface</finalName>

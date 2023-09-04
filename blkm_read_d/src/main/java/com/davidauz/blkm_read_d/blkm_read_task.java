@@ -11,28 +11,28 @@ import java.util.Optional;
 
 public class blkm_read_task implements Runnable {
 
-    @Autowired
+	@Autowired
 	blk_MailQueue blk_mailQueue;
 
-    @Autowired
-    private ConfigurationRepository configurationRepository;
+	@Autowired
+	private ConfigurationRepository configurationRepository;
 
-    @Autowired
-    private readEmailService readEmailSrvc;
+	@Autowired
+	private readEmailService readEmailSrvc;
 
-    @Autowired
+	@Autowired
 	MailMessageRepository mailMessageRepository;
 
-    @Override
-    public void run(){
-        Optional<ConfigurationPair> o_mda = configurationRepository.findByName("read_mail_daemon_running");
-        if(o_mda.isPresent()){
-            ConfigurationPair mda=o_mda.get();
-            if("0".equals(mda.getValue()))
-                return;
-            mailMessageRepository.update_heart_beat("heartbeat_r");
+	@Override
+	public void run(){
+		Optional<ConfigurationPair> o_mda = configurationRepository.findByName("read_mail_daemon_running");
+		if(o_mda.isPresent()){
+			ConfigurationPair mda=o_mda.get();
+			if("0".equals(mda.getValue()))
+				return;
+			mailMessageRepository.update_heart_beat("heartbeat_r");
 
-            readEmailSrvc.read_messages_in_inbox();
-        }
-    }
+			readEmailSrvc.read_messages_in_inbox();
+		}
+	}
 }
