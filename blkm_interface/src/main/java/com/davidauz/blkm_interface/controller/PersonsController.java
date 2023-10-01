@@ -144,8 +144,8 @@ public class PersonsController {
 
     @GetMapping(value = "person/new")
     public String person_new
-            (   Model model
-            ){
+    (   Model model
+    ){
         Person pers = new Person();
         pers.setCompany(new Company());
         pers.getCompany().setId(0L);

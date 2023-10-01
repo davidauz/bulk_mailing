@@ -61,7 +61,8 @@ public class UserValidation
         TimeUtil time = new TimeUtil();
         long a=Math.abs(getTokenTimeStamp().getTime());
         long b = time.now().getTime();
-        return Math.abs(getTokenTimeStamp().getTime() - time.now().getTime()) < 1000 * 60 * 60 * 24;
+        long diff=Math.abs(getTokenTimeStamp().getTime() - time.now().getTime());
+        return diff < 1000 * 60 * 60 * 24;
     }
 
     public boolean tokenIsCurrent() {
