@@ -8,6 +8,8 @@ Keywords:
 <li>thymeleaf</li>
 <li>htmx</li>
 <li>lombok</li>
+<li>Junit</li>
+<li>Mockito</li>
 <li>JPA</li>
 </ul>
 

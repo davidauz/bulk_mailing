@@ -1,7 +1,6 @@
 package com.davidauz.blkm_send_d;
 
 import com.davidauz.blkm_common.entity.ConfigurationPair;
-import com.davidauz.blkm_common.entity.blk_MailQueue;
 import com.davidauz.blkm_common.repo.ConfigurationRepository;
 import com.davidauz.blkm_common.repo.MailMessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Optional;
 
 public class blkm_send_task implements Runnable {
-
-    @Autowired
-	blk_MailQueue blk_mailQueue;
 
     @Autowired
     private ConfigurationRepository configurationRepository;

@@ -13,6 +13,8 @@ import java.util.Properties;
 @Configuration
 public class MailSenderConfig {
 
+    @Autowired
+    private ConfigurationRepository cfgRepo;
 
     private static final String[][] MANDATORY_PROPERTIES =
     {	{"SMTPPort", "25"}
@@ -61,11 +63,9 @@ public class MailSenderConfig {
         }
     }
 
-    @Autowired
-    private ConfigurationRepository cfgRepo;
 
     @Bean("JavaMailSender") // this is because the parameters are read not from application.resources but
-    // from database, so here is the place where to configure the JavaMailSenderImpl (Autowired in sendEmailService)
+// from database, so here is the place where to configure the JavaMailSenderImpl (Autowired in sendEmailService)
     public JavaMailSenderImpl javaMailSenderImpl()  {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         ensureValuesPresent();

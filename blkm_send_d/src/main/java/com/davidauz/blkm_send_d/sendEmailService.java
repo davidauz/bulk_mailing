@@ -61,8 +61,6 @@ public class sendEmailService {
 
             Date date = new Date();
             String messageId = "bm."+ m_dateFormat.format(date)+"."+ UUID.randomUUID().toString().substring(0,10)+"@rightwayasia.com"
-//            "<" + UUID.randomUUID().toString() + "." + m_dateFormat.format(date) + "@" + InetAddress.getLocalHost().getHostName() + ">"
-//            UUID.randomUUID().toString() + "." + m_dateFormat.format(date) + "@" + InetAddress.getLocalHost().getHostName()
             ;
 
             mimeMessage.setHeader("Message-ID", "<" + messageId + ">");

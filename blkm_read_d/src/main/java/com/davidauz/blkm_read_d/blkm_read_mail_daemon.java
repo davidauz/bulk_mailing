@@ -52,7 +52,9 @@ public class blkm_read_mail_daemon extends SpringBootServletInitializer  {
         return scheduler;
     }
 
-
+    public Runnable get_rm_background_task() {
+        return new blkm_read_task();
+    }
     @Bean
     public ScheduledFuture<?> scheduleMyBackgroundTask(TaskScheduler taskScheduler) {
         int wait_interval_in_seconds=5*60;
@@ -60,7 +62,7 @@ public class blkm_read_mail_daemon extends SpringBootServletInitializer  {
         if(cfg.isPresent())
             wait_interval_in_seconds=60*Integer.valueOf(cfg.get().getValue());
         Duration dur= Duration.ofSeconds(wait_interval_in_seconds);
-	return taskScheduler.scheduleAtFixedRate(get_rm_background_task(), dur);
+	    return taskScheduler.scheduleAtFixedRate(get_rm_background_task(), dur);
     }
 
     @Override
